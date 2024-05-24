@@ -1,0 +1,35 @@
+pub fn three_sum_closest(mut nums: Vec<i32>, target: i32) -> i32 {
+    nums.sort();
+
+    let mut closest = nums[0] + nums[1] + nums[2];
+
+    for i in 0..nums.len() {
+        let mut l = i + 1;
+        let mut r = nums.len() - 1;
+
+        while l < r {
+            let sum = nums[i] + nums[l] + nums[r];
+
+            if sum == target {
+                return sum;
+            }
+
+            if sum < target {
+                l += 1;
+            } else {
+                r -= 1;
+            }
+            
+            if (target - sum).abs() < (target - closest).abs() {
+                closest = sum;
+            }
+        }
+    }
+
+    closest
+}
+
+// println!("\nThree sum closest");
+// println!("[-1,2,1,-4], 1 -> {}", crate::three_sum_closest::three_sum_closest(vec![-1, 2, 1, -4], 1));
+// println!("[0,0,0], 1 -> {}", crate::three_sum_closest::three_sum_closest(vec![0, 0, 0], 1));
+// println!("[1,1,1,0], -100 -> {}", crate::three_sum_closest::three_sum_closest(vec![1, 1, 1, 0], -100));
