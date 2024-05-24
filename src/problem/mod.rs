@@ -10,3 +10,5 @@ pub mod kth_largest_element;
 pub mod sliding_window_maximum;
 mod sort_colors;
 mod minimum_abs_difference;
+mod maximum_gap;
+mod radix_sort;
