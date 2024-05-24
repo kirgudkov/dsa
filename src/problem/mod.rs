@@ -9,3 +9,4 @@ pub mod heap_sort;
 pub mod kth_largest_element;
 pub mod sliding_window_maximum;
 mod sort_colors;
+mod minimum_abs_difference;
