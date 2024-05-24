@@ -1,89 +1,109 @@
-// min heap
-
 pub fn sort_array(nums: Vec<i32>) -> Vec<i32> {
-    let mut heap: Vec<i32> = vec![];
     let mut result: Vec<i32> = vec![];
+    let mut heap = MinHeap::from(nums);
 
-    for item in nums.iter() {
-        heap.push(*item);
-        maintain_up(&mut heap);
-    }
-
-    while let Some(min) = pop(&mut heap) {
+    while let Some(min) = heap.pop() {
         result.push(min);
     }
 
     result
 }
 
-fn maintain_up(heap: &mut [i32]) {
-    if heap.is_empty() {
-        return;
-    }
+struct MinHeap {
+    vec: Vec<i32>,
+}
 
-    let mut index = heap.len() - 1;
+impl MinHeap {
+    pub fn from(vec: Vec<i32>) -> Self {
+        let mut instance = Self { vec: vec![] };
 
-    while let Some(parent_idx) = get_parent(heap, index) {
-        if heap[index] < heap[parent_idx] {
-            heap.swap(index, parent_idx);
-            index = parent_idx;
-        } else {
-            break;
+        for item in vec.iter() {
+            instance.insert(*item);
         }
-    }
-}
 
-fn get_parent(heap: &[i32], index: usize) -> Option<usize> {
-    let _ = heap.get(index.checked_sub(1)? / 2)?;
-
-    Some((index - 1) / 2)
-}
-
-fn get_children(heap: &[i32], i: usize) -> Option<(Option<usize>, Option<usize>)> {
-    let l = heap.get((i * 2) + 1).map(|_| (i * 2) + 1);
-    let r = heap.get((i * 2) + 2).map(|_| (i * 2) + 2);
-
-    Some((l, r))
-}
-
-fn pop(heap: &mut Vec<i32>) -> Option<i32> {
-    if heap.is_empty() {
-        return None;
+        instance
     }
 
-    let a = 0;
-    let b = heap.len() - 1;
-    heap.swap(a, b);
+    pub fn pop(&mut self) -> Option<i32> {
+        if self.vec.is_empty() {
+            return None;
+        }
 
-    let last = heap.pop();
+        let last_idx = self.vec.len() - 1;
+        self.vec.swap(0, last_idx);
 
-    if heap.len() < 2 {
-        return last;
-    }
+        let last_value = self.vec.pop();
 
-    let mut i = 0;
-    while let Some((left, right)) = get_children(heap, i) {
-        let idx = match (left, right) {
-            (None, None) => break,
-            (Some(left_idx), None) => left_idx,
-            (None, Some(right_idx)) => right_idx,
-            (Some(left_idx), Some(right_idx)) => {
-                let condition = heap[left_idx] < heap[right_idx];
+        if self.vec.len() < 2 {
+            return last_value;
+        }
 
-                if condition { left_idx } else { right_idx }
+        // Maintain the heap property from the top down
+        let mut i = 0;
+        while let Some((left, right)) = self.get_children(i) {
+            let idx = match (left, right) {
+                (None, None) => break,
+                (Some(left_idx), None) => left_idx,
+                (None, Some(right_idx)) => right_idx,
+                (Some(left_idx), Some(right_idx)) => {
+                    let condition = self.vec[left_idx] < self.vec[right_idx];
+
+                    if condition { left_idx } else { right_idx }
+                }
+            };
+
+            if self.vec[i] > self.vec[idx] {
+                self.vec.swap(i, idx);
+                i = idx;
+            } else {
+                break;
             }
-        };
+        }
 
-        if heap[i] > heap[idx] {
-            heap.swap(i, idx);
-            i = idx;
-        } else {
-            break;
+        last_value
+    }
+
+    fn insert(&mut self, value: i32) {
+        self.vec.push(value);
+
+        if self.vec.is_empty() {
+            return;
+        }
+
+        // Maintain the heap property from the bottom up
+        let mut index = self.vec.len() - 1;
+
+        while let Some(parent_idx) = self.get_parent(index) {
+            if self.vec[index] < self.vec[parent_idx] {
+                self.vec.swap(index, parent_idx);
+                index = parent_idx;
+            } else {
+                break;
+            }
         }
     }
 
-    last
+    fn get_parent(&self, index: usize) -> Option<usize> {
+        let _ = self.vec.get(index.checked_sub(1)? / 2)?;
+
+        Some((index - 1) / 2)
+    }
+
+    fn get_children(&self, i: usize) -> Option<(Option<usize>, Option<usize>)> {
+        let l = self.vec.get((i * 2) + 1).map(|_| (i * 2) + 1);
+        let r = self.vec.get((i * 2) + 2).map(|_| (i * 2) + 2);
+
+        Some((l, r))
+    }
 }
 
-// println!("{:?}", sort_array(vec![5, 2, 3, 1]));
-// println!("{:?}", sort_array(vec![5, 1, 1, 2, 0, 0]));
+#[cfg(test)]
+mod tests {
+    use crate::problem::heap_sort::sort_array;
+
+    #[test]
+    fn test_sort_array() {
+        assert_eq!(sort_array(vec![5, 2, 3, 1]), vec![1, 2, 3, 5]);
+        assert_eq!(sort_array(vec![5, 1, 1, 2, 0, 0]), vec![0, 0, 1, 1, 2, 5]);
+    }
+}
