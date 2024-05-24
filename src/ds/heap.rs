@@ -142,7 +142,14 @@ impl Heap {
     }
 }
 
-// let mut max_heap = Heap::max(vec![12, 14, 20, 9, 10, 30, 18]);
-// 
-// println!("heap: {:?}", max_heap);
-// println!("sorted: {:?}", max_heap.as_sorted());
+#[cfg(test)]
+mod tests {
+    use crate::ds::heap::Heap;
+
+    #[test]
+    fn test_max_heap() {
+        let mut max_heap = Heap::max(vec![12, 14, 20, 9, 10, 30, 18]);
+        assert_eq!(max_heap.as_sorted(), vec![30, 20, 18, 14, 12, 10, 9]);
+    }
+}
+

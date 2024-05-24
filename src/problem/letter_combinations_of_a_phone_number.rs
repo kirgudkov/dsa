@@ -40,8 +40,15 @@ pub fn letter_combinations(digits: String) -> Vec<String> {
     result
 }
 
-// println!("\nLetter combinations of a phone number");
-// println!("\"23\" -> {:?}", crate::letter_combinations_of_a_phone_number::letter_combinations(String::from("23")));
-// println!("\"234\" -> {:?}", crate::letter_combinations_of_a_phone_number::letter_combinations(String::from("234")));
-// println!("\"\" -> {:?}", crate::letter_combinations_of_a_phone_number::letter_combinations(String::from("")));
-// println!("\"2\" -> {:?}", crate::letter_combinations_of_a_phone_number::letter_combinations(String::from("2")));
+#[cfg(test)]
+mod tests {
+    use crate::problem::letter_combinations_of_a_phone_number::letter_combinations;
+
+    #[test]
+    fn test_letter_combinations() {
+        assert_eq!(letter_combinations(String::from("23")), vec!["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"]);
+        assert_eq!(letter_combinations(String::from("234")), vec!["adg", "adh", "adi", "aeg", "aeh", "aei", "afg", "afh", "afi", "bdg", "bdh", "bdi", "beg", "beh", "bei", "bfg", "bfh", "bfi", "cdg", "cdh", "cdi", "ceg", "ceh", "cei", "cfg", "cfh", "cfi"]);
+        assert_eq!(letter_combinations(String::from("")), vec![] as Vec<String>);
+        assert_eq!(letter_combinations(String::from("2")), vec!["a", "b", "c"]);
+    }
+}

@@ -60,7 +60,14 @@ fn digit_to_roman(digit: i32, vocab: &HashMap<i32, &str>) -> String {
     roman
 }
 
-// println!("\nInteger to roman");
-// println!("3749: {}", crate::integer_to_roman::int_to_roman(3749));
-// println!("58: {}", crate::integer_to_roman::int_to_roman(58));
-// println!("1994: {}", crate::integer_to_roman::int_to_roman(1994));
+#[cfg(test)]
+mod tests {
+    use crate::problem::integer_to_roman::int_to_roman;
+
+    #[test]
+    fn test_int_to_roman() {
+        assert_eq!(int_to_roman(3749), "MMMDCCXLIX");
+        assert_eq!(int_to_roman(58), "LVIII");
+        assert_eq!(int_to_roman(1994), "MCMXCIV");
+    }
+}

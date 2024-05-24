@@ -28,7 +28,14 @@ pub fn longest_palindrome(s: String) -> String {
     s[result.0..=result.1].to_string()
 }
 
-// println!("Longest palindrome");
-// println!("Longest of \"cbbd\" is: {}", crate::longest_palindrome::longest_palindrome(String::from("cbbd")));
-// println!("Longest of \"alevelevelqweytty\" is: {}", crate::longest_palindrome::longest_palindrome(String::from("alevelevelqweytty")));
-// println!("Longest of \"aaabaaaa\" is: {}", crate::longest_palindrome::longest_palindrome(String::from("aaabaaaa")));
+#[cfg(test)]
+mod tests {
+    use crate::problem::longest_palindrome::longest_palindrome;
+
+    #[test]
+    fn test_longest_palindrome() {
+        assert_eq!(longest_palindrome(String::from("cbbd")), "bb".to_string());
+        assert_eq!(longest_palindrome(String::from("alevelevelqweytty")), "levelevel".to_string());
+        assert_eq!(longest_palindrome(String::from("aaabaaaa")), "aaabaaa".to_string());
+    }
+}

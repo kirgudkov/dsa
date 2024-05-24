@@ -42,7 +42,14 @@ fn median(vec: Vec<i32>) -> f64 {
     }
 }
 
-// println!("\nFind median of two sorted arrays");
-// println!("Median of [1, 3] and [2] is: {}", crate::median_of_two_sorted_arrays::find_median_sorted_arrays(vec![1, 3], vec![2]));
-// println!("Median of [1, 2] and [3, 4] is: {}", crate::median_of_two_sorted_arrays::find_median_sorted_arrays(vec![1, 2], vec![3, 4]));
-// println!("Median of [1, 2, 3, 6] and [4, 5] is: {}", crate::median_of_two_sorted_arrays::find_median_sorted_arrays(vec![1, 2, 3, 6], vec![4, 5]));
+#[cfg(test)]
+mod tests {
+    use crate::problem::median_of_two_sorted_arrays::find_median_sorted_arrays;
+
+    #[test]
+    fn test_find_median_sorted_arrays() {
+        assert_eq!(find_median_sorted_arrays(vec![1, 3], vec![2]), 2.0);
+        assert_eq!(find_median_sorted_arrays(vec![1, 2], vec![3, 4]), 2.5);
+        assert_eq!(find_median_sorted_arrays(vec![1, 2, 3, 6], vec![4, 5]), 3.5);
+    }
+}

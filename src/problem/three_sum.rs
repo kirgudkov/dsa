@@ -37,8 +37,15 @@ fn two_sum(nums: &[i32], sum: i32) -> Option<Vec<Vec<i32>>> {
     Some(result)
 }
 
-// println!("\nThree sum");
-// println!("[-1,0,1,2,-1,-4] -> {:?}", crate::three_sum::three_sum(vec![-1, 0, 1, 2, -1, -4]));
-// println!("[0,1,1] -> {:?}", crate::three_sum::three_sum(vec![0, 1, 1]));
-// println!("[0,0,0] -> {:?}", crate::three_sum::three_sum(vec![0, 0, 0]));
-// println!("[0,0,0,0] -> {:?}", crate::three_sum::three_sum(vec![0, 0, 0, 0]));
+#[cfg(test)]
+mod tests {
+    use crate::problem::three_sum::three_sum;
+
+    #[test]
+    fn test_three_sum() {
+        assert_eq!(three_sum(vec![-1, 0, 1, 2, -1, -4]), vec![vec![-1, -1, 2], vec![-1, 0, 1]]);
+        assert_eq!(three_sum(vec![0, 1, 1]), vec![] as Vec<Vec<i32>>);
+        assert_eq!(three_sum(vec![0, 0, 0]), vec![vec![0, 0, 0]]);
+        assert_eq!(three_sum(vec![0, 0, 0, 0]), vec![vec![0, 0, 0]]);
+    }
+}
