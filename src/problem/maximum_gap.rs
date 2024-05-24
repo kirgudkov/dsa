@@ -1,17 +1,21 @@
 use crate::problem::radix_sort::radix_sort;
 
+// https://leetcode.com/problems/maximum-gap/description/
 pub fn maximum_gap(mut nums: Vec<i32>) -> i32 {
     radix_sort(&mut nums);
 
-    nums.windows(2)
-        .map(|x| x[1] - x[0])
-        .max()
-        .unwrap_or(0)
+    let mut result = 0;
+
+    for i in 1..nums.len() {
+        result = result.max(nums[i] - nums[i - 1]);
+    }
+
+    result
 }
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+    use crate::problem::maximum_gap::maximum_gap;
 
     #[test]
     fn test_maximum_gap() {
