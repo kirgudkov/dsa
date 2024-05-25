@@ -1,5 +1,5 @@
 // https://leetcode.com/problems/minimum-absolute-difference/description/
-// Naive approach: sort, run through once to find min diff and then run once more to find same pairs 
+// Naive approach: sort, run through once to find min diff and then run once more to find same pairs
 pub fn minimum_abs_difference(mut input: Vec<i32>) -> Vec<Vec<i32>> {
     let mut result: Vec<Vec<i32>> = vec![];
 
@@ -88,7 +88,6 @@ mod tests {
         let arr = vec![40, 11, 26, 27, -20];
         let result = minimum_abs_difference(arr);
         assert_eq!(result, vec![vec![26, 27]]);
-
 
         // v2
         let arr = vec![4, 2, 1, 3];

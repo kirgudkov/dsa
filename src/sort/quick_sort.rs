@@ -14,7 +14,7 @@ fn partition(input: &mut [i32], l: usize, h: usize) -> usize {
     let pivot = input[l];
     let mut i = l;
     let mut j = h;
-    
+
     loop {
         while input[i] < pivot {
             i += 1;
@@ -45,7 +45,7 @@ mod tests {
         let mut input = [4, 3, 2, 1, 5];
         quick_sort(&mut input);
         assert_eq!(input, [1, 2, 3, 4, 5]);
-        
+
         let mut input = [1];
         quick_sort(&mut input);
         assert_eq!(input, [1]);

@@ -1,7 +1,6 @@
 // https://leetcode.com/problems/sort-colors/description/
 // Counting sort approach
 pub fn sort_colors(nums: &mut [i32]) {
-
     // Find the maximum in the array
     let mut max = 0;
     for num in nums.iter() {
@@ -27,9 +26,9 @@ pub fn sort_colors(nums: &mut [i32]) {
 
     // Iterate the array in reverse order. Fill the sorted array with the elements:
     // For [2, 0, 2, 1, 1, 0], the counts will be [2, 2, 2], and the prefix sum will be [2, 4, 6]
-    // -> [-, -, -, -, -, -] 
-    // -> [-, 0, -, -, -, -] -> [-, 0, 1, -, -, -] 
-    // -> [-, 0, 1, 1, -, -] -> [-, 0, 1, 1, 2, -] 
+    // -> [-, -, -, -, -, -]
+    // -> [-, 0, -, -, -, -] -> [-, 0, 1, -, -, -]
+    // -> [-, 0, 1, 1, -, -] -> [-, 0, 1, 1, 2, -]
     // -> [0, 0, 1, 1, 2, -] -> [0, 0, 1, 1, 2, 2]
     for num in nums.iter().rev() {
         sorted[counts[*num as usize] - 1] = *num;

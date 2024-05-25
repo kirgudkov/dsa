@@ -152,4 +152,3 @@ mod tests {
         assert_eq!(max_heap.as_sorted(), vec![30, 20, 18, 14, 12, 10, 9]);
     }
 }
-

@@ -1,27 +1,22 @@
 use std::collections::HashMap;
 
 pub fn int_to_roman(num: i32) -> String {
-    let ones_vocab: HashMap<i32, &str> = [
-        (1, "I"),
-        (5, "V"),
-        (10, "X"),
-    ].iter().cloned().collect();
+    let ones_vocab: HashMap<i32, &str> = [(1, "I"), (5, "V"), (10, "X")]
+        .iter()
+        .cloned()
+        .collect();
 
-    let tens_vocab: HashMap<i32, &str> = [
-        (1, "X"),
-        (5, "L"),
-        (10, "C"),
-    ].iter().cloned().collect();
+    let tens_vocab: HashMap<i32, &str> = [(1, "X"), (5, "L"), (10, "C")]
+        .iter()
+        .cloned()
+        .collect();
 
-    let hundreds_vocab: HashMap<i32, &str> = [
-        (1, "C"),
-        (5, "D"),
-        (10, "M"),
-    ].iter().cloned().collect();
+    let hundreds_vocab: HashMap<i32, &str> = [(1, "C"), (5, "D"), (10, "M")]
+        .iter()
+        .cloned()
+        .collect();
 
-    let thousands_vocab: HashMap<i32, &str> = [
-        (1, "M"),
-    ].iter().cloned().collect();
+    let thousands_vocab: HashMap<i32, &str> = [(1, "M")].iter().cloned().collect();
 
     let mut roman = String::new();
 

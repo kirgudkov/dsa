@@ -10,7 +10,11 @@ pub fn top_k_frequent(nums: Vec<i32>, k: i32) -> Vec<i32> {
 
     let mut freqs_vec: Vec<(&i32, i32)> = freqs.into_iter().collect();
     freqs_vec.sort_by(|a, b| b.1.cmp(&a.1));
-    freqs_vec.iter().take(k as usize).map(|(num, _)| **num).collect()
+    freqs_vec
+        .iter()
+        .take(k as usize)
+        .map(|(num, _)| **num)
+        .collect()
 }
 
 fn bucket_sort(input: &mut [i32], k: i32) {
@@ -26,7 +30,9 @@ fn bucket_sort(input: &mut [i32], k: i32) {
         }
     }
 
-    buckets.iter_mut().for_each(|item| item.sort_unstable());
+    buckets
+        .iter_mut()
+        .for_each(|item| item.sort_unstable());
     input.copy_from_slice(buckets.concat().as_slice());
 }
 

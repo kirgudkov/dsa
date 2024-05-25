@@ -34,10 +34,7 @@ mod tests {
             val: 1,
             next: Some(Box::new(ListNode {
                 val: 2,
-                next: Some(Box::new(ListNode {
-                    val: 4,
-                    next: None,
-                })),
+                next: Some(Box::new(ListNode { val: 4, next: None })),
             })),
         };
 
@@ -45,10 +42,7 @@ mod tests {
             val: 1,
             next: Some(Box::new(ListNode {
                 val: 3,
-                next: Some(Box::new(ListNode {
-                    val: 4,
-                    next: None,
-                })),
+                next: Some(Box::new(ListNode { val: 4, next: None })),
             })),
         };
 

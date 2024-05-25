@@ -6,9 +6,16 @@ pub fn letter_combinations(digits: String) -> Vec<String> {
     let mut result = Vec::new();
 
     let mapping = vec![
-        vec![], vec![], vec!["a", "b", "c"], vec!["d", "e", "f"],
-        vec!["g", "h", "i"], vec!["j", "k", "l"], vec!["m", "n", "o"],
-        vec!["p", "q", "r", "s"], vec!["t", "u", "v"], vec!["w", "x", "y", "z"],
+        vec![],
+        vec![],
+        vec!["a", "b", "c"],
+        vec!["d", "e", "f"],
+        vec!["g", "h", "i"],
+        vec!["j", "k", "l"],
+        vec!["m", "n", "o"],
+        vec!["p", "q", "r", "s"],
+        vec!["t", "u", "v"],
+        vec!["w", "x", "y", "z"],
     ];
 
     let mut chars = digits.chars();
@@ -46,8 +53,17 @@ mod tests {
 
     #[test]
     fn test_letter_combinations() {
-        assert_eq!(letter_combinations(String::from("23")), vec!["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"]);
-        assert_eq!(letter_combinations(String::from("234")), vec!["adg", "adh", "adi", "aeg", "aeh", "aei", "afg", "afh", "afi", "bdg", "bdh", "bdi", "beg", "beh", "bei", "bfg", "bfh", "bfi", "cdg", "cdh", "cdi", "ceg", "ceh", "cei", "cfg", "cfh", "cfi"]);
+        assert_eq!(
+            letter_combinations(String::from("23")),
+            vec!["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"]
+        );
+        assert_eq!(
+            letter_combinations(String::from("234")),
+            vec![
+                "adg", "adh", "adi", "aeg", "aeh", "aei", "afg", "afh", "afi", "bdg", "bdh", "bdi", "beg", "beh",
+                "bei", "bfg", "bfh", "bfi", "cdg", "cdh", "cdi", "ceg", "ceh", "cei", "cfg", "cfh", "cfi"
+            ]
+        );
         assert_eq!(letter_combinations(String::from("")), vec![] as Vec<String>);
         assert_eq!(letter_combinations(String::from("2")), vec!["a", "b", "c"]);
     }

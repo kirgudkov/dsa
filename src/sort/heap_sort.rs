@@ -48,7 +48,11 @@ impl MinHeap {
                 (Some(left_idx), Some(right_idx)) => {
                     let condition = self.vec[left_idx] < self.vec[right_idx];
 
-                    if condition { left_idx } else { right_idx }
+                    if condition {
+                        left_idx
+                    } else {
+                        right_idx
+                    }
                 }
             };
 
