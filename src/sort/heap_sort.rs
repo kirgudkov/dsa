@@ -99,7 +99,7 @@ impl MinHeap {
 
 #[cfg(test)]
 mod tests {
-    use crate::problem::heap_sort::sort_array;
+    use crate::sort::heap_sort::sort_array;
 
     #[test]
     fn test_sort_array() {

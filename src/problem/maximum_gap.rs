@@ -1,4 +1,4 @@
-use crate::problem::radix_sort::radix_sort;
+use crate::sort::radix_sort::radix_sort;
 
 // https://leetcode.com/problems/maximum-gap/description/
 pub fn maximum_gap(mut nums: Vec<i32>) -> i32 {

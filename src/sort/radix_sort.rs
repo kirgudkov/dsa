@@ -37,7 +37,7 @@ pub fn counting_sort(input: &mut [i32], position: i32) {
 
 #[cfg(test)]
 mod tests {
-    use crate::problem::radix_sort::radix_sort;
+    use crate::sort::radix_sort::radix_sort;
 
     #[test]
     fn test_radix_sort() {
