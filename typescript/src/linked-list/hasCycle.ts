@@ -5,7 +5,7 @@
 // Time complexity: O(n)
 // Space complexity: O(1)
 
-import type { ListNode } from "./ListNode";
+import type { ListNode } from "./ListNode.ts";
 
 export function hasCycle(head: ListNode | null): boolean {
 	let slow = head;

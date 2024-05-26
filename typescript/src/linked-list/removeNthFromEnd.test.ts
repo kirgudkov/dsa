@@ -1,5 +1,5 @@
 import { describe, test, expect } from "bun:test";
-import { removeNthFromEnd } from "./removeNthFromEnd";
+import { removeNthFromEnd } from "./removeNthFromEnd.ts";
 
 describe("removeNthFromEnd", () => {
 	test("should remove the nth node from the end of the list", () => {

@@ -1,6 +1,6 @@
 import { describe, test, expect } from "bun:test";
-import { detectCycle } from "./detectCycle";
-import { ListNode } from "./ListNode";
+import { detectCycle } from "./detectCycle.ts";
+import { ListNode } from "./ListNode.ts";
 
 describe("detectCycle", () => {
 	test("Example 1", () => {

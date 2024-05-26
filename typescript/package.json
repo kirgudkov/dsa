@@ -1,6 +1,6 @@
 {
   "name": "leetcode",
-  "module": "index.ts",
+  "module": "src/index.ts",
   "type": "module",
   "scripts": {
     "test": "bun test"

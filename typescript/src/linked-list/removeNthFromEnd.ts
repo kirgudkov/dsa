@@ -1,4 +1,4 @@
-import type { ListNode } from "./ListNode";
+import type { ListNode } from "./ListNode.ts";
 
 export function removeNthFromEnd(head: ListNode | null, n: number): ListNode | null {
 	const arr = [head];

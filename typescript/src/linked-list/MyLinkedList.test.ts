@@ -1,5 +1,5 @@
 import { describe, test, expect } from "bun:test";
-import { MyLinkedList, MyListNode } from "./MyLinkedList";
+import { MyLinkedList, MyListNode } from "./MyLinkedList.ts";
 
 describe("MyLinkedList", () => {
 	test("get", () => {

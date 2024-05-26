@@ -1,4 +1,4 @@
-import type { ListNode } from "./ListNode";
+import type { ListNode } from "./ListNode.ts";
 
 export function isPalindrome(head: ListNode | null): boolean {
 	const stack = [];

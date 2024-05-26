@@ -1,5 +1,5 @@
 import { describe, test, expect } from "bun:test";
-import { isPalindrome } from "./isPalindrome";
+import { isPalindrome } from "./isPalindrome.ts";
 
 describe("isPalindrome", () => {
 	test("Example 1", () => {

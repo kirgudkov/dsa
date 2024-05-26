@@ -1,5 +1,5 @@
 import { describe, test, expect } from "bun:test";
-import { hasCycle } from "./hasCycle";
+import { hasCycle } from "./hasCycle.ts";
 import { ListNode } from "./ListNode.ts";
 
 describe("linked_list/hasCycle", () => {
