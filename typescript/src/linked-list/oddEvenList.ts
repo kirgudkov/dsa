@@ -1,32 +1,36 @@
 import type { ListNode } from "./ListNode.ts";
 
 export function oddEvenList(head: ListNode | null): ListNode | null {
-	if (!head) {
-		return null;
-	}
-
-	// If length is 1, nothing to change;
-	if (!head.next) {
+	if (!head || !head.next) {
 		return head;
 	}
 
+	const first_even: ListNode = head.next;
+
+	let last_odd: ListNode = head;
 	let current: ListNode | null = head.next;
 
-	// Border is a first even node. It'll never change. We are going to insert each odd node right before it.
-	//                                  p   c  n               p      c  n            p      c     n
-	// It will be something like this: [1, |2, 3, 4, 5] => [1, 3, |2, 4, 5] => [1, 3, 5, |2, 4]; | null
-	let border: ListNode | null = head.next;
-	let border_prev: ListNode | null = head;
-
 	while (current?.next) {
-		border_prev.next = current.next;
-		border_prev = current.next;
+		// current is always even;
+		// current.next is always odd;
 
-		const next_next: ListNode | null = current.next.next;
+		// We are going to move current.next to the position between last_odd and first_even.
+		// current.next will become the new last_odd.
+		// current will point to the node after current.next (next even node).
 
-		current.next.next = border;
-		current.next = next_next;
-		current = next_next;
+		// Stash next even node, because we're about to mutate the reference:
+		const next_even: ListNode | null = current.next.next;
+
+		// Make the current.next the new last_odd:
+		current.next.next = first_even;
+		last_odd.next = current.next;
+		last_odd = current.next;
+
+		// Connect current node with next_even:
+		current.next = next_even;
+
+		// Update current pointer
+		current = next_even;
 	}
 
 	return head;

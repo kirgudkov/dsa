@@ -1,9 +1,9 @@
 import { describe, test, expect } from "bun:test";
-import { MyLinkedList, MyListNode } from "./MyLinkedList.ts";
+import { SinglyLinkedList } from "./SinglyLinkedList.ts";
 
 describe("MyLinkedList", () => {
 	test("get", () => {
-		const linkedList = new MyLinkedList();
+		const linkedList = new SinglyLinkedList();
 		expect(linkedList.get(0)).toBe(-1);
 		linkedList.addAtHead(1);
 		expect(linkedList.get(0)).toBe(1);
@@ -14,7 +14,7 @@ describe("MyLinkedList", () => {
 	});
 
 	test("addAtHead", () => {
-		const linkedList = new MyLinkedList();
+		const linkedList = new SinglyLinkedList();
 		linkedList.addAtHead(1);
 		expect(linkedList.get(0)).toBe(1);
 		linkedList.addAtHead(2);
@@ -22,7 +22,7 @@ describe("MyLinkedList", () => {
 	});
 
 	test("addAtTail", () => {
-		const linkedList = new MyLinkedList();
+		const linkedList = new SinglyLinkedList();
 		linkedList.addAtTail(1);
 		expect(linkedList.get(0)).toBe(1);
 		linkedList.addAtTail(2);
@@ -30,7 +30,7 @@ describe("MyLinkedList", () => {
 	});
 
 	test("addAtIndex", () => {
-		const linkedList = new MyLinkedList();
+		const linkedList = new SinglyLinkedList();
 		linkedList.addAtIndex(0, 1);
 		expect(linkedList.get(0)).toBe(1);
 		linkedList.addAtIndex(0, 2);
@@ -40,7 +40,7 @@ describe("MyLinkedList", () => {
 	});
 
 	test("deleteAtIndex", () => {
-		const linkedList = new MyLinkedList();
+		const linkedList = new SinglyLinkedList();
 		linkedList.addAtHead(1);
 		linkedList.addAtTail(3);
 		linkedList.addAtIndex(1, 2);

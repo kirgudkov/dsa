@@ -64,4 +64,10 @@ describe("src/linked-list/oddEvenList", () => {
 			)
 		);
 	});
+
+	test("Example 3", () => {
+		const head: ListNode = new ListNode(1);
+		const result = oddEvenList(head);
+		expect(result).toEqual(new ListNode(1));
+	});
 });
