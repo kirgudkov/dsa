@@ -16,3 +16,7 @@ mod max_score_words;
 mod num_islands;
 mod open_lock;
 mod num_squares;
+mod valid_parentheses;
+mod daily_temperatures;
+mod next_greater_element;
+mod eval_rpn;
