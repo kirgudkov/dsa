@@ -13,3 +13,6 @@ pub mod three_sum;
 pub mod three_sum_closest;
 pub mod top_k_frequent;
 mod max_score_words;
+mod num_islands;
+mod open_lock;
+mod num_squares;
