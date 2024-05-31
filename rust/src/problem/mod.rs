@@ -20,3 +20,5 @@ mod valid_parentheses;
 mod daily_temperatures;
 mod next_greater_element;
 mod eval_rpn;
+mod find_target_sum_ways;
+mod decode_string;
