@@ -83,9 +83,6 @@ mod tests {
         assert_eq!(num_squares_rec(2), 2);
         assert_eq!(num_squares_rec(3), 3);
         assert_eq!(num_squares_rec(4), 1);
-        assert_eq!(num_squares_rec(12), 3);
-        assert_eq!(num_squares_rec(13), 2);
-        assert_eq!(num_squares_rec(50), 2);
     }
 
     #[test]

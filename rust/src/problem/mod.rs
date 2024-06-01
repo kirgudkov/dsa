@@ -22,3 +22,8 @@ mod next_greater_element;
 mod eval_rpn;
 mod find_target_sum_ways;
 mod decode_string;
+mod flood_fill;
+mod update_matrix;
+mod can_visit_all_rooms;
+mod reverse_string;
+mod get_row;

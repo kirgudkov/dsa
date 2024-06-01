@@ -1,36 +1,36 @@
+// https://leetcode.com/problems/decode-string
 pub fn decode_string(s: String) -> String {
-    let mut stack = Vec::new();
-    stack.push("".to_string());
+    let mut stack: std::collections::VecDeque<String> = std::collections::VecDeque::new();
 
     for char in s.chars() {
         match char {
-            '[' => stack.push("".to_string()),
             ']' => {
-                let right = stack.pop().unwrap();
-                let count = stack.pop().unwrap().parse::<usize>().unwrap();
-                let left = stack.pop().unwrap();
-
-                stack.push(left + right.repeat(count).as_str());
-            }
-            char => {
-                if let Some(last) = stack.last_mut() {
-                    if char.is_ascii_digit() {
-                        if last.parse::<usize>().is_ok() {
-                            *last += &char.to_string();
-                        } else {
-                            stack.push(char.to_string());
-                        }
-                    } else {
-                        *last += &char.to_string();
+                let mut str = String::new();
+                while let Some(last) = stack.pop_back() {
+                    if last == "[" {
+                        break;
                     }
-                } else {
-                    stack.push(char.to_string());
+
+                    str = last + &str;
                 }
+
+                let mut count = String::new();
+                while let Some(last) = stack.pop_back() {
+                    if last.chars().all(char::is_numeric) {
+                        count = last + &count;
+                    } else {
+                        stack.push_back(last);
+                        break;
+                    }
+                }
+
+                stack.push_back(str.repeat(count.parse::<usize>().unwrap()));
             }
+            _ => stack.push_back(char.to_string())
         }
     }
 
-    stack.join("")
+    stack.into_iter().collect()
 }
 
 #[cfg(test)]
