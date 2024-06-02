@@ -27,3 +27,7 @@ mod update_matrix;
 mod can_visit_all_rooms;
 mod reverse_string;
 mod get_row;
+mod fib;
+mod my_pow;
+mod kth_grammar;
+mod search_matrix;
