@@ -31,3 +31,7 @@ mod fib;
 mod my_pow;
 mod kth_grammar;
 mod search_matrix;
+mod total_n_queens;
+mod solve_n_queens;
+mod solve_sudoku;
+mod combine;

@@ -3,21 +3,21 @@ pub fn search_matrix(matrix: Vec<Vec<i32>>, target: i32) -> bool {
         return false;
     }
 
-    let tl = Cell { i: 0, j: 0 };
-    let br = Cell { i: matrix.len() - 1, j: matrix[0].len() - 1 };
+    let top_left = Cell { i: 0, j: 0 };
+    let bottom_right = Cell { i: matrix.len() - 1, j: matrix[0].len() - 1 };
 
-    search_sub_matrix(&matrix, target, tl, br)
+    search_sub_matrix(&matrix, target, top_left, bottom_right)
 }
 
-fn search_sub_matrix(matrix: &Vec<Vec<i32>>, target: i32, tl: Cell, br: Cell) -> bool {
+fn search_sub_matrix(matrix: &Vec<Vec<i32>>, target: i32, top_left: Cell, bottom_right: Cell) -> bool {
     // Base case: matrix consists of a single element:
-    if tl.i == br.i && tl.j == br.j {
-        return matrix[tl.i][tl.j] == target;
+    if top_left.i == bottom_right.i && top_left.j == bottom_right.j {
+        return matrix[top_left.i][top_left.j] == target;
     }
 
-    // top-left element is matrix's minimum and bottom-right element is matrix's maximum;
+    // Top-left element is matrix's minimum and bottom-right element is matrix's maximum;
     // Thus, if target is out of this range, it's not in the matrix:
-    if matrix[tl.i][tl.j] > target || matrix[br.i][br.j] < target {
+    if matrix[top_left.i][top_left.j] > target || matrix[bottom_right.i][bottom_right.j] < target {
         return false;
     }
 
@@ -25,30 +25,40 @@ fn search_sub_matrix(matrix: &Vec<Vec<i32>>, target: i32, tl: Cell, br: Cell) ->
     // top-left and bottom-right.
     // Essentially it is two-dimensional binary search.
 
-    // Split vertically:
-    let mid_h = (tl.j + br.j) / 2;
-    let mut i = tl.i;
+    // Pick the vertical split point:
+    let mid_col = (top_left.j + bottom_right.j) / 2;
 
-    // Try to find the row where target is located or cell is greater than target:
-    while i <= br.i {
-        if matrix[i][mid_h] == target {
+    // Traverse mid-column and try to find a horizontal split point, which is
+    // the cell with the value greater than the target.
+    for i in top_left.i..=bottom_right.i {
+        // if we're lucky enough to find the target in the mid-column, we're done:
+        if matrix[i][mid_col] == target {
             return true;
         }
 
-        if matrix[i][mid_h] > target {
-            if i == tl.i {
-                return search_sub_matrix(matrix, target, tl, Cell { i: br.i, j: mid_h - 1 });
-            }
+        // if we found the cell with the value greater than the target, we can split the matrix vertically;
+        // Run search recursively on the bottom-left and top-right sub-matrices:
+        if matrix[i][mid_col] > target {
+            let top_right = {
+                let top_left = Cell { i: top_left.i, j: mid_col };
+                let bottom_right = Cell { i: i.wrapping_sub(1), j: bottom_right.j };
 
-            return search_sub_matrix(matrix, target, Cell { i: tl.i, j: mid_h }, Cell { i: i - 1, j: br.j })
-                || search_sub_matrix(matrix, target, Cell { i, j: tl.j }, Cell { i: br.i, j: mid_h - 1 });
+                search_sub_matrix(matrix, target, top_left, bottom_right)
+            };
+
+            let bottom_left = {
+                let top_left = Cell { i, j: top_left.j };
+                let bottom_right = Cell { i: bottom_right.i, j: mid_col.wrapping_sub(1) };
+
+                search_sub_matrix(matrix, target, top_left, bottom_right)
+            };
+
+            return top_right || bottom_left;
         }
-
-        i += 1;
     }
 
-    // We couldn't split the matrix vertically; Search in the right full-height sub-matrix:
-    search_sub_matrix(matrix, target, Cell { i: tl.i, j: mid_h + 1 }, br)
+    // We couldn't split the matrix horizontally; Search in the right full-height sub-matrix:
+    search_sub_matrix(matrix, target, Cell { i: top_left.i, j: mid_col + 1 }, bottom_right)
 }
 
 struct Cell {
