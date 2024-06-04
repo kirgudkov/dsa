@@ -38,3 +38,5 @@ mod combine;
 mod is_same_tree;
 mod generate_parenthesis;
 mod level_order;
+mod largest_rectangle_area;
+mod permute;
