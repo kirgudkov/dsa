@@ -25,6 +25,7 @@ mod tests {
 
     #[test]
     fn test_1() {
+        assert!(!is_valid(")".to_string()));
         assert!(is_valid("()".to_string()));
         assert!(is_valid("()[]{}".to_string()));
         assert!(!is_valid("(]".to_string()));

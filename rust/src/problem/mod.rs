@@ -35,3 +35,6 @@ mod total_n_queens;
 mod solve_n_queens;
 mod solve_sudoku;
 mod combine;
+mod is_same_tree;
+mod generate_parenthesis;
+mod level_order;
