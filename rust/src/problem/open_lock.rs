@@ -18,7 +18,7 @@ pub fn open_lock(deadends: Vec<String>, target: String) -> i32 {
     while !queue.is_empty() {
         for _ in 0..queue.len() {
             let num = queue.pop_front().unwrap();
-            
+
             if visited[num] {
                 continue;
             }
