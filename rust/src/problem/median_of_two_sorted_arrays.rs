@@ -44,7 +44,7 @@ fn median(vec: Vec<i32>) -> f64 {
 
 #[cfg(test)]
 mod tests {
-    use crate::problem::median_of_two_sorted_arrays::find_median_sorted_arrays;
+    use crate::problem::median_of_two_sorted_arrays::{find_median_sorted_arrays};
 
     #[test]
     fn test_find_median_sorted_arrays() {

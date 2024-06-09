@@ -41,3 +41,6 @@ mod level_order;
 mod largest_rectangle_area;
 mod permute;
 mod binary_search;
+mod two_sum;
+mod intersection_of_two_arrays_ii;
+mod find_duplicate;

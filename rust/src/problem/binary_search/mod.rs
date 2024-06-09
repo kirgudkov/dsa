@@ -9,3 +9,4 @@ mod find_closest_elements;
 mod is_perfect_square;
 mod next_greatest_letter;
 mod find_min_in_rotated_array_ii;
+mod intersection_of_two_arrays;
