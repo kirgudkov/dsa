@@ -5,3 +5,4 @@ mod queue_2_stacks;
 mod stack_2_queues;
 mod hash_set;
 mod hash_map;
+mod randomized_set;
