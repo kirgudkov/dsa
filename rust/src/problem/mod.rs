@@ -60,3 +60,8 @@ mod spiral_order;
 mod generate_pascals_triangle;
 mod add_binary;
 mod str_str;
+mod remove_element;
+mod find_max_consecutive_ones;
+mod min_sub_array_len;
+mod rotate;
+mod reverse_words;
