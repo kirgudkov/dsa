@@ -65,3 +65,5 @@ mod find_max_consecutive_ones;
 mod min_sub_array_len;
 mod rotate;
 mod reverse_words;
+mod remove_duplicates;
+mod move_zeroes;
