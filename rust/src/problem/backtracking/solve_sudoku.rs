@@ -59,7 +59,7 @@ fn is_valid(i: usize, j: usize, num: char, board: &[Vec<char>]) -> bool {
 
 #[cfg(test)]
 mod tests {
-    use crate::problem::solve_sudoku::solve_sudoku;
+    use super::*;
 
     #[test]
     fn test() {

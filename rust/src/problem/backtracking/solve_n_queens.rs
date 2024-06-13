@@ -85,7 +85,7 @@ impl Ctx {
 
 #[cfg(test)]
 mod tests {
-    use crate::problem::solve_n_queens::solve_n_queens;
+    use super::*;
 
     #[test]
     fn test() {

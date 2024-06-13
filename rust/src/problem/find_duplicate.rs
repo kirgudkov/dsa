@@ -1,5 +1,5 @@
 // https://leetcode.com/problems/find-the-duplicate-number
-// Fucking incomprehensible approach. TC is O(n) and SC is O(1).
+// Freaking incomprehensible approach. TC is O(n) and SC is O(1).
 // Since numbers are in the range [1, n] and array len is n + 1, every number is a valid index.
 // So we can treat the array as a linked list and use fast and slow pointers;
 // First, we move slow pointer one step at the time and fast pointer two steps at the time until they meet.

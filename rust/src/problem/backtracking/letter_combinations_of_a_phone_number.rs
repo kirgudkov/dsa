@@ -82,7 +82,7 @@ impl Solution {
 
 #[cfg(test)]
 mod tests {
-    use crate::problem::letter_combinations_of_a_phone_number::Solution;
+    use super::*;
 
     #[test]
     fn test_letter_combinations() {

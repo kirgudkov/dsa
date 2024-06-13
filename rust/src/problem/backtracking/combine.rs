@@ -37,7 +37,7 @@ impl Ctx {
 
 #[cfg(test)]
 mod tests {
-    use crate::problem::combine::combine;
+    use super::*;
 
     #[test]
     fn test_1() {
