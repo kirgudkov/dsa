@@ -11,13 +11,11 @@ class Trie {
 		}
 
 		const _insert = (node: TrieNode, char: string): TrieNode => {
-			if (node.children.has(char)) {
-				return node.children.get(char);
-			} else {
-				const child = new TrieNode(char);
-				node.children.set(char, child);
-				return child;
+			if (!node.children.has(char)) {
+				node.children.set(char, new TrieNode(char));
 			}
+
+			return node.children.get(char);
 		};
 
 		let node = this.root;

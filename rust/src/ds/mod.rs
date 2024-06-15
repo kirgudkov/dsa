@@ -6,3 +6,4 @@ mod stack_2_queues;
 mod hash_set;
 mod hash_map;
 mod randomized_set;
+mod logger_rate_limiter;

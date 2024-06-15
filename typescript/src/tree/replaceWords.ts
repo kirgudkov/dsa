@@ -42,13 +42,11 @@ class Trie {
 		let node = this.root;
 
 		for (const char of word) {
-			if (node.children.has(char)) {
-				node = node.children.get(char)!;
-			} else {
-				const child = new TrieNode(char);
-				node.children.set(char, child);
-				node = child;
+			if (!node.children.has(char)) {
+				node.children.set(char, new TrieNode(char));
 			}
+
+			node = node.children.get(char);
 		}
 
 		node.terminal = true;
