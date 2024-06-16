@@ -6,3 +6,4 @@ mod meeting_rooms_ii;
 mod k_closest_to_origin;
 mod connect_sticks;
 mod furthest_building;
+mod median_finder;

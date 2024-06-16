@@ -1,31 +1,29 @@
+use std::ops::RangeInclusive;
+
+// https://leetcode.com/problems/longest-palindromic-substring/
 pub fn longest_palindrome(s: String) -> String {
+    let mut range = RangeInclusive::new(0, 0);
     let chars = s.as_bytes();
-    let mut result = (0, 0);
 
     for i in 0..chars.len() * 2 {
-        let mut l = i / 2;
+        let mut l = i as i32 / 2;
         let mut r = i / 2 + if i % 2 == 0 { 0 } else { 1 };
 
-        while l <= r && l < chars.len() && r < chars.len() {
-            if chars[l] == chars[r] {
-                if r - l > result.1 - result.0 {
-                    result = (l, r)
-                }
-            } else {
+        while r < chars.len() && l >= 0 {
+            if chars[l as usize] != chars[r] {
                 break;
             }
 
-            if l > 0 {
-                l -= 1;
-            } else {
-                break;
-            };
+            if r - l as usize > range.end() - range.start() {
+                range = RangeInclusive::new(l as usize, r);
+            }
 
+            l -= 1;
             r += 1;
         }
     }
 
-    s[result.0..=result.1].to_string()
+    s[range].to_string()
 }
 
 #[cfg(test)]
