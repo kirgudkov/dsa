@@ -7,3 +7,4 @@ mod hash_set;
 mod hash_map;
 mod randomized_set;
 mod logger_rate_limiter;
+mod trie;

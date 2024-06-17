@@ -11,3 +11,4 @@ mod next_greatest_letter;
 mod find_min_in_rotated_array_ii;
 mod intersection_of_two_arrays;
 mod smallest_distance_pair;
+mod search_matrix;

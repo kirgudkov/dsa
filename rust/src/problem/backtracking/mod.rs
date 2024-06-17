@@ -6,3 +6,4 @@ mod permute;
 mod solve_n_queens;
 mod solve_sudoku;
 mod total_n_queens;
+mod word_search_ii;

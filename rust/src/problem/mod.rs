@@ -69,3 +69,7 @@ mod unique_word_abbreviation;
 mod two_sum_iii;
 mod heap;
 mod reverse_words_ii;
+mod set_zeroes;
+mod roman_to_int;
+mod title_to_number;
+mod find_celebrity;
