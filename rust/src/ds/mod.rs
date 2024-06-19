@@ -8,3 +8,4 @@ mod hash_map;
 mod randomized_set;
 mod logger_rate_limiter;
 mod trie;
+pub mod disjoint_set;

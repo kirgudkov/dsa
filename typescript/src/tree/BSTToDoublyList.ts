@@ -23,6 +23,8 @@ function treeToDoublyList(root: TreeNode | null): TreeNode | null {
 	}
 
 	for (let i = 0; i < sorted.length; i++) {
+		// Magic that loops next_i back to 0 when "i" is the last index,
+		// and prev_i back to the last index when "i" is the first index.
 		const next_i = (i + 1) % sorted.length;
 		const prev_i = (i - 1 + sorted.length) % sorted.length;
 
