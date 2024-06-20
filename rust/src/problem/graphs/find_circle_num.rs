@@ -13,7 +13,7 @@ pub fn find_circle_num(is_connected: Vec<Vec<i32>>) -> i32 {
     ds.count
 }
 
-pub struct DisjointSet {
+struct DisjointSet {
     root: Vec<usize>,
     rank: Vec<usize>,
     count: i32,
