@@ -8,7 +8,7 @@ export class _Node {
 	}
 }
 
-// Recursive approach.
+// Recursive dfs approach.
 export function cloneGraphRecursive(node: _Node | null, visited: Map<number, _Node> = new Map()): _Node | null {
 	if (!node) {
 		return null;
@@ -28,7 +28,7 @@ export function cloneGraphRecursive(node: _Node | null, visited: Map<number, _No
 	return new_node;
 }
 
-// Stack approach.
+// Iterative dfs approach.
 export function cloneGraphStack(node: _Node | null): _Node | null {
 	if (!node) {
 		return null;
@@ -37,25 +37,25 @@ export function cloneGraphStack(node: _Node | null): _Node | null {
 	const map: Map<_Node, _Node> = new Map();
 	const stack: _Node[] = [node];
 
-	while (stack.length !== 0) {
-		const original_node = stack.pop()!;
-		const cloned_node = map.get(original_node) ?? new _Node(original_node.val);
-		map.set(original_node, cloned_node);
+	while (stack.length) {
+		const og = stack.pop()!;
+		const copy = map.get(og) ?? new _Node(og.val);
+		map.set(og, copy);
 
-		original_node.neighbors.forEach(neighbor => {
-			let cloned_neighbor = map.get(neighbor);
+		og.neighbors.forEach(neighbor => {
+			let neighbor_copy = map.get(neighbor);
 
-			if (cloned_neighbor) {
-				cloned_node.neighbors.push(cloned_neighbor);
+			if (neighbor_copy) {
+				copy.neighbors.push(neighbor_copy);
 				return;
 			}
 
-			cloned_neighbor = new _Node(neighbor.val);
-			cloned_node.neighbors.push(cloned_neighbor);
-			map.set(neighbor, cloned_neighbor);
+			neighbor_copy = new _Node(neighbor.val);
+			copy.neighbors.push(neighbor_copy);
+			map.set(neighbor, neighbor_copy);
 			stack.push(neighbor);
 		});
 	}
 
-	return map.get(node) ?? null;
+	return map.get(node)!;
 }
