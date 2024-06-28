@@ -1,0 +1,10 @@
+mod rob;
+mod min_cost_climbing_stairs;
+mod tribonacci;
+mod delete_and_earn;
+mod maximum_score;
+mod longest_common_subsequence;
+mod maximal_square;
+mod min_difficulty;
+mod coin_change;
+mod word_break;
