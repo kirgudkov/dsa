@@ -8,3 +8,6 @@ mod maximal_square;
 mod min_difficulty;
 mod coin_change;
 mod word_break;
+mod length_of_lis;
+mod max_profit;
+mod max_envelopes_354;

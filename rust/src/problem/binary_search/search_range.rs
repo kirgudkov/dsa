@@ -2,51 +2,40 @@
 // TC: O(logN)
 // SC: O(1)
 pub fn search_range(nums: Vec<i32>, target: i32) -> Vec<i32> {
-    if nums.is_empty() {
-        return vec![-1, -1];
-    }
-
-    let find_left = || -> i32 {
-        let mut l = 0;
-        let mut r = nums.len() as i32 - 1;
-        let mut result = -1;
+    let find = |p: char| -> i32 {
+        let (mut l, mut r, mut pos) = (0, nums.len() as i32 - 1, -1);
 
         while l <= r {
             let m = l + (r - l) / 2;
-            if nums[m as usize] >= target {
-                if nums[m as usize] == target {
-                    result = m;
+
+            match p {
+                'l' => {
+                    if nums[m as usize] >= target {
+                        if nums[m as usize] == target {
+                            pos = m;
+                        }
+                        r = m - 1;
+                    } else {
+                        l = m + 1;
+                    }
                 }
-                r = m - 1;
-            } else {
-                l = m + 1;
+                _ => {
+                    if nums[m as usize] <= target {
+                        if nums[m as usize] == target {
+                            pos = m;
+                        }
+                        l = m + 1;
+                    } else {
+                        r = m - 1;
+                    }
+                }
             }
         }
 
-        result
+        pos
     };
 
-    let find_right = || -> i32 {
-        let mut l = 0;
-        let mut r = nums.len() as i32 - 1;
-        let mut result = -1;
-
-        while l <= r {
-            let m = l + (r - l) / 2;
-            if nums[m as usize] <= target {
-                if nums[m as usize] == target {
-                    result = m;
-                }
-                l = m + 1;
-            } else {
-                r = m - 1;
-            }
-        }
-
-        result
-    };
-
-    vec![find_left(), find_right()]
+    vec![find('l'), find('r')]
 }
 
 #[cfg(test)]

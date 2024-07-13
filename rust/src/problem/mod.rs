@@ -75,3 +75,8 @@ mod title_to_number;
 mod find_celebrity;
 mod graphs;
 mod dp;
+mod valid_word_abbreviation;
+mod max_profit;
+mod valid_palindrome_ii;
+mod two_sum_less_than_k;
+mod triangle_number;
