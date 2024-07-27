@@ -1,1 +1,10 @@
 mod find_max_consecutive_ones;
+mod length_of_longest_substring_3;
+mod num_subarray_product_less_than_k_713;
+mod count_subarrays_2962;
+mod max_satisfied_1052;
+mod max_subarray_length_2958;
+mod length_of_longest_substring_k_distinct_340;
+mod character_replacement_424;
+mod number_of_subarrays_1248;
+mod num_subarrays_with_sum_930;

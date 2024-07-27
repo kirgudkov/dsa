@@ -1,37 +1,36 @@
 use std::collections::BinaryHeap;
 
+// https://leetcode.com/problems/sliding-window-maximum
+// TC O(nlogn) SC O(n)
 pub fn max_sliding_window(nums: Vec<i32>, k: i32) -> Vec<i32> {
     let mut result: Vec<i32> = Vec::new();
 
     let mut left = 0;
     let mut heap: BinaryHeap<(i32, usize)> = BinaryHeap::new();
 
-    // tc: O(n)
-    for (idx, &num) in nums.iter().enumerate() {
-        // tc: O(log k)
-        heap.push((num, idx));
+    for (i, &num) in nums.iter().enumerate() {
+        heap.push((num, i));
 
-        if idx < k as usize - 1 {
+        if i < k as usize - 1 {
             continue;
         }
 
-        // tc: O(n * log k)
-        // remove every root that is outside the window
+        // Heap size not necessary should be k, but if heap contains max whose index is less then current l,
+        // that means it doesn't belong to the current window and should be removed;
         while heap.peek().unwrap().1 < left {
             heap.pop();
         }
 
         result.push(heap.peek().unwrap().0);
-
         left += 1;
     }
-    // total tc: O(n * log k)
+
     result
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::problem::sliding_window_maximum::max_sliding_window;
+    use crate::problem::heap::sliding_window_maximum_239::max_sliding_window;
 
     #[test]
     fn test() {

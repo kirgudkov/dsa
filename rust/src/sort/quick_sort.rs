@@ -2,33 +2,31 @@ pub fn quick_sort(input: &mut [i32]) {
     sort(input, 0, input.len() - 1);
 }
 
-fn sort(input: &mut [i32], l: usize, h: usize) {
-    if l < h {
-        let p = partition(input, l, h);
+fn sort(input: &mut [i32], l: usize, r: usize) {
+    if l < r {
+        let p = partition(input, l, r);
         sort(input, l, p);
-        sort(input, p + 1, h);
+        sort(input, p + 1, r);
     }
 }
 
-fn partition(input: &mut [i32], l: usize, h: usize) -> usize {
+fn partition(input: &mut [i32], mut l: usize, mut r: usize) -> usize {
     let pivot = input[l];
-    let mut i = l;
-    let mut j = h;
 
     loop {
-        while input[i] < pivot {
-            i += 1;
+        while input[l] < pivot {
+            l += 1;
         }
 
-        while input[j] > pivot {
-            j -= 1;
+        while input[r] > pivot {
+            r -= 1;
         }
 
-        if i >= j {
-            return j;
+        if l >= r {
+            return r;
         }
 
-        input.swap(i, j);
+        input.swap(l, r);
     }
 }
 

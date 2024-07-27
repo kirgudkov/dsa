@@ -7,3 +7,4 @@ mod k_closest_to_origin;
 mod connect_sticks;
 mod furthest_building;
 mod median_finder;
+pub mod sliding_window_maximum_239;

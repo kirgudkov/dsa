@@ -26,3 +26,8 @@ mod successful_pairs_of_spells_and_potions;
 mod num_subseq_1498;
 mod random_pick_with_weight_528;
 mod min_eating_speed_875;
+mod ship_within_days_1011;
+mod smallest_divisor_1283;
+mod min_speed_on_time_1870;
+mod split_array_410;
+mod maximize_sweetness_1231;

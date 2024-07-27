@@ -1,5 +1,5 @@
 pub fn min_eating_speed(piles: Vec<i32>, h: i32) -> i32 {
-    let mut l = 1;
+    let mut l = (piles.iter().map(|&x| x as f64).sum::<f64>() / h as f64).ceil() as i32;
     let mut r = *piles.iter().max().unwrap();
 
     while l < r {

@@ -1,8 +1,5 @@
+// https://leetcode.com/problems/longest-substring-without-repeating-characters
 pub fn length_of_longest_substring(s: String) -> i32 {
-    if s.len() < 2 {
-        return s.len() as i32;
-    }
-
     let mut set = std::collections::HashSet::new();
     let mut res = 0;
 
@@ -12,18 +9,15 @@ pub fn length_of_longest_substring(s: String) -> i32 {
 
     while r < s.len() {
         if set.contains(&bytes[r]) {
-            res = res.max(r - l);
             set.remove(&bytes[l]);
             l += 1;
-
-            continue;
+        } else {
+            set.insert(bytes[r]);
+            r += 1;
         }
 
-        set.insert(bytes[r]);
-        r += 1;
+        res = res.max(r - l);
     }
-
-    res = res.max(r - l);
 
     res as i32
 }
