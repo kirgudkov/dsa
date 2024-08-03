@@ -8,3 +8,4 @@ mod length_of_longest_substring_k_distinct_340;
 mod character_replacement_424;
 mod number_of_subarrays_1248;
 mod num_subarrays_with_sum_930;
+mod max_consequiteve_iii_1004;
