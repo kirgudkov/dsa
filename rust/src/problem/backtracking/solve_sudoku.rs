@@ -37,12 +37,17 @@ fn backtrack(i: usize, j: usize, board: &mut Vec<Vec<char>>) -> bool {
 }
 
 fn is_valid(i: usize, j: usize, num: char, board: &[Vec<char>]) -> bool {
+    // check row and col in one pass
     for k in 0..9 {
         if board[i][k] == num || board[k][j] == num {
             return false;
         }
     }
 
+    // Leverage integer division to calculate the top-left cell of the 3x3 subgrid that contains the cell (i, j):
+    // e.g for cell (7, 7) it should be the last 3x3 subgrid that starts at (6, 6) position:
+    // 7 / 3 -> 2.[3] -> 2
+    // 2 * 3 -> 6
     let start_row = (i / 3) * 3;
     let start_col = (j / 3) * 3;
 

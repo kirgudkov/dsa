@@ -1,6 +1,7 @@
+use rand::seq::IndexedRandom;
 use std::collections::HashMap;
-use rand::seq::{IndexedRandom};
 
+#[derive(Default)]
 struct RandomizedSet {
     map: HashMap<i32, usize>,
     vec: Vec<i32>,
@@ -8,10 +9,7 @@ struct RandomizedSet {
 
 impl RandomizedSet {
     fn new() -> Self {
-        Self {
-            map: HashMap::new(),
-            vec: vec![],
-        }
+        Self::default()
     }
 
     fn insert(&mut self, val: i32) -> bool {
@@ -28,15 +26,15 @@ impl RandomizedSet {
     fn remove(&mut self, val: i32) -> bool {
         match self.map.remove(&val) {
             None => false,
-            Some(removed_i) => {
+            Some(i) => {
                 let last_i = self.vec.len() - 1;
                 let last_item = self.vec[last_i];
 
-                self.vec.swap(removed_i, last_i);
+                self.vec.swap(i, last_i);
                 self.vec.pop();
 
-                if let Some(last_i) = self.map.get_mut(&last_item) {
-                    *last_i = removed_i;
+                if let Some(swapped_i) = self.map.get_mut(&last_item) {
+                    *swapped_i = i;
                 }
 
                 true

@@ -1,44 +1,42 @@
+#[derive(Default)]
 struct MyQueue {
-    v_stack: Vec<i32>,
-    i_stack: Vec<usize>,
+    val_vec: Vec<i32>,
+    idx_vec: Vec<usize>,
 }
 
 impl MyQueue {
     fn new() -> Self {
-        Self {
-            v_stack: Vec::new(),
-            i_stack: Vec::new(),
-        }
+        Self::default()
     }
 
     fn push(&mut self, x: i32) {
-        self.v_stack.push(x);
+        self.val_vec.push(x);
 
-        if self.i_stack.is_empty() {
-            self.i_stack.push(0);
+        if self.idx_vec.is_empty() {
+            self.idx_vec.push(0);
         }
     }
 
     fn pop(&mut self) -> i32 {
-        let i = self.i_stack.pop().unwrap();
-        let top = self.v_stack[i];
+        let i = self.idx_vec.pop().unwrap();
+        let top = self.val_vec[i];
 
-        if i == self.v_stack.len() - 1 {
-            self.i_stack = Vec::new();
-            self.v_stack = Vec::new();
+        if i == self.val_vec.len() - 1 {
+            self.idx_vec = Vec::new();
+            self.val_vec = Vec::new();
         } else {
-            self.i_stack.push(i + 1);
+            self.idx_vec.push(i + 1);
         }
 
         top
     }
 
     fn peek(&self) -> i32 {
-        self.v_stack[*self.i_stack.last().unwrap()]
+        self.val_vec[*self.idx_vec.last().unwrap()]
     }
 
     fn empty(&self) -> bool {
-        self.i_stack.is_empty()
+        self.idx_vec.is_empty()
     }
 }
 

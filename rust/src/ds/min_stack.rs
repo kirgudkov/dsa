@@ -1,3 +1,4 @@
+#[derive(Default)]
 struct MinStack {
     stack: Vec<i32>,
     min_stack: Vec<i32>,
@@ -5,10 +6,7 @@ struct MinStack {
 
 impl MinStack {
     fn new() -> Self {
-        Self {
-            stack: vec![],
-            min_stack: vec![],
-        }
+        Self::default()
     }
 
     fn push(&mut self, val: i32) {

@@ -1,12 +1,12 @@
 // https://leetcode.com/problems/peak-index-in-a-mountain-array
-pub fn peak_index_in_mountain_array(arr: Vec<i32>) -> i32 {
+pub fn peak_index_in_mountain_array(vec: Vec<i32>) -> i32 {
     let mut l = 0;
-    let mut r = arr.len() - 1;
+    let mut r = vec.len() - 1;
 
     while l < r {
         let m = l + (r - l) / 2;
 
-        if arr[m + 1] >= arr[m] {
+        if vec[m] < vec[m + 1] {
             l = m + 1;
         } else {
             r = m;

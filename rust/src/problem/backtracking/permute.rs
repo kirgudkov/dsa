@@ -1,28 +1,24 @@
 pub fn permute(nums: Vec<i32>) -> Vec<Vec<i32>> {
-    let mut ctx = Ctx::new(nums);
-    ctx.backtrack();
-    ctx.result
+    Bt::solve(nums)
 }
 
-struct Ctx {
+#[derive(Default)]
+struct Bt {
+    result: Vec<Vec<i32>>,
     nums: Vec<i32>,
     buf: Vec<i32>,
-    result: Vec<Vec<i32>>,
 }
 
-impl Ctx {
-    fn new(nums: Vec<i32>) -> Self {
-        Self {
-            nums,
-            buf: vec![],
-            result: vec![],
-        }
+impl Bt {
+    pub fn solve(nums: Vec<i32>) -> Vec<Vec<i32>> {
+        let mut instance = Bt { nums, ..Default::default() };
+        instance.backtrack();
+        instance.result
     }
 
     fn backtrack(&mut self) {
         if self.buf.len() == self.nums.len() {
-            self.result.push(self.buf.clone());
-            return;
+            return self.result.push(self.buf.clone());
         }
 
         for i in 0..self.nums.len() {

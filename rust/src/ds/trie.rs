@@ -15,8 +15,8 @@ impl Trie {
         for word in words {
             let mut node = &mut trie;
 
-            for c in word.chars() {
-                node = node.children[c as usize - 'a' as usize]
+            for c in word.as_bytes() {
+                node = node.children[(c - b'a') as usize]
                     .get_or_insert_with(|| Box::new(Trie::new()));
             }
 
@@ -33,13 +33,8 @@ impl Trie {
     fn search_prefix(&self, prefix: &str) -> Option<&Trie> {
         let mut node = self;
 
-        for c in prefix.chars() {
-            let idx = c as usize - 'a' as usize;
-            if let Some(child) = &node.children[idx] {
-                node = child;
-            } else {
-                return None;
-            }
+        for c in prefix.as_bytes() {
+            node = node.children[(c - b'a') as usize].as_deref()?;
         }
 
         Some(node)

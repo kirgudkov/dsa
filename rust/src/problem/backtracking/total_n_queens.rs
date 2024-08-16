@@ -1,41 +1,37 @@
 use std::collections::HashSet;
 
 pub fn total_n_queens(n: i32) -> i32 {
-    backtrack(0, n, &mut Ctx::new()).count
+    Backtracking::solve(n)
 }
 
-fn backtrack(i: i32, n: i32, ctx: &mut Ctx) -> &mut Ctx {
-    if i == n {
-        ctx.count += 1;
-    }
-
-    for j in 0..n {
-        if !ctx.is_safe(i, j) {
-            continue;
-        }
-
-        ctx.place(i, j);
-        backtrack(i + 1, n, ctx);
-        ctx.remove(i, j);
-    }
-
-    ctx
-}
-
-struct Ctx {
+#[derive(Default)]
+struct Backtracking {
     count: i32,
     cols: HashSet<i32>,
     diags_1: HashSet<i32>,
     diags_2: HashSet<i32>,
 }
 
-impl Ctx {
-    fn new() -> Self {
-        Self {
-            count: 0,
-            cols: HashSet::new(),
-            diags_1: HashSet::new(),
-            diags_2: HashSet::new(),
+impl Backtracking {
+    pub fn solve(n: i32) -> i32 {
+        let mut bt = Backtracking::default();
+        bt.backtrack(n, 0);
+        bt.count
+    }
+
+    fn backtrack(&mut self, n: i32, i: i32) {
+        if i == n {
+            self.count += 1;
+        }
+
+        for j in 0..n {
+            if !self.is_safe(i, j) {
+                continue;
+            }
+
+            self.place(i, j);
+            self.backtrack(n, i + 1);
+            self.remove(i, j);
         }
     }
 

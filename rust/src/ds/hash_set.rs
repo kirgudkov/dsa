@@ -28,7 +28,7 @@ impl MyHashSet {
         self.size += 1;
     }
 
-    // TC is O(n) in the worst case because of checking if the key exists
+    // position() and remove() both have O(n) in the worst case
     fn remove(&mut self, key: i32) {
         if !self.contains(key) {
             return;
@@ -55,17 +55,15 @@ impl MyHashSet {
             return;
         }
 
-        let new_capacity = self.capacity * 2;
-        let mut new_buckets = vec![vec![]; new_capacity];
+        self.capacity *= 2;
+        let mut new_buckets = vec![vec![]; self.capacity];
 
         for bucket in &self.buckets {
-            for key in bucket {
-                let hash = *key as usize % new_capacity;
-                new_buckets[hash].push(*key);
+            for &key in bucket {
+                new_buckets[self.hash(key)].push(key);
             }
         }
 
-        self.capacity = new_capacity;
         self.buckets = new_buckets;
     }
 }

@@ -4,37 +4,36 @@ use std::collections::BinaryHeap;
 // https://leetcode.com/problems/find-median-from-data-stream/description/
 // TC: O(log n) for binary search + O(n) for insert
 // SC: O(n)
+#[derive(Default)]
 struct MedianFinder {
     vec: Vec<i32>,
 }
 
 impl MedianFinder {
     fn new() -> Self {
-        Self { vec: vec![] }
+        Default::default()
     }
 
     fn add_num(&mut self, num: i32) {
-        if self.vec.is_empty() {
-            self.vec.push(num);
-        } else {
-            let mut l = 0i32;
-            let mut r = (self.vec.len() - 1) as i32;
+        let mut l = 0;
+        let mut r = self.vec.len();
 
-            while l <= r {
-                let m = l + (r - l) / 2;
+        while l < r {
+            let m = l + (r - l) / 2;
 
-                match self.vec[m as usize].cmp(&num) {
-                    std::cmp::Ordering::Less => l = m + 1,
-                    std::cmp::Ordering::Greater => r = m - 1,
-                    std::cmp::Ordering::Equal => {
-                        self.vec.insert(m as usize, num);
-                        return;
-                    }
-                }
+            if self.vec[m] == num {
+                self.vec.insert(m, num);
+                return;
             }
 
-            self.vec.insert(l as usize, num);
+            if self.vec[m] > num {
+                r = m;
+            } else {
+                l = m + 1;
+            }
         }
+
+        self.vec.insert(l, num);
     }
 
     fn find_median(&self) -> f64 {
@@ -46,8 +45,13 @@ impl MedianFinder {
     }
 }
 
+// Two heaps approach. Technically, it doesn't comply with problem description:
+// ...The median is the middle value in an **ordered** integer list...
+// But it does the job, it finds median.
+//
 // TC: O(log n)
 // SC: O(n)
+#[derive(Default)]
 struct MedianFinder2 {
     left_heap: BinaryHeap<i32>,
     right_heap: BinaryHeap<Reverse<i32>>,
@@ -55,10 +59,7 @@ struct MedianFinder2 {
 
 impl MedianFinder2 {
     fn new() -> Self {
-        Self {
-            left_heap: BinaryHeap::new(),
-            right_heap: BinaryHeap::new(),
-        }
+        Default::default()
     }
 
     fn add_num(&mut self, num: i32) {

@@ -79,3 +79,4 @@ mod valid_palindrome_ii;
 mod two_sum_less_than_k;
 mod triangle_number;
 mod fizzbuzz;
+mod common_chars_1002;

@@ -1,18 +1,18 @@
 fn guess_number(n: i32) -> i32 {
-    let mut left = 1;
-    let mut right = n;
+    let mut l = 1;
+    let mut r = n;
 
-    while left < right {
-        let mid = left + (right - left) / 2;
+    while l < r {
+        let m = l + (r - l) / 2;
 
-        match guess(mid) {
-            -1 => right = mid - 1,
-            1 => left = mid + 1,
-            _ => return mid,
+        match guess(m) {
+            -1 => r = m - 1,
+            1 => l = m + 1,
+            _ => return m,
         }
     }
 
-    left
+    l
 }
 
 fn guess(_: i32) -> i32 {

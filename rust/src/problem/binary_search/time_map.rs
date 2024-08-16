@@ -37,7 +37,7 @@ impl TimeMap {
                     }
                 }
 
-                return entry[l as usize - 1].1.clone();
+                return entry[r as usize].1.clone();
             }
         }
 

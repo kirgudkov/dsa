@@ -18,7 +18,7 @@ pub fn num_subseq(mut nums: Vec<i32>, target: i32) -> i32 {
             base = (base * base) % MOD;
             num /= 2;
         }
-    
+
         res
     };
 
@@ -36,22 +36,25 @@ pub fn num_subseq(mut nums: Vec<i32>, target: i32) -> i32 {
 
     let mut count = 0;
 
-    nums.iter().take_while(|&x| *x <= target / 2).enumerate().for_each(|(i, &num)| {
-        let mut l = i;
-        let mut r = nums.len() - 1;
+    nums.iter()
+        .take_while(|&x| *x <= target / 2)
+        .enumerate()
+        .for_each(|(i, &num)| {
+            let mut l = i;
+            let mut r = nums.len() - 1;
 
-        while l <= r {
-            let m = l + (r - l) / 2;
+            while l <= r {
+                let m = l + (r - l) / 2;
 
-            if num + nums[m] <= target {
-                l = m + 1;
-            } else {
-                r = m - 1;
+                if num + nums[m] <= target {
+                    l = m + 1;
+                } else {
+                    r = m - 1;
+                }
             }
-        }
 
-        count = (count + pow((l - 1 - i) as u64)) % MOD;
-    });
+            count = (count + pow((l - 1 - i) as u64)) % MOD;
+        });
 
     count as i32
 }

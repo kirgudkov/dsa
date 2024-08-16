@@ -3,8 +3,8 @@ pub fn find_right_interval(mut intervals: Vec<Vec<i32>>) -> Vec<i32> {
     let mut res = vec![-1; intervals.len()];
     let mut hm = std::collections::HashMap::new();
 
-    intervals.iter().enumerate().for_each(|(i, int)| {
-        hm.insert(int.clone(), i as i32);
+    intervals.iter().enumerate().for_each(|(i, val)| {
+        hm.insert(val.clone(), i as i32);
     });
 
     intervals.sort_unstable_by(|a, b| {

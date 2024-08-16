@@ -1,6 +1,6 @@
 pub fn binary_search(nums: Vec<i32>, target: i32) -> i32 {
-    let mut l: i32 = 0;
-    let mut r: i32 = (nums.len() - 1) as i32;
+    let mut l = 0i32;
+    let mut r = nums.len() as i32 - 1;
 
     while l <= r {
         let m = l + (r - l) / 2;

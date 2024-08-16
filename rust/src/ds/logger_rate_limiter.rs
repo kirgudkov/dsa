@@ -1,12 +1,13 @@
+use std::collections::HashMap;
+
+#[derive(Default)]
 struct Logger {
-    map: std::collections::HashMap<String, i32>,
+    map: HashMap<String, i32>,
 }
 
 impl Logger {
     fn new() -> Self {
-        Self {
-            map: std::collections::HashMap::new()
-        }
+        Self::default()
     }
 
     fn should_print_message(&mut self, timestamp: i32, message: String) -> bool {
@@ -16,10 +17,10 @@ impl Logger {
             }
 
             *next_allowed = timestamp + 10;
-        } else { 
+        } else {
             self.map.insert(message, timestamp + 10);
         }
-        
+
         true
     }
 }

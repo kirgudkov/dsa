@@ -7,16 +7,17 @@ pub fn k_weakest_rows(mat: Vec<Vec<i32>>, k: i32) -> Vec<i32> {
     let mut heap = BinaryHeap::new();
 
     for (i, row) in mat.iter().enumerate() {
-        let soldiers_count = row.iter().take_while(|&&x| x == 1).count();
-        heap.push(Reverse((soldiers_count, i)));
+        let soldiers_count = row.iter()
+            .take_while(|&x| *x == 1)
+            .count();
+
+        heap.push(Reverse((soldiers_count, i as i32)));
     }
 
     let mut res = Vec::with_capacity(k as usize);
 
     for _ in 0..k {
-        if let Some(Reverse((_, index))) = heap.pop() {
-            res.push(index as i32);
-        }
+        res.push(heap.pop().unwrap().0.1);
     }
 
     res

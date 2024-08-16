@@ -7,13 +7,13 @@ pub fn find_min(nums: Vec<i32>) -> i32 {
     while l < r {
         let m = l + (r - l) / 2;
 
-        // For arrays like: [10, 1, 10, 10, 10]
-        //                  l       m       r
-        // we can't decide which side to go, so we reduce r by 1 and try again.
         if nums[m] > nums[r] {
             l = m + 1;
         } else if nums[m] < nums[l] {
             r = m;
+        // For situation like this: [10, 1, 10, 10, 10]
+        //                  l       m       r
+        // we can't decide which side to go, so the only choice we have is to reduce r by 1
         } else {
             r -= 1;
         }

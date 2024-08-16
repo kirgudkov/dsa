@@ -4,16 +4,12 @@ use std::collections::HashSet;
 
 // TC is O(n log n) + O(m log n);
 pub fn intersection_bs(mut nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
-    let mut res = HashSet::new();
     nums1.sort_unstable();
 
-    for item in nums2.iter() {
-        if let Some(i) = bs(&nums1, item) {
-            res.insert(nums1[i]);
-        }
-    }
-
-    res.iter().copied().collect()
+    nums2.iter()
+        .filter(|&x| bs(&nums1, x).is_some())
+        .copied().collect::<HashSet<i32>>().iter()
+        .copied().collect::<Vec<i32>>()
 }
 
 fn bs(vec: &[i32], x: &i32) -> Option<usize> {
@@ -40,15 +36,10 @@ fn bs(vec: &[i32], x: &i32) -> Option<usize> {
 // TC is O(n + m)
 pub fn intersection_hs(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
     let mut set: HashSet<i32> = nums1.into_iter().collect();
-    let mut res = vec![];
 
-    for num in nums2 {
-        if set.remove(&num) {
-            res.push(num);
-        }
-    }
-
-    res
+    nums2.iter()
+        .filter(|&x| set.remove(x))
+        .copied().collect()
 }
 
 #[cfg(test)]

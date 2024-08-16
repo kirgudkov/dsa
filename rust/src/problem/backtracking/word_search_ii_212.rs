@@ -1,91 +1,95 @@
-// pub fn find_words(board: Vec<Vec<char>>, words: Vec<String>) -> Vec<String> {
-//     Ctx::new(board).find_words(words)
-// }
-// 
-// struct Ctx {
-//     buf: String,
-//     board: Vec<Vec<char>>,
-//     visited: HashSet<(usize, usize)>,
-// }
-// 
-// // Fully working pure backtracking implementation but not quite efficient and not getting accepted by Leetcode due to TLE.
-// // More efficient approach is to use Trie which is implemented below, but it's still not efficient enough getting TLE sometimes.
-// impl Ctx {
-//     fn new(board: Vec<Vec<char>>) -> Self {
-//         Self {
-//             board,
-//             buf: String::new(),
-//             visited: HashSet::new(),
-//         }
-//     }
-// 
-//     fn find_words(&mut self, words: Vec<String>) -> Vec<String> {
-//         let mut result = vec![];
-// 
-//         for word in words {
-//             let chars = word.chars().collect::<Vec<char>>();
-// 
-//             'board: for i in 0..self.board.len() {
-//                 for j in 0..self.board[i].len() {
-//                     if self.board[i][j] == chars[0] {
-//                         self.buf.clear();
-//                         self.visited.clear();
-// 
-//                         if self.backtrack(&chars, i, j, 0) {
-//                             result.push(self.buf.clone());
-//                             break 'board;
-//                         }
-//                     }
-//                 }
-//             }
-//         }
-// 
-//         result
-//     }
-// 
-//     fn backtrack(&mut self, chars: &[char], i: usize, j: usize, k: usize) -> bool {
-//         if k == chars.len() {
-//             return true;
-//         }
-// 
-//         if i == self.board.len()
-//             || j == self.board[0].len()
-//             || self.visited.contains(&(i, j))
-//             || self.board[i][j] != chars[k]
-//         {
-//             return false;
-//         }
-// 
-//         self.visited.insert((i, j));
-//         self.buf.push(chars[k]);
-// 
-//         if self.backtrack(chars, i + 1, j, k + 1)
-//             || self.backtrack(chars, i.saturating_sub(1), j, k + 1)
-//             || self.backtrack(chars, i, j + 1, k + 1)
-//             || self.backtrack(chars, i, j.saturating_sub(1), k + 1)
-//         {
-//             return true;
-//         }
-// 
-//         self.visited.remove(&(i, j));
-//         self.buf.pop();
-// 
-//         false
-//     }
-// }
+// https://leetcode.com/problems/word-search-ii/
 
-pub fn find_words(board: Vec<Vec<char>>, words: Vec<String>) -> Vec<String> {
-    Ctx::new(board, words).find_words()
+use std::collections::HashSet;
+
+pub fn find_words_bt(board: Vec<Vec<char>>, words: Vec<String>) -> Vec<String> {
+    Backtracking::new(board).find_words(words)
 }
 
-struct Ctx {
+struct Backtracking {
+    buf: String,
+    board: Vec<Vec<char>>,
+    visited: HashSet<(usize, usize)>,
+}
+
+// Fully working pure backtracking implementation but not quite efficient and not getting accepted by Leetcode due to TLE.
+// More efficient approach is to use Trie which is implemented below, but it's still not efficient enough getting TLE sometimes.
+impl Backtracking {
+    fn new(board: Vec<Vec<char>>) -> Self {
+        Self {
+            board,
+            buf: String::new(),
+            visited: HashSet::new(),
+        }
+    }
+
+    fn find_words(&mut self, words: Vec<String>) -> Vec<String> {
+        let mut result = vec![];
+
+        for word in words {
+            let chars = word.chars().collect::<Vec<char>>();
+
+            'outer: for i in 0..self.board.len() {
+                for j in 0..self.board[i].len() {
+                    if self.board[i][j] == chars[0] {
+                        self.buf.clear();
+                        self.visited.clear();
+
+                        if self.backtrack(&chars, i, j, 0) {
+                            result.push(self.buf.clone());
+                            break 'outer;
+                        }
+                    }
+                }
+            }
+        }
+
+        result
+    }
+
+    fn backtrack(&mut self, chars: &[char], i: usize, j: usize, k: usize) -> bool {
+        if k == chars.len() {
+            return true;
+        }
+
+        if i == self.board.len()
+            || j == self.board[0].len()
+            || self.visited.contains(&(i, j))
+            || self.board[i][j] != chars[k]
+        {
+            return false;
+        }
+
+        self.visited.insert((i, j));
+        self.buf.push(chars[k]);
+
+        if self.backtrack(chars, i + 1, j, k + 1)
+            || self.backtrack(chars, i.saturating_sub(1), j, k + 1)
+            || self.backtrack(chars, i, j + 1, k + 1)
+            || self.backtrack(chars, i, j.saturating_sub(1), k + 1)
+        {
+            return true;
+        }
+
+        self.visited.remove(&(i, j));
+        self.buf.pop();
+
+        false
+    }
+}
+
+pub fn find_words(board: Vec<Vec<char>>, words: Vec<String>) -> Vec<String> {
+    TrieBacktracking::new(board, words).find_words()
+}
+
+struct TrieBacktracking {
     buf: String,
     result: Vec<String>,
     board: Vec<Vec<char>>,
     trie: Trie,
 }
 
-impl Ctx {
+impl TrieBacktracking {
     fn new(board: Vec<Vec<char>>, words: Vec<String>) -> Self {
         Self {
             board,
@@ -152,8 +156,8 @@ impl Trie {
         for word in words {
             let mut node = &mut node;
 
-            for c in word.chars() {
-                node = node.children[c as usize - 'a' as usize]
+            for b in word.as_bytes() {
+                node = node.children[(b - b'a') as usize]
                     .get_or_insert_with(|| Box::new(Trie::new()));
             }
 
@@ -166,11 +170,8 @@ impl Trie {
     fn search_prefix(&mut self, prefix: &str) -> Option<&mut Trie> {
         let mut node = self;
 
-        for c in prefix.chars() {
-            node = match node.children[c as usize - 'a' as usize].as_deref_mut() {
-                Some(child) => child,
-                None => return None,
-            };
+        for b in prefix.as_bytes() {
+            node = node.children[(b - b'a') as usize].as_deref_mut()?;
         }
 
         Some(node)

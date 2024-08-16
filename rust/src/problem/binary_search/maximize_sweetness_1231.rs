@@ -1,3 +1,4 @@
+// https://leetcode.com/problems/divide-chocolate/
 pub fn maximize_sweetness(sweetness: Vec<i32>, k: i32) -> i32 {
     let splits = |max| {
         let mut pieces = 0;

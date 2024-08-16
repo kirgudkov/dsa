@@ -1,44 +1,27 @@
 use std::collections::HashSet;
 
 pub fn solve_n_queens(n: i32) -> Vec<Vec<String>> {
-    let mut ctx = Ctx::new(n);
-    ctx.backtrack(0);
-    ctx.boards
+    Backtracking::solve(n)
 }
 
-fn backtrack(i: i32, n: i32, ctx: &mut Ctx) {
-    if i == n {
-        ctx.boards.push(ctx.board.clone());
-    }
-
-    for j in 0..n {
-        if !ctx.is_under_attack(i, j) {
-            continue;
-        }
-
-        ctx.place(i, j);
-        backtrack(i + 1, n, ctx);
-        ctx.remove(i, j);
-    }
-}
-
-struct Ctx {
+#[derive(Default)]
+struct Backtracking {
     board: Vec<String>,
-    boards: Vec<Vec<String>>,
+    result: Vec<Vec<String>>,
     cols: HashSet<i32>,
     diag_1: HashSet<i32>,
     diag_2: HashSet<i32>,
 }
 
-impl Ctx {
-    fn new(n: i32) -> Self {
-        Self {
+impl Backtracking {
+    pub fn solve(n: i32) -> Vec<Vec<String>> {
+        let mut bt = Backtracking {
             board: vec![".".repeat(n as usize); n as usize],
-            boards: vec![],
-            cols: HashSet::new(),
-            diag_1: HashSet::new(),
-            diag_2: HashSet::new(),
-        }
+            ..Default::default()
+        };
+
+        bt.backtrack(0);
+        bt.result
     }
 
     fn place(&mut self, i: i32, j: i32) {
@@ -68,7 +51,7 @@ impl Ctx {
 
     fn backtrack(&mut self, i: i32) {
         if i == self.board.len() as i32 {
-            self.boards.push(self.board.clone());
+            self.result.push(self.board.clone());
         }
 
         for j in 0..self.board.len() as i32 {

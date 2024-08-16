@@ -2,13 +2,13 @@
 // TC: O(logN)
 // SC: O(1)
 pub fn search_range(nums: Vec<i32>, target: i32) -> Vec<i32> {
-    let find = |p: char| -> i32 {
+    let edge = |side: char| -> i32 {
         let (mut l, mut r, mut pos) = (0, nums.len() as i32 - 1, -1);
 
         while l <= r {
             let m = l + (r - l) / 2;
 
-            match p {
+            match side {
                 'l' => {
                     if nums[m as usize] >= target {
                         if nums[m as usize] == target {
@@ -35,7 +35,7 @@ pub fn search_range(nums: Vec<i32>, target: i32) -> Vec<i32> {
         pos
     };
 
-    vec![find('l'), find('r')]
+    vec![edge('l'), edge('r')]
 }
 
 #[cfg(test)]

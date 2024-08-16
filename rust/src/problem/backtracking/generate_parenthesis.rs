@@ -1,53 +1,46 @@
 pub fn generate_parenthesis(n: i32) -> Vec<String> {
-    let mut ctx = Ctx::new(n as usize);
-    ctx.backtrack();
-    ctx.result
+    Bt::new(n).result
 }
 
-struct Ctx {
+#[derive(Default)]
+struct Bt {
     n: usize,
     buf: String,
     result: Vec<String>,
 }
 
-impl Ctx {
-    fn new(n: usize) -> Self {
-        Self {
-            n,
-            buf: String::new(),
-            result: vec![],
-        }
+impl Bt {
+    fn new(n: i32) -> Self {
+        let mut instance = Bt { n: n as usize, ..Default::default() };
+        instance.backtrack();
+        instance
     }
 
     fn backtrack(&mut self) {
         if self.buf.len() == self.n * 2 {
-            self.result.push(self.buf.clone());
-            return;
+            return self.result.push(self.buf.clone());
         }
 
-        for parenthesis in &["(", ")"] {
-            if !self.is_valid(parenthesis) {
-                continue;
+        for p in ['(', ')'] {
+            if self.is_valid(p) {
+                self.buf.push(p);
+                self.backtrack();
+                self.buf.pop();
             }
-
-            self.buf.push_str(parenthesis);
-            self.backtrack();
-            self.buf.pop();
         }
     }
 
-    // This fn magically drops all the invalid entries:
-    // 1. We can insert an open parenthesis only if the number of open parenthesis is less than n; - "There is space for an open parenthesis"
-    // 2. We can insert a close parenthesis only if the number of close parenthesis is less than the number of open parenthesis; - "There is an open parenthesis to close"
-    // So, for example, we cannot insert ")" at first position, because there is no open parenthesis to close. 
-    fn is_valid(&self, sym: &str) -> bool {
-        let open = self.buf.chars().filter(|&c| c == '(').count();
-        let close = self.buf.chars().filter(|&c| c == ')').count();
+    // 1. We can insert '(' only if the number of '(' is less than n; - "There is space for an open parenthesis"
+    // 2. We can insert ')' only if the number of ')' is less than the number of '('; - "There is an open parenthesis to be closed"
+    // e.g, we cannot insert ')' at 0 position, because there is no open parenthesis to close yet. 
+    fn is_valid(&self, c: char) -> bool {
+        let open_count = self.buf.chars().filter(|&c| c == '(').count();
+        let close_count = self.buf.chars().filter(|&c| c == ')').count();
 
-        if sym == "(" {
-            open < self.n
+        if c == '(' {
+            open_count < self.n
         } else {
-            close < open
+            close_count < open_count
         }
     }
 }

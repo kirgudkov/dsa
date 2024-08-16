@@ -18,11 +18,11 @@ pub fn split_array(nums: Vec<i32>, k: i32) -> i32 {
     let mut l = *nums.iter().max().unwrap();
     let mut r = nums.iter().sum::<i32>();
 
-    while l < r {
+    while l <= r {
         let m = l + (r - l) / 2;
 
         if fit(m) {
-            r = m;
+            r = m - 1;
         } else {
             l = m + 1;
         }

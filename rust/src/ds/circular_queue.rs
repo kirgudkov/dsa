@@ -8,10 +8,10 @@ struct MyCircularQueue {
 impl MyCircularQueue {
     fn new(k: i32) -> Self {
         Self {
-            k: k as usize,
             buf: vec![0; k as usize],
             head: None,
             tail: None,
+            k: k as usize,
         }
     }
 
@@ -24,16 +24,12 @@ impl MyCircularQueue {
             self.head = Some(0);
             self.tail = Some(0);
             self.buf[0] = value;
-
-            return true;
-        } else if let Some(tail) = self.tail {
-            self.tail = Some((tail + 1) % self.k);
-            self.buf[(tail + 1) % self.k] = value;
-
-            return true;
+        } else {
+            self.tail = Some((self.tail.unwrap() + 1) % self.k);
+            self.buf[(self.tail.unwrap()) % self.k] = value;
         }
 
-        false
+        true
     }
 
     fn de_queue(&mut self) -> bool {
@@ -41,18 +37,14 @@ impl MyCircularQueue {
             return false;
         }
 
-        if let (Some(head), Some(tail)) = (self.head, self.tail) {
-            if head == tail {
-                self.head = None;
-                self.tail = None;
-            } else {
-                self.head = Some((head + 1) % self.k);
-            }
-
-            return true;
+        if self.head.unwrap() == self.tail.unwrap() {
+            self.head = None;
+            self.tail = None;
+        } else {
+            self.head = Some((self.head.unwrap() + 1) % self.k);
         }
 
-        false
+        true
     }
 
     fn front(&self) -> i32 {

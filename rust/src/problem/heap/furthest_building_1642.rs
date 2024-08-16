@@ -1,6 +1,7 @@
 use std::cmp::Reverse;
 use std::collections::BinaryHeap;
 
+// https://leetcode.com/problems/furthest-building-you-can-reach
 pub fn furthest_building(heights: Vec<i32>, mut bricks: i32, mut ladders: i32) -> i32 {
     if heights.len() == 1 {
         return 0;
@@ -8,7 +9,7 @@ pub fn furthest_building(heights: Vec<i32>, mut bricks: i32, mut ladders: i32) -
 
     let mut heap = BinaryHeap::new();
 
-    for i in 0..=heights.len() - 2 {
+    for i in 0..heights.len() - 1 {
         let diff = heights[i + 1] - heights[i];
 
         // go next if flat or lower

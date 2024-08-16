@@ -24,7 +24,6 @@ impl Heap {
     pub fn max(list: Vec<i32>) -> Self {
         Self::create(list, HeapType::Max)
     }
-
     pub fn min(list: Vec<i32>) -> Self {
         Self::create(list, HeapType::Min)
     }
@@ -49,14 +48,17 @@ impl Heap {
             return None;
         }
 
-        let a = 0;
         let b = self.list.len() - 1;
-        self.list.swap(a, b);
+        self.list.swap(0, b);
 
         let last = self.list.pop();
         self.maintain_down();
 
         last
+    }
+
+    pub fn peek(&self) -> Option<&i32> {
+        self.list.first()
     }
 
     fn heapify(&mut self) {
@@ -73,7 +75,7 @@ impl Heap {
         }
 
         let mut i = 0;
-        while let Some((left_idx, right_idx)) = self.get_kids(i) {
+        while let Some((left_idx, right_idx)) = self.get_kids_idx(i) {
             let idx = match (left_idx, right_idx) {
                 (None, None) => break,
                 (Some(left_idx), None) => left_idx,
@@ -113,7 +115,7 @@ impl Heap {
 
         let mut i = self.list.len() - 1;
 
-        while let Some(parent_idx) = self.get_parent(i) {
+        while let Some(parent_idx) = self.get_parent_idx(i) {
             let condition = match self.heap_type {
                 HeapType::Max => self.list[i] > self.list[parent_idx],
                 HeapType::Min => self.list[i] < self.list[parent_idx],
@@ -128,16 +130,17 @@ impl Heap {
         }
     }
 
-    fn get_kids(&self, i: usize) -> Option<(Option<usize>, Option<usize>)> {
+    fn get_kids_idx(&self, i: usize) -> Option<(Option<usize>, Option<usize>)> {
         let l = self.list.get((i * 2) + 1).map(|_| (i * 2) + 1);
         let r = self.list.get((i * 2) + 2).map(|_| (i * 2) + 2);
 
         Some((l, r))
     }
 
-    fn get_parent(&self, index: usize) -> Option<usize> {
+    fn get_parent_idx(&self, index: usize) -> Option<usize> {
+        // Just guard expression to safely perform parent's index obtaining
         let _ = self.list.get(index.checked_sub(1)? / 2)?;
-
+        // If previous line didn't fail, it is safe to subtract and divide, thus there is a parent:  
         Some((index - 1) / 2)
     }
 }
@@ -150,5 +153,12 @@ mod tests {
     fn test_max_heap() {
         let mut max_heap = Heap::max(vec![12, 14, 20, 9, 10, 30, 18]);
         assert_eq!(max_heap.as_sorted(), vec![30, 20, 18, 14, 12, 10, 9]);
+
+        let mut max_heap = Heap::max(vec![]);
+        max_heap.insert(3);
+        max_heap.insert(1);
+        max_heap.insert(6);
+        assert_eq!(max_heap.peek(), Some(&6));
+        assert_eq!(max_heap.as_sorted(), vec![6, 3, 1]);
     }
 }

@@ -1,18 +1,18 @@
 // https://leetcode.com/problems/successful-pairs-of-spells-and-potions/
 // O((s + p) log p)
 pub fn successful_pairs(spells: Vec<i32>, mut potions: Vec<i32>, success: i64) -> Vec<i32> {
-    let mut res = vec![0; spells.len()];
+    let mut pairs = vec![0; spells.len()];
     potions.sort_unstable();
 
     let bs = |spell: i64| {
         let mut l = 0;
-        let mut r = potions.len() as i32;
+        let mut r = potions.len() as i32 - 1;
 
-        while l < r {
+        while l <= r {
             let m = l + (r - l) / 2;
 
             if potions[m as usize] as i64 * spell >= success {
-                r = m;
+                r = m - 1;
             } else {
                 l = m + 1;
             }
@@ -21,15 +21,21 @@ pub fn successful_pairs(spells: Vec<i32>, mut potions: Vec<i32>, success: i64) -
         l
     };
 
+    let strongest_potion = *potions.last().unwrap() as f64;
+
     for (i, &spell) in spells.iter().enumerate() {
-        if ((1.0 * success as f64) / spell as f64).ceil() > *potions.last().unwrap() as f64 {
+        // Pair is successful only when spell * potion >= success,
+        // thus we can skip spell, if even strongest potion cannot give a successful pair;
+        if (success as f64 / spell as f64).ceil() > strongest_potion {
             continue;
         }
 
-        res[i] = potions.len() as i32 - bs(spell as i64);
+        // potions are sorted; bs finds the index of the first pertinent potion;
+        // "count of successful pairs for i-th spell is the length of potions subarray from bs(spell) to the end"
+        pairs[i] = potions.len() as i32 - bs(spell as i64);
     }
 
-    res
+    pairs
 }
 
 #[cfg(test)]

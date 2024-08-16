@@ -17,7 +17,7 @@ mod hoare {
         }
     }
 
-    // The Hoare partition scheme (second implementation) is generally more efficient in practice, 
+    // The Hoare partition scheme (second implementation) is generally more efficient in practice,
     // as it does three times fewer swaps on average;
     // This implementation is slightly more robust against the worst-case scenario (already sorted array) due to its pivot selection.
     fn partition<T>(slice: &mut [T], mut l: usize, mut r: usize) -> usize

@@ -3,7 +3,7 @@ pub fn search_matrix(matrix: &[Vec<i32>], target: i32) -> bool {
         return false;
     }
 
-    // 1. do binary search among first column to find specific row
+    // 1. do binary search to find target row
     let mut i = 0i32;
     let mut r = matrix.len() as i32 - 1;
 
@@ -24,7 +24,7 @@ pub fn search_matrix(matrix: &[Vec<i32>], target: i32) -> bool {
         }
     }
 
-    // 2. do bs in this i-th row
+    // 2. do bs in this row to find target
     let mut l = 0i32;
     r = matrix[i as usize].len() as i32 - 1;
 

@@ -1,6 +1,6 @@
 struct Solution {
     digits: Vec<u8>,
-    mapping: [&'static [char]; 8],
+    numpad: [&'static [char]; 8],
     buf: String,
     result: Vec<String>,
 }
@@ -8,11 +8,14 @@ struct Solution {
 impl Solution {
     fn new(digits: String) -> Self {
         Self {
-            digits: digits.chars().map(|c| c.to_digit(10).unwrap() as u8).collect(),
-            mapping: [
-                &['a', 'b', 'c'],
-                &['d', 'e', 'f'],
-                &['g', 'h', 'i'],
+            digits: digits.chars()
+                .map(|c| c.to_digit(10).unwrap() as u8)
+                .collect(),
+
+            numpad: [
+                &['a', 'b', 'c'], // for button with digit 2
+                &['d', 'e', 'f'], // for 3
+                &['g', 'h', 'i'], // etc ...
                 &['j', 'k', 'l'],
                 &['m', 'n', 'o'],
                 &['p', 'q', 'r', 's'],
@@ -24,7 +27,7 @@ impl Solution {
         }
     }
 
-    // Backtracking reimplementation. Still not as efficient as the iterative solution: O(3^N * 4^M)
+    // TC is O(4^n) in the worst case scenario, where input has all 7 or/and 9 (both have 4 chars in mapping)
     fn backtrack(&mut self) {
         if self.digits.is_empty() {
             return;
@@ -34,49 +37,48 @@ impl Solution {
             return self.result.push(self.buf.clone());
         }
 
-        // Subtract 2 from the digit to get the index of the corresponding characters: for 2 we should look into mapping[0]
-        let digit = self.digits[self.buf.len()] as usize - 2;
+        // digits[buf.len()] is a trick to get current digit without passign current position into backtrack():
+        // e.g. when buf.len() is 0, we're working on the first digit in input
+        let digit = self.digits[self.buf.len()]
+            // Subtract 2 from the digit to get the index of the corresponding characters: for 2 we should look into mapping[0]
+            as usize - 2;
 
-        for i in 0..self.mapping[digit].len() {
-            self.buf.push(self.mapping[digit][i]);
+        for &ch in self.numpad[digit] {
+            self.buf.push(ch);
             self.backtrack();
             self.buf.pop();
         }
     }
 
-    // My first implementation was iterative
+    // TC is the same - O(4^n)
     fn solve_iteratively(&self) -> Vec<String> {
         if self.digits.is_empty() {
             return vec![];
         }
 
-        let mut result = Vec::new();
-        let first = &self.mapping[self.digits[0] as usize - 2];
+        let mut res = vec![];
 
         // fill the result with the first set of characters: "2" -> ["a", "b", "c"]
-        for item in first.iter() {
-            result.push(item.to_string());
+        for ch in self.numpad[self.digits[0] as usize - 2] {
+            res.push(ch.to_string());
         }
 
-        // Start from the next digit (first item in chars iterator has already been consumed above by .next())
-        for c in self.digits.iter().skip(1) {
-            // map digit to its corresponding characters: "3" -> ["d", "e", "f"]
-            let mapped = &self.mapping[*c as usize - 2];
-
+        // Start from the next digit
+        for digit in self.digits.iter().skip(1) {
             // iterate over the result and append each mapped character to each result item
             // 23 -> ["a", "b", "c"] -> ["d", "e", "f"] => ["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"]
-            let mut temp = Vec::new();
-            for i in result {
-                for j in mapped.iter() {
-                    temp.push(format!("{}{}", i, j));
+            let mut new_res = Vec::new();
+
+            for prev_str in res {
+                for next_char in self.numpad[*digit as usize - 2].iter() {
+                    new_res.push(format!("{}{}", prev_str, next_char));
                 }
             }
 
-            // overwrite the result with the new combinations
-            result = temp;
+            res = new_res;
         }
 
-        result
+        res
     }
 }
 

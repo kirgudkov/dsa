@@ -5,12 +5,21 @@ pub struct DisjointSet {
 
 impl DisjointSet {
     pub fn new(capacity: usize) -> Self {
-        DisjointSet {
+        Self {
             root: (0..capacity).collect(),
             rank: vec![0; capacity],
         }
     }
 
+    // On each find() call it will try to balance the tree:
+    // If root of x isn't the same as x, then we go down the chain:
+    // root: [0,2,4,3,4] <-- roots
+    //        0 1 2 3 4 <-- vertices
+    // find(1): root[1] is 2; 1 != 2, need to be balanced;
+    //    --> root[1] = find(2): root[2] is 4; 2 != 4, need to be balanced;
+    //         --> root[2] = find(4): root[4] == 4, root has been found, return 4;
+    // root: [0,4,4,3,4] <-- roots
+    //        0 1 2 3 4 <-- vertices
     pub fn find(&mut self, x: usize) -> usize {
         if self.root[x] != x {
             self.root[x] = self.find(self.root[x]);
@@ -25,14 +34,16 @@ impl DisjointSet {
         let x = self.find(x);
         let y = self.find(y);
 
-        if x == y {
+        if x == y { // roots are equal: union is not possible 
             return false;
         }
 
+        // Union is possible, figuring out which one should became root for another:
+        // Always choose the higher tree and connect smaller to it;
         match self.rank[x].cmp(&self.rank[y]) {
-            std::cmp::Ordering::Less => self.root[x] = y,
-            std::cmp::Ordering::Greater => self.root[y] = x,
-            std::cmp::Ordering::Equal => {
+            std::cmp::Ordering::Less => self.root[x] = y, // make y parent of x
+            std::cmp::Ordering::Greater => self.root[y] = x, // make x parent of y
+            std::cmp::Ordering::Equal => { // if heights are equal, then it doesn't matter which one will become root
                 self.root[x] = y;
                 self.rank[y] += 1;
             }

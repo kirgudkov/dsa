@@ -4,12 +4,11 @@ struct ArrayReader {
 
 impl ArrayReader {
     #[allow(non_snake_case)]
-    pub fn compareSub(&self, l: i32, r: i32, x: i32, y: i32) -> i32 {
-        match &self.arr[(l as usize)..=(r as usize)].iter().sum::<i32>().cmp(&self.arr[(x as usize)..=(y as usize)].iter().sum::<i32>()) {
-            std::cmp::Ordering::Greater => 1,
-            std::cmp::Ordering::Less => -1,
-            std::cmp::Ordering::Equal => 0,
-        }
+    pub fn compareSub(&self, a: i32, b: i32, c: i32, d: i32) -> std::cmp::Ordering {
+        let l_sum: i32 = self.arr[(a as usize)..=(b as usize)].iter().sum();
+        let r_sum: i32 = self.arr[(c as usize)..=(d as usize)].iter().sum();
+
+        l_sum.cmp(&r_sum)
     }
 
     pub fn length(&self) -> i32 {
@@ -26,15 +25,9 @@ fn get_index(reader: &ArrayReader) -> i32 {
         let offset = if (r - l) % 2 == 0 { 0 } else { 1 };
 
         match reader.compareSub(l, m, m + offset, r) {
-            1 => {
-                r = m;
-            }
-            -1 => {
-                l = m + 1;
-            }
-            _ => {
-                return m;
-            }
+            std::cmp::Ordering::Greater => r = m,
+            std::cmp::Ordering::Less => l = m + 1,
+            std::cmp::Ordering::Equal => return m
         }
     }
 
@@ -48,10 +41,10 @@ mod tests {
     #[test]
     fn test_array_reader() {
         let reader = ArrayReader { arr: vec![7, 7, 7, 7, 10, 7, 7, 7] };
-        assert_eq!(reader.compareSub(0, 3, 4, 7), -1);
-        assert_eq!(reader.compareSub(0, 2, 3, 7), -1);
-        assert_eq!(reader.compareSub(0, 4, 5, 7), 1);
-        assert_eq!(reader.compareSub(0, 1, 2, 3), 0);
+        assert_eq!(reader.compareSub(0, 3, 4, 7), std::cmp::Ordering::Less);
+        assert_eq!(reader.compareSub(0, 2, 3, 7), std::cmp::Ordering::Less);
+        assert_eq!(reader.compareSub(0, 4, 5, 7), std::cmp::Ordering::Greater);
+        assert_eq!(reader.compareSub(0, 1, 2, 3), std::cmp::Ordering::Equal);
     }
 
     #[test]

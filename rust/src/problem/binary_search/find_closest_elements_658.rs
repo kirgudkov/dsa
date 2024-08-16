@@ -1,20 +1,20 @@
+// https://leetcode.com/problems/find-k-closest-elements
 pub fn find_closest_elements(arr: Vec<i32>, k: i32, x: i32) -> Vec<i32> {
-    let mut l = 0;
-    let mut r = arr.len();
+    let mut l = 0i32;
+    let mut r = arr.len() as i32;
 
     // 1. Find closest element to x using binary search:
     while l < r {
         let m = l + (r - l) / 2;
 
-        if arr[m] >= x {
+        if arr[m as usize] >= x {
             r = m;
         } else {
             l = m + 1;
         }
-    } // l is the closest;
+    } // l is the leftmost closest to x;
 
-    let mut r = l as i32;
-    let mut l = l as i32 - 1;
+    r = l;
 
     // 2. Expand window until it reaches size of k;
     while r - l <= k {

@@ -26,7 +26,6 @@ pub fn kth_smallest(matrix: Vec<Vec<i32>>, mut k: i32) -> i32 {
         }
 
         kth = heap.peek().unwrap().0.0;
-
         k -= 1;
     }
 
@@ -44,22 +43,18 @@ mod tests {
             vec![10, 11, 13],
             vec![12, 13, 15],
         ];
-        let k = 8;
-        assert_eq!(kth_smallest(matrix, k), 13);
+        assert_eq!(kth_smallest(matrix, 8), 13);
 
         let matrix = vec![
             vec![1, 3, 5],
             vec![6, 7, 12],
             vec![11, 14, 14],
         ];
-        let k = 3;
-        assert_eq!(kth_smallest(matrix, k), 5);
+        assert_eq!(kth_smallest(matrix, 3), 5);
 
         let matrix = vec![
             vec![-5],
         ];
-
-        let k = 1;
-        assert_eq!(kth_smallest(matrix, k), -5);
+        assert_eq!(kth_smallest(matrix, 1), -5);
     }
 }

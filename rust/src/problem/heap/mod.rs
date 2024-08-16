@@ -1,10 +1,11 @@
 mod kth_largest_in_stream;
 mod last_stone_weight;
-mod k_weakest_rows;
-mod kth_smallest_in_matrix;
+mod k_weakest_rows_1337;
+mod kth_smallest_in_matrix_378;
 mod meeting_rooms_ii;
-mod k_closest_to_origin;
-mod connect_sticks;
-mod furthest_building;
+mod k_closest_to_origin_973;
+mod connect_sticks_1167;
+mod furthest_building_1642;
 mod median_finder;
 pub mod sliding_window_maximum_239;
+mod reorganize_string_767;
