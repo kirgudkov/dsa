@@ -1,15 +1,15 @@
-use std::collections::VecDeque;
+use std::collections::{HashSet, VecDeque};
 
 pub fn can_visit_all_rooms(rooms: Vec<Vec<i32>>) -> bool {
-    let mut queue: VecDeque<(&Vec<i32>, usize)> = VecDeque::from([(&rooms[0], 0)]);
-    let mut visited: Vec<usize> = vec![];
+    let mut queue = VecDeque::from([(&rooms[0], 0)]);
+    let mut visited = HashSet::new();
 
     while let Some((keys, room)) = queue.pop_front() {
         if visited.contains(&room) {
             continue;
         }
 
-        visited.push(room);
+        visited.insert(room);
 
         for key in keys.iter() {
             queue.push_back((&rooms[*key as usize], *key as usize));
@@ -21,7 +21,7 @@ pub fn can_visit_all_rooms(rooms: Vec<Vec<i32>>) -> bool {
 
 #[cfg(test)]
 mod tests {
-    use crate::problem::can_visit_all_rooms::can_visit_all_rooms;
+    use crate::problem::stack_qs::can_visit_all_rooms::can_visit_all_rooms;
 
     #[test]
     fn test_can_visit_all_rooms() {

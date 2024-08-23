@@ -1,18 +1,18 @@
 pub fn fib(n: i32) -> i32 {
-    fib_memo(n, &mut vec![-1; (n + 1) as usize])
+    _fib(n as usize, &mut vec![None; n as usize + 1])
 }
 
-fn fib_memo(n: i32, memo: &mut Vec<i32>) -> i32 {
-    if memo[n as usize] != -1 {
-        return memo[n as usize];
+fn _fib(n: usize, memo: &mut Vec<Option<i32>>) -> i32 {
+    if let Some(cached) = memo[n] {
+        return cached;
     }
 
     if n < 2 {
-        return n;
+        return n as i32;
     }
 
-    let result = fib_memo(n - 1, memo) + fib_memo(n - 2, memo);
-    memo[n as usize] = result;
+    let result = _fib(n - 1, memo) + _fib(n - 2, memo);
+    memo[n] = Some(result);
 
     result
 }

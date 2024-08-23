@@ -1,25 +1,25 @@
 // https://leetcode.com/problems/count-number-of-nice-subarrays/
 pub fn number_of_subarrays(nums: Vec<i32>, k: i32) -> i32 {
-    fn sum(nums: &[i32], k: i32) -> i32 {
+    let at_most = |k: i32, nums: &[i32]| -> i32 {
         let mut l = 0;
+        let mut acc = 0;
         let mut count = 0;
-        let mut res = 0;
 
         for (r, &num) in nums.iter().enumerate() {
-            count += num % 2;
+            acc += num % 2; // ood numbers anlways have reamainder of 1
 
-            while count > k {
-                count -= nums[l] % 2;
+            while l <= r && acc > k {
+                acc -= nums[l] % 2;
                 l += 1;
             }
 
-            res += r - l + 1;
+            count += 1 + r - l;
         }
 
-        res as i32
-    }
+        count as i32
+    };
 
-    sum(&nums, k) - sum(&nums, k - 1)
+    at_most(k, &nums) - at_most(k - 1, &nums)
 }
 
 #[cfg(test)]

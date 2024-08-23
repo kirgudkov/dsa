@@ -1,17 +1,17 @@
 pub fn find_diagonal_order(mat: Vec<Vec<i32>>) -> Vec<i32> {
-    let mut res = vec![];
+    let mut result = Vec::with_capacity(mat.len() * mat[0].len());
 
     let mut i = 0;
     let mut j = 0;
 
-    while res.len() != mat.len() * mat[0].len() {
-        res.push(mat[i][j]);
+    while result.len() != result.capacity() {
+        result.push(mat[i][j]);
 
         match (i + j) % 2 {
             0 => {
-                if j == mat[0].len() - 1 { // reached right boundary
+                if j == mat[0].len() - 1 {
                     i += 1;
-                } else if i == 0 { // reached top boundary
+                } else if i == 0 {
                     j += 1;
                 } else {
                     i -= 1;
@@ -19,9 +19,9 @@ pub fn find_diagonal_order(mat: Vec<Vec<i32>>) -> Vec<i32> {
                 }
             }
             _ => {
-                if i == mat.len() - 1 { // reached left boundary 
+                if i == mat.len() - 1 {
                     j += 1;
-                } else if j == 0 { // reached
+                } else if j == 0 {
                     i += 1;
                 } else {
                     i += 1;
@@ -31,7 +31,7 @@ pub fn find_diagonal_order(mat: Vec<Vec<i32>>) -> Vec<i32> {
         }
     }
 
-    res
+    result
 }
 
 #[cfg(test)]

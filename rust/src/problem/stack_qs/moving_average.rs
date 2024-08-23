@@ -1,5 +1,5 @@
 struct MovingAverage {
-    size: usize,
+    size: f64,
     avg: f64,
     q: std::collections::VecDeque<i32>,
 }
@@ -8,15 +8,15 @@ impl MovingAverage {
     fn new(size: i32) -> Self {
         Self {
             avg: 0.0,
-            size: size as usize,
+            size: size as f64,
             q: std::collections::VecDeque::new(),
         }
     }
 
     fn next(&mut self, val: i32) -> f64 {
-        if self.q.len() == self.size {
+        if self.q.len() == self.size as usize {
             let front = self.q.pop_front().unwrap() as f64;
-            self.avg = (self.avg * self.size as f64 - front + val as f64) / self.size as f64;
+            self.avg = (self.avg * self.size - front + val as f64) / self.size;
             self.q.push_back(val);
         } else {
             self.q.push_back(val);

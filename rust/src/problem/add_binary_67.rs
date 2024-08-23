@@ -1,5 +1,5 @@
 pub fn add_binary(a: String, b: String) -> String {
-    let mut res = String::new();
+    let mut result = String::new();
     let mut carry = 0;
 
     let mut chars_a = a.chars().rev();
@@ -9,7 +9,7 @@ pub fn add_binary(a: String, b: String) -> String {
         match (chars_a.next(), chars_b.next()) {
             (None, None) => {
                 if carry > 0 {
-                    res.push('1');
+                    result.push('1');
                 }
 
                 break;
@@ -19,13 +19,13 @@ pub fn add_binary(a: String, b: String) -> String {
                     + a.unwrap_or('0').to_digit(2).unwrap()
                     + b.unwrap_or('0').to_digit(2).unwrap();
 
-                res.push_str(&format!("{}", sum % 2));
+                result.push_str(&format!("{}", sum % 2));
                 carry = sum / 2;
             }
         }
     }
 
-    res.chars().rev().collect()
+    result.chars().rev().collect()
 }
 
 #[cfg(test)]

@@ -2,7 +2,7 @@
 pub fn max_satisfied(customers: Vec<i32>, grumpy: Vec<i32>, minutes: i32) -> i32 {
     let mut l = 0;
     let mut r = 0;
-    let mut max = (i32::MIN, 0, 0);
+    let mut best = (i32::MIN, 0, 0);
     let mut curr = 0;
 
     // Searchin for the best window that contains max customers on grumpy minutes
@@ -17,8 +17,8 @@ pub fn max_satisfied(customers: Vec<i32>, grumpy: Vec<i32>, minutes: i32) -> i32
             continue;
         }
 
-        if curr > max.0 {
-            max = (curr, l, r - 1);
+        if curr > best.0 {
+            best = (curr, l, r - 1);
         }
 
         if grumpy[l] == 1 {
@@ -29,20 +29,16 @@ pub fn max_satisfied(customers: Vec<i32>, grumpy: Vec<i32>, minutes: i32) -> i32
     }
 
     // Count all non-grumpy
-    let mut res = 0;
+    let mut satisfied = 0;
 
     for (i, c) in customers.iter().enumerate() {
-        if (i < max.1 || i > max.2) && grumpy[i] == 0 {
-            res += *c;
+        // Count all customers on non-grumpy minutes and grumpy minutes if they're in "best" window
+        if grumpy[i] == 0 || (i >= best.1 && i <= best.2) {
+            satisfied += *c;
         }
     }
 
-    // Add our best window
-    for &cus in customers.iter().skip(max.1).take(max.2 - max.1 + 1) {
-        res += cus;
-    }
-
-    res
+    satisfied
 }
 
 #[cfg(test)]

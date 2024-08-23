@@ -1,21 +1,38 @@
 // https://leetcode.com/problems/length-of-longest-subarray-with-at-most-k-frequency/
 pub fn max_subarray_length(nums: Vec<i32>, k: i32) -> i32 {
     let mut freq = std::collections::HashMap::with_capacity(nums.len());
-    let mut res = 0;
+    let mut longest = 0;
     let mut l = 0;
 
-    for (r, num) in nums.iter().enumerate() {
-        *freq.entry(*num).or_insert(0) += 1;
+    for (r, &num_r) in nums.iter().enumerate() {
+        // With each new item on the right, we increase this item frequency 
+        let r_freq = *freq.entry(num_r)
+            .and_modify(|e| *e += 1)
+            .or_insert(1);
 
-        while *freq.get(num).unwrap() > k {
-            *freq.get_mut(&nums[l]).unwrap() -= 1;
-            l += 1;
+        // Valid window should contain not more than k instances of each number;
+        // If we have exceeded the k limit, we got invalid window;
+        if r_freq > k {
+            // So, before counting the length, we should get back to valid state;
+            loop {
+                let num_l = nums[l];
+
+                // Remove leftmost item and reduce its frequency;
+                l += 1;
+                *freq.get_mut(&num_l).unwrap() -= 1;
+
+                // If the leftmost item was the same as the rightmost, 
+                // that means we 100% got back to valid window -> stop shrinking; 
+                if num_l == num_r {
+                    break;
+                }
+            }
         }
 
-        res = res.max((r - l + 1) as i32);
+        longest = longest.max(r - l + 1);
     }
 
-    res
+    longest as i32
 }
 
 #[cfg(test)]

@@ -3,10 +3,10 @@ use std::collections::BinaryHeap;
 // https://leetcode.com/problems/sliding-window-maximum
 // TC O(nlogn) SC O(n)
 pub fn max_sliding_window(nums: Vec<i32>, k: i32) -> Vec<i32> {
-    let mut result: Vec<i32> = Vec::new();
+    let mut result = Vec::new();
 
     let mut left = 0;
-    let mut heap: BinaryHeap<(i32, usize)> = BinaryHeap::new();
+    let mut heap = BinaryHeap::new();
 
     for (i, &num) in nums.iter().enumerate() {
         heap.push((num, i));

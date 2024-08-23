@@ -1,32 +1,35 @@
 // https://leetcode.com/problems/decode-string
-pub fn decode_string(s: String) -> String {
-    let mut stack: std::collections::VecDeque<String> = std::collections::VecDeque::new();
+pub fn decode_string(string: String) -> String {
+    let mut stack: Vec<String> = vec![];
 
-    for char in s.chars() {
+    for char in string.chars() {
         match char {
             ']' => {
                 let mut str = String::new();
-                while let Some(last) = stack.pop_back() {
-                    if last == "[" {
+
+                while let Some(s) = stack.pop() {
+                    if s == "[" {
                         break;
                     }
 
-                    str = last + &str;
+                    str = s + &str;
                 }
 
                 let mut count = String::new();
-                while let Some(last) = stack.pop_back() {
-                    if last.chars().all(char::is_numeric) {
-                        count = last + &count;
+
+                while let Some(s) = stack.pop() {
+                    if s.chars().all(char::is_numeric) {
+                        count = s + &count;
                     } else {
-                        stack.push_back(last);
+                        stack.push(s);
                         break;
                     }
                 }
 
-                stack.push_back(str.repeat(count.parse::<usize>().unwrap()));
+                str = str.repeat(count.parse::<usize>().unwrap());
+                stack.push(str);
             }
-            _ => stack.push_back(char.to_string())
+            _ => stack.push(char.to_string())
         }
     }
 
@@ -35,7 +38,7 @@ pub fn decode_string(s: String) -> String {
 
 #[cfg(test)]
 mod tests {
-    use crate::problem::decode_string::decode_string;
+    use crate::problem::stack_qs::decode_string_394::decode_string;
 
     #[test]
     fn test_decode_string() {

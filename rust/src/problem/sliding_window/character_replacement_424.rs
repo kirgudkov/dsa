@@ -1,26 +1,28 @@
 // https://leetcode.com/problems/longest-repeating-character-replacement/
 pub fn character_replacement(s: String, k: i32) -> i32 {
-    let mut map = std::collections::HashMap::with_capacity(s.len());
+    let mut freq = [0usize; 27]; // last item to hold max freq
+    let mut result = i32::MIN;
     let bytes = s.as_bytes();
 
+    let index = |byte: &u8| -> usize {
+        (byte - b'A') as usize // b'A' -> 65u8;
+    };
+
     let mut l = 0;
-    let mut max_freq = 0;
-    let mut res = i32::MIN;
 
-    for (r, b) in bytes.iter().enumerate() {
-        let freq = map.entry(b).or_insert(0);
-        *freq += 1;
-        max_freq = max_freq.max(*freq);
+    for (r, byte) in bytes.iter().enumerate() {
+        freq[index(byte)] += 1;
+        freq[26] = freq[26].max(freq[index(byte)]);
 
-        if (r - l + 1) as i32 - max_freq > k {
-            *map.get_mut(&bytes[l]).unwrap() -= 1;
+        if r - l + 1 - freq[26] > k as usize {
+            freq[index(&bytes[l])] -= 1;
             l += 1;
         }
 
-        res = res.max((r - l + 1) as i32);
+        result = result.max((r - l + 1) as i32);
     }
 
-    res
+    result
 }
 
 #[cfg(test)]

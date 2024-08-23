@@ -1,10 +1,10 @@
 pub fn find_max_consecutive_ones(nums: Vec<i32>) -> i32 {
-    let mut max = 0;
+    let mut result = 0;
     let mut zero_count = 0;
     let mut l = 0;
 
-    for r in 0..nums.len() {
-        if nums[r] == 0 {
+    for (r, &num) in nums.iter().enumerate() {
+        if num == 0 {
             zero_count += 1;
         }
 
@@ -15,10 +15,10 @@ pub fn find_max_consecutive_ones(nums: Vec<i32>) -> i32 {
             l += 1;
         }
 
-        max = max.max(r - l + 1);
+        result = result.max(r - l + 1);
     }
 
-    max as i32
+    result as i32
 }
 
 #[cfg(test)]

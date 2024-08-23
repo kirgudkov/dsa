@@ -30,6 +30,7 @@ mod tests {
         assert_eq!(longest_ones(vec![1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0], 2), 6);
         assert_eq!(longest_ones(vec![0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1], 3), 10);
         assert_eq!(longest_ones(vec![0, 0, 1, 1, 1, 0, 0], 0), 3);
+        assert_eq!(longest_ones(vec![0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1], 0), 3);
         assert_eq!(longest_ones(vec![1, 1, 1, 0, 0, 0, 1, 1, 1, 1], 0), 4);
     }
 }

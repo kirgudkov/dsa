@@ -2,10 +2,11 @@
 // Time Complexity: O(n)
 // Space Complexity: O(n)
 pub fn min_remove_to_make_valid(s: String) -> String {
-    let mut stack = Vec::new();
+    let mut stack: Vec<char> = Vec::new();
     let mut chars: Vec<char> = s.chars().collect();
 
     let mut i = 0;
+
     while i < chars.len() {
         match chars[i] {
             '(' => {
@@ -27,7 +28,9 @@ pub fn min_remove_to_make_valid(s: String) -> String {
     }
 
     stack.clear();
+
     let mut i = chars.len() as i32 - 1;
+
     while i >= 0 {
         match chars[i as usize] {
             ')' => {
