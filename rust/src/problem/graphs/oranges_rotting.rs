@@ -1,3 +1,5 @@
+use crate::utils::neighbors;
+
 // https://leetcode.com/problems/rotting-oranges
 // TC: O(mn), SC: O(mn)
 pub fn oranges_rotting(mut grid: Vec<Vec<i32>>) -> i32 {
@@ -10,21 +12,6 @@ pub fn oranges_rotting(mut grid: Vec<Vec<i32>>) -> i32 {
             // It takes 0 minutes for a rotten orange to rot
             if grid[i][j] == 2 { q.push_back((i, j, 0)) }
         }
-    }
-
-    fn neighbors(i: usize, j: usize, grid: &[Vec<i32>]) -> Vec<(usize, usize)> {
-        [(1, 0), (-1, 0), (0, 1), (0, -1)]
-            .iter()
-            .map(|&(di, dj)| {
-                (i as isize + di, j as isize + dj)
-            })
-            .filter(|&(i, j)| {
-                i >= 0 && i < grid.len() as isize && j >= 0 && j < grid[0].len() as isize
-            })
-            .map(|(i, j)| {
-                (i as usize, j as usize)
-            })
-            .collect()
     }
 
     while let Some((i, j, d)) = q.pop_front() {

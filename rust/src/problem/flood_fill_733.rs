@@ -1,36 +1,23 @@
+use crate::utils::neighbors;
+use std::collections::VecDeque;
+
 // https://leetcode.com/problems/flood-fill
 pub fn flood_fill(mut image: Vec<Vec<i32>>, si: i32, sj: i32, color: i32) -> Vec<Vec<i32>> {
     if image[si as usize][sj as usize] == color {
         return image;
     }
 
-    let mut queue = std::collections::VecDeque::from([(si as usize, sj as usize)]);
-    let target_color = image[si as usize][sj as usize];
-    let (h, w) = (image.len(), image[0].len());
+    let original_color = image[si as usize][sj as usize];
+    let mut queue = VecDeque::from([(si as usize, sj as usize)]);
 
-    while !queue.is_empty() {
-        let (i, j) = queue.pop_front().unwrap();
+    while let Some((i, j)) = queue.pop_front() {
         image[i][j] = color;
 
-        if let Some(i) = i.checked_sub(1) {
-            if image[i][j] == target_color {
+        neighbors(i, j, &image).iter().for_each(|&(i, j)| {
+            if image[i][j] == original_color {
                 queue.push_back((i, j))
             }
-        }
-
-        if let Some(j) = j.checked_sub(1) {
-            if image[i][j] == target_color {
-                queue.push_back((i, j))
-            }
-        }
-
-        if (i + 1) < h && image[i + 1][j] == target_color {
-            queue.push_back((i + 1, j))
-        }
-
-        if (j + 1) < w && image[i][j + 1] == target_color {
-            queue.push_back((i, j + 1))
-        }
+        });
     }
 
     image

@@ -5,8 +5,10 @@ pub fn group_anagrams(strings: Vec<String>) -> Vec<Vec<String>> {
     for string in &strings {
         let mut key = string.chars().collect::<Vec<char>>();
         key.sort();
-        let entry = map.entry(key).or_insert(vec![]);
-        entry.push(string.clone());
+
+        map.entry(key)
+            .or_insert(vec![])
+            .push(string.clone());
     }
 
     map.into_values().collect()

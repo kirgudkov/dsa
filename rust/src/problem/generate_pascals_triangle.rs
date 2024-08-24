@@ -2,7 +2,7 @@ pub fn generate(num_rows: i32) -> Vec<Vec<i32>> {
     let mut res: Vec<Vec<i32>> = vec![];
     let mut i = 0;
 
-    while num_rows as usize - i != 0 {
+    while i != num_rows as usize {
         let mut row = vec![];
         let mut j = 0;
 

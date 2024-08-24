@@ -1,27 +1,20 @@
 // https://leetcode.com/problems/pascals-triangle-ii
-// Recursive solution with memoization.
 pub fn get_row(i: i32) -> Vec<i32> {
-    let mut memo = vec![vec![0; (i + 1) as usize]; (i + 1) as usize];
-    let mut result = vec![0; (i + 1) as usize];
+    let i = i as usize;
+    let mut memo = vec![vec![0; i + 1]; i + 1];
 
-    for (j, cell) in result.iter_mut().enumerate() {
-        *cell = get_cell(i as usize, j, &mut memo);
-    }
-
-    result
+    (0..=i).map(|j| cell(i, j, &mut memo)).collect()
 }
 
-fn get_cell(i: usize, j: usize, memo: &mut Vec<Vec<i32>>) -> i32 {
+fn cell(i: usize, j: usize, memo: &mut Vec<Vec<i32>>) -> i32 {
     if memo[i][j] != 0 {
-        return memo[i][j];
+        memo[i][j]
+    } else if j == 0 || j == i {
+        1
+    } else {
+        memo[i][j] = cell(i - 1, j - 1, memo) + cell(i - 1, j, memo);
+        memo[i][j]
     }
-
-    if j == 0 || j == i {
-        return 1;
-    }
-
-    memo[i][j] = get_cell(i - 1, j - 1, memo) + get_cell(i - 1, j, memo);
-    memo[i][j]
 }
 
 #[cfg(test)]
