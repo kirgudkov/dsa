@@ -1,25 +1,21 @@
 // https://leetcode.com/problems/intersection-of-two-arrays-ii
 // Two pointers approach. TC is O(n log n + m log m)
-pub fn intersection_tp(mut nums1: Vec<i32>, mut nums2: Vec<i32>) -> Vec<i32> {
+pub fn intersection_tp(mut nums_1: Vec<i32>, mut nums_2: Vec<i32>) -> Vec<i32> {
     let mut res = vec![];
 
-    nums1.sort_unstable(); // O(n log n)
-    nums2.sort_unstable(); // O(m log m)
+    nums_1.sort_unstable(); // O(n log n)
+    nums_2.sort_unstable(); // O(m log m)
 
     let mut a = 0;
     let mut b = 0;
 
-    while a < nums1.len() && b < nums2.len() { // O(min(n, m))
-        match nums1[a].cmp(&nums2[b]) {
+    while a < nums_1.len() && b < nums_2.len() { // O(min(n, m))
+        match nums_1[a].cmp(&nums_2[b]) {
+            std::cmp::Ordering::Less => a += 1,
+            std::cmp::Ordering::Greater => b += 1,
             std::cmp::Ordering::Equal => {
-                res.push(nums1[a]);
+                res.push(nums_1[a]);
                 a += 1;
-                b += 1;
-            }
-            std::cmp::Ordering::Less => {
-                a += 1;
-            }
-            std::cmp::Ordering::Greater => {
                 b += 1;
             }
         }
@@ -29,22 +25,22 @@ pub fn intersection_tp(mut nums1: Vec<i32>, mut nums2: Vec<i32>) -> Vec<i32> {
 }
 
 // HashMap approach. TC is O(n + m)
-pub fn intersection_hm(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
+pub fn intersection_hm(nums_1: Vec<i32>, nums_2: Vec<i32>) -> Vec<i32> {
     let mut freq = std::collections::HashMap::new();
     let mut res = vec![];
 
-    for num in nums1.iter() {
-        *freq.entry(num).or_insert(0) += 1;
-    }
+    nums_1.iter().for_each(|n| {
+        *freq.entry(n).or_insert(0) += 1;
+    });
 
-    for num in nums2.iter() {
-        if let Some(count) = freq.get_mut(num) {
+    nums_2.iter().for_each(|n| {
+        if let Some(count) = freq.get_mut(n) {
             if *count > 0 {
-                res.push(*num);
+                res.push(*n);
                 *count -= 1;
             }
         }
-    }
+    });
 
     res
 }

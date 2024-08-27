@@ -13,10 +13,10 @@ pub fn level_order(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<i32>> {
     let mut queue = VecDeque::from([root]);
 
     while !queue.is_empty() {
-        let mut len = queue.len();
+        let mut n = queue.len();
         let mut level = vec![];
 
-        while len > 0 {
+        while n > 0 {
             if let Some(next) = queue.pop_front().unwrap() {
                 level.push(next.borrow().val);
 
@@ -29,7 +29,7 @@ pub fn level_order(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<i32>> {
                 }
             }
 
-            len -= 1;
+            n -= 1;
         }
 
         result.push(level);

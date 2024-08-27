@@ -24,59 +24,51 @@ pub fn is_same_tree_it(p: Option<Rc<RefCell<TreeNode>>>, q: Option<Rc<RefCell<Tr
     let mut queue = VecDeque::from([(p, q)]);
 
     while let Some(pair) = queue.pop_front() {
-        if pair.0.is_none() && pair.1.is_none() {
-            return false;
+        match pair {
+            (None, None) | (None, Some(_)) | (Some(_), None) => {
+                return false;
+            }
+            (Some(p), Some(q)) => {
+                if p.eq(&q) {
+                    return true;
+                }
+
+                let p = p.borrow();
+                let q = q.borrow();
+
+                if p.val != q.val {
+                    return false;
+                }
+
+                queue.push_back((p.left.clone(), q.left.clone()));
+                queue.push_back((p.right.clone(), q.right.clone()));
+            }
         }
-
-        if (pair.0.is_none() && pair.1.is_some()) || (pair.0.is_some() && pair.1.is_none()) {
-            return false;
-        }
-
-        let p = pair.0.unwrap();
-        let q = pair.1.unwrap();
-
-        if p.eq(&q) {
-            return true;
-        }
-
-        let p = p.borrow();
-        let q = q.borrow();
-
-        if p.val != q.val {
-            return false;
-        }
-
-        queue.push_back((p.left.clone(), q.left.clone()));
-        queue.push_back((p.right.clone(), q.right.clone()));
     }
 
     false
 }
 
 pub fn is_same_tree_rec(p: Option<Rc<RefCell<TreeNode>>>, q: Option<Rc<RefCell<TreeNode>>>) -> bool {
-    if p.is_none() && q.is_none() {
-        return true;
+    match (p, q) {
+        (None, None) | (None, Some(_)) | (Some(_), None) => {
+            false
+        }
+        (Some(p), Some(q)) => {
+            if p.eq(&q) {
+                return true;
+            }
+
+            let p = p.borrow();
+            let q = q.borrow();
+
+            if p.val != q.val {
+                return false;
+            }
+
+            is_same_tree_rec(p.left.clone(), q.left.clone()) && is_same_tree_rec(p.right.clone(), q.right.clone())
+        }
     }
-
-    if (p.is_none() && q.is_some()) || (p.is_some() && q.is_none()) {
-        return false;
-    }
-
-    let q = q.unwrap();
-    let p = p.unwrap();
-
-    if p.eq(&q) {
-        return true;
-    }
-
-    let p = p.borrow();
-    let q = q.borrow();
-
-    if p.val != q.val {
-        return false;
-    }
-
-    is_same_tree_rec(p.left.clone(), q.left.clone()) && is_same_tree_rec(p.right.clone(), q.right.clone())
 }
 
 #[cfg(test)]

@@ -1,24 +1,24 @@
 // https://leetcode.com/problems/isomorphic-strings
-pub fn is_isomorphic(s: String, t: String) -> bool {
+pub fn is_isomorphic(a: String, b: String) -> bool {
     // Originally, a HashMaps were used to store the mappings.
-    let mut s_to_t: Vec<Option<u8>> = vec![None; 256];
-    let mut t_to_s: Vec<Option<u8>> = vec![None; 256];
+    let mut a_to_b: Vec<Option<u8>> = vec![None; 256];
+    let mut b_to_a: Vec<Option<u8>> = vec![None; 256];
 
-    s.bytes()
-        .zip(t.bytes())
-        .all(|(sc, tc)| {
-            match (s_to_t[sc as usize], t_to_s[tc as usize]) {
-                // Both characters already have mappings: Ensure they are consistent with the current pair:
-                (Some(mapped_tc), Some(mapped_sc)) => mapped_tc == tc && mapped_sc == sc,
+    a.bytes()
+        .zip(b.bytes())
+        .all(|(a_char, b_char)| {
+            match (a_to_b[a_char as usize], b_to_a[b_char as usize]) {
+                // Both characters have mappings: Ensure they are consistent with the current pair:
+                (Some(mapped_b), Some(mapped_a)) => mapped_b == b_char && mapped_a == a_char,
                 // None of the characters have mappings: Create new mappings:
                 (None, None) => {
-                    s_to_t[sc as usize] = Some(tc);
-                    t_to_s[tc as usize] = Some(sc);
+                    a_to_b[a_char as usize] = Some(b_char);
+                    b_to_a[b_char as usize] = Some(a_char);
                     true
                 }
                 // One of the characters has a mapping while the other doesn't: 
                 // Inconsistent mappings. Return false.
-                _ => false,
+                _ => false
             }
         })
 }

@@ -1,24 +1,18 @@
 use std::collections::BinaryHeap;
 
-pub fn find_kth_largest(nums: Vec<i32>, mut k: i32) -> i32 {
+fn find_kth_largest(nums: Vec<i32>, k: i32) -> i32 {
     let mut heap = BinaryHeap::from(nums);
-    let mut result = 0;
 
-    while let Some(value) = heap.pop() {
-        if k == 1 {
-            result = value;
-            break;
-        }
+    (0..k - 1).for_each(|_| {
+        heap.pop();
+    });
 
-        k -= 1;
-    }
-
-    result
+    heap.pop().unwrap()
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::problem::kth_largest_element::find_kth_largest;
+    use crate::problem::heap::kth_largest_element::find_kth_largest;
 
     #[test]
     fn test_kth_largest() {
