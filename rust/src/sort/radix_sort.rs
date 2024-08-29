@@ -1,23 +1,18 @@
 pub fn radix_sort(input: &mut [i32]) {
-    let mut max = i32::MIN;
+    let max = *input.iter().max().unwrap();
+    let mut pos = 1usize;
 
-    for item in input.iter() {
-        max = max.max(*item);
-    }
-
-    let mut position = 1;
-    while max / position > 0 {
-        counting_sort(input, position);
-        position *= 10;
+    while max as usize / pos > 0 {
+        counting_sort(input, pos);
+        pos *= 10;
     }
 }
 
-pub fn counting_sort(input: &mut [i32], position: i32) {
+pub fn counting_sort(input: &mut [i32], pos: usize) {
     let mut counts = [0; 10];
 
-    for item in input.iter() {
-        // item: 153, position: 10 -> 153 / 10 = 15; 15 % 10 = 5;
-        counts[((*item / position) % 10) as usize] += 1;
+    for &item in input.iter() {
+        counts[(item as usize / pos) % 10] += 1;
     }
 
     for i in 1..counts.len() {
@@ -26,11 +21,11 @@ pub fn counting_sort(input: &mut [i32], position: i32) {
 
     let mut sorted = vec![0; input.len()];
 
-    for item in input.iter().rev() {
-        let idx = ((*item / position) % 10) as usize;
-        sorted[counts[idx] - 1] = *item;
-        counts[idx] -= 1;
-    }
+    input.iter().rev().for_each(|&item| {
+        let i = (item as usize / pos) % 10;
+        sorted[counts[i] - 1] = item;
+        counts[i] -= 1;
+    });
 
     input.copy_from_slice(&sorted);
 }

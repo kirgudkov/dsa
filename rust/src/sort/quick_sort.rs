@@ -17,14 +17,14 @@ mod hoare {
         }
     }
 
-    // The Hoare partition scheme (second implementation) is generally more efficient in practice,
+    // The Hoare partition scheme is generally more efficient in practice,
     // as it does three times fewer swaps on average;
     // This implementation is slightly more robust against the worst-case scenario (already sorted array) due to its pivot selection.
     fn partition<T>(slice: &mut [T], mut l: usize, mut r: usize) -> usize
     where
         T: PartialOrd + Clone,
     {
-        // middle-of-three pivot selection to mitigate worst-case scenarios (already sorted array)
+        // middle-of-three pivot selection to mitigate worst-case scenarios (e.g. already sorted array)
         let pivot = slice[l + (r - l) / 2].clone();
 
         loop {
@@ -48,7 +48,8 @@ mod lomuto {
 
         let (l, r) = partition(slice);
         quicksort(l);
-        quicksort(&mut r[1..]); // strip the pivot
+        // split_at_mut returns [mid, len) slice, so we need to strip one item (pivot) on the left 
+        quicksort(&mut r[1..]);
     }
 
     fn partition<T: PartialOrd>(slice: &mut [T]) -> (&mut [T], &mut [T]) {
@@ -63,14 +64,12 @@ mod lomuto {
         }
 
         // After the loop, slice is somewhat: [p-, p-, i, p+, p+, p];
-        // The index i keeps track of where the "less than or equal to" section ends;
-        // So we additionaly swap pivot with the ith position:
+        // i is the partition point: this is the first item greater than pivot, so we need an additional swap:
         slice.swap(i, pivot);
-        // After this swap, the slice is properly partitioned:
-        // slice[0..i] contains all elements <= pivot
-        // slice[i] is the pivot in its final sorted position
-        // slice[i+1..] contains all elements > pivot
-
+        // Now the slice is properly partitioned:
+        // slice[..p] contains all elements <= pivot
+        // slice[p] is the pivot in its final sorted position
+        // slice[p+1..] contains all elements > pivot
         slice.split_at_mut(i)
     }
 }

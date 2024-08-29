@@ -18,20 +18,24 @@ pub fn next_greater_element(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
     result
 }
 
-// Stack approach; TC is O(n + m)
+// Monotonic stack approach; TC is O(n + m)
 pub fn next_greater_element2(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
-    let mut map = std::collections::HashMap::new();
-    let mut stack: Vec<i32> = vec![];
+    let mut hm = std::collections::HashMap::new();
+    let mut stack = vec![];
 
     for num in nums2 {
         while !stack.is_empty() && *stack.last().unwrap() < num {
-            map.insert(stack.pop().unwrap(), num);
+            hm.insert(stack.pop().unwrap(), num);
         }
 
         stack.push(num);
     }
 
-    nums1.iter().map(|num| *map.get(num).unwrap_or(&-1)).collect()
+    nums1.iter()
+        .map(|num| {
+            *hm.get(num).unwrap_or(&-1)
+        })
+        .collect()
 }
 
 #[cfg(test)]
