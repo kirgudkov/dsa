@@ -1,18 +1,19 @@
-pub fn plus_one(digits: Vec<i32>) -> Vec<i32> {
-    let mut res = vec![0; digits.len()];
+pub fn plus_one(mut digits: Vec<i32>) -> Vec<i32> {
+    let mut i = digits.len() as i32 - 1;
     let mut carry = 1;
 
-    for (i, &digit) in digits.iter().enumerate().rev() {
-        let sum = digit + carry;
-        res[i] = sum % 10;
+    while i >= 0 && carry > 0 {
+        let sum = digits[i as usize] + carry;
+        digits[i as usize] = sum % 10;
         carry = sum / 10;
+        i -= 1;
     }
 
     if carry > 0 {
-        res.insert(0, carry);
+        digits.insert(0, carry);
     }
 
-    res
+    digits
 }
 
 #[cfg(test)]

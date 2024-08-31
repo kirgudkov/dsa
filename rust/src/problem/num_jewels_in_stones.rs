@@ -1,14 +1,15 @@
-pub fn num_jewels_in_stones(jewels: String, stones: String) -> i32 {
-    let set: std::collections::HashSet<char> = jewels.chars().collect();
-    let mut count = 0;
+use std::collections::HashSet;
 
-    for stone in stones.chars() {
+pub fn num_jewels_in_stones(jewels: String, stones: String) -> i32 {
+    let set = HashSet::<char>::from_iter(jewels.chars());
+
+    stones.chars().fold(0, |mut count, stone| {
         if set.contains(&stone) {
             count += 1;
         }
-    }
 
-    count
+        count
+    })
 }
 
 #[cfg(test)]

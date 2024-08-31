@@ -1,24 +1,34 @@
 use std::collections::VecDeque;
+//https://leetcode.com/problems/perfect-squares
 
-// BFS approach
+// BFS approach 💖
+// Building the tree that consist of remainders after subtracting each possible square that does not exceed n:
+// n = 13;
+// depth 1:
+// 13 -> 1(1), 4(2), 9(3); remainders: [12, 9, 4]
+//     depth 2:
+//     4 -> 1(1), 4(2); we stop here as we have reached the target
+//     9 -> 1(1), 4(2), 9(3); it could also stop here
+//     12 -> 1(1), 4(2), 9(3);
+//     We got either 9 or 4 which are both the targets, so it took 2 squares to reach the target.
 pub fn num_squares_bfs(n: i32) -> i32 {
     let mut q = VecDeque::from([n]);
-    let mut moves = 0;
+    let mut depth = 0;
 
     while !q.is_empty() {
-        moves += 1;
+        depth += 1;
 
         for _ in 0..q.len() {
             let num = q.pop_front().unwrap();
+            let mut square = 1;
 
-            let mut i = 1;
-            while i * i <= num {
-                let next = num - i * i;
-                if next == 0 {
-                    return moves;
+            while square <= num {
+                if num - square == 0 {
+                    return depth;
                 }
-                q.push_back(next);
-                i += 1;
+
+                q.push_back(num - square);
+                square = ((square as f64).sqrt() + 1.0).powi(2) as i32
             }
         }
     }
@@ -64,7 +74,7 @@ pub fn num_squares_rec(n: i32) -> i32 {
 
 #[cfg(test)]
 mod tests {
-    use crate::problem::num_squares::{num_squares_bfs, num_squares_dp, num_squares_rec};
+    use crate::problem::num_squares_279::{num_squares_bfs, num_squares_dp, num_squares_rec};
 
     #[test]
     fn test_num_squares_dp() {

@@ -1,26 +1,24 @@
+// https://leetcode.com/problems/remove-element
 pub fn remove_element(nums: &mut [i32], val: i32) -> i32 {
-    let mut len = nums.len();
+    let mut n = nums.len() as i32;
 
-    let mut r: i32 = nums.len() as i32 - 1;
-    let mut l: i32 = 0;
+    let mut l = 0;
+    let mut r = n - 1;
 
     while l <= r {
-        if nums[r as usize] == val {
-            len -= 1;
-            r -= 1;
-            continue;
-        }
-
         if nums[l as usize] == val {
             nums.swap(l as usize, r as usize);
-            len -= 1;
+        }
+
+        if nums[r as usize] == val {
+            n -= 1;
             r -= 1;
         } else {
-            l += 1;
+            l += 1
         }
     }
 
-    len as i32
+    n
 }
 
 #[cfg(test)]

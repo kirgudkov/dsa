@@ -4,7 +4,6 @@ pub fn reverse_string(s: &mut [char]) {
 
     while l < r {
         s.swap(l, r);
-
         l += 1;
         r -= 1;
     }

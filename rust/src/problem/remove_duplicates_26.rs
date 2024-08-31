@@ -1,3 +1,4 @@
+// https://leetcode.com/problems/remove-duplicates-from-sorted-array
 pub fn remove_duplicates(nums: &mut [i32]) -> i32 {
     let mut p = 0;
 
