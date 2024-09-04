@@ -6,10 +6,10 @@ pub fn spiral_order(matrix: Vec<Vec<i32>>) -> Vec<i32> {
 
     let mut direction = Direction::Right;
 
-    let mut r_boundary = matrix[0].len() - 1;
-    let mut d_boundary = matrix.len() - 1;
     let mut l_boundary = 0;
-    let mut u_boundary = 0;
+    let mut r_boundary = matrix[0].len() - 1;
+    let mut t_boundary = 0;
+    let mut b_boundary = matrix.len() - 1;
 
     while res.len() != matrix.len() * matrix[0].len() {
         res.push(matrix[i][j]);
@@ -17,7 +17,7 @@ pub fn spiral_order(matrix: Vec<Vec<i32>>) -> Vec<i32> {
         match direction {
             Direction::Right => {
                 if j == r_boundary {
-                    u_boundary += 1;
+                    t_boundary += 1;
                     direction = Direction::Down;
                     i += 1;
                 } else {
@@ -25,7 +25,7 @@ pub fn spiral_order(matrix: Vec<Vec<i32>>) -> Vec<i32> {
                 }
             }
             Direction::Down => {
-                if i == d_boundary {
+                if i == b_boundary {
                     r_boundary -= 1;
                     direction = Direction::Left;
                     j -= 1;
@@ -35,7 +35,7 @@ pub fn spiral_order(matrix: Vec<Vec<i32>>) -> Vec<i32> {
             }
             Direction::Left => {
                 if j == l_boundary {
-                    d_boundary -= 1;
+                    b_boundary -= 1;
                     direction = Direction::Up;
                     i -= 1;
                 } else {
@@ -43,7 +43,7 @@ pub fn spiral_order(matrix: Vec<Vec<i32>>) -> Vec<i32> {
                 }
             }
             Direction::Up => {
-                if i == u_boundary {
+                if i == t_boundary {
                     l_boundary += 1;
                     direction = Direction::Right;
                     j += 1;

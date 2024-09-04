@@ -1,4 +1,4 @@
-use crate::utils::neighbors;
+use crate::utils::Neighbors;
 
 // https://leetcode.com/problems/rotting-oranges
 // TC: O(mn), SC: O(mn)
@@ -17,7 +17,7 @@ pub fn oranges_rotting(mut grid: Vec<Vec<i32>>) -> i32 {
     while let Some((i, j, d)) = q.pop_front() {
         max = max.max(d);
 
-        for (i, j) in neighbors(i, j, &grid) {
+        for (i, j) in grid.neighbors(i, j) {
             if grid[i][j] == 1 {
                 grid[i][j] = 2;
                 q.push_back((i, j, d + 1));

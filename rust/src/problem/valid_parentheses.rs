@@ -1,23 +1,32 @@
-pub fn is_valid(s: String) -> bool {
+fn is_valid(s: String) -> bool {
     let mut stack: Vec<char> = vec![];
 
-    for next in s.chars() {
-        match next {
-            '{' | '(' | '[' => stack.push(next),
-            _ => {
-                if let Some(last) = stack.pop() {
-                    if !matches!((last, next), ('{', '}') | ('(', ')') | ('[', ']')) {
-                        return false;
-                    }
-                } else {
-                    return false;
-                }
+    for ch in s.chars() {
+        match ch {
+            '{' | '(' | '[' => stack.push(ch),
+            _ => if !matches!((stack.pop(), ch), (Some('{'), '}') | (Some('('), ')') | (Some('['), ']')) {
+                return false;
             }
         }
     }
 
     stack.is_empty()
 }
+
+// fn is_valid(s: String) -> bool {
+//     let mut stack: Vec<char> = vec![];
+// 
+//     s.chars().try_for_each(|c| {
+//         match c {
+//             '{' | '(' | '[' => stack.push(c),
+//             _ => if !matches!((stack.pop(), c), (Some('{'), '}') | (Some('('), ')') | (Some('['), ']')) {
+//                 return Err(())
+//             }
+//         };
+// 
+//         Ok(())
+//     }).is_ok() && stack.is_empty()
+// }
 
 #[cfg(test)]
 mod tests {

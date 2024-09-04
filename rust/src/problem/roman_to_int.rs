@@ -12,15 +12,15 @@ pub fn roman_to_int(s: String) -> i32 {
     let mut i = 0;
     let chars = s.chars().collect::<Vec<char>>();
 
-    while i < s.len() {
-        let curr = *dict.get(&chars[i]).unwrap();
+    while i < chars.len() {
+        let curr = dict[&chars[i]];
 
-        if i == s.len() - 1 {
+        if i == chars.len() - 1 {
             result += curr;
             break;
         }
 
-        let next = *dict.get(&chars[i + 1]).unwrap();
+        let next = dict[&chars[i + 1]];
 
         if curr >= next {
             result += curr;

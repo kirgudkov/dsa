@@ -14,19 +14,18 @@ pub fn top_k_frequent(nums: Vec<i32>, k: i32) -> Vec<i32> {
 
     // collect into a vector of tuples (item, frequency)
     let mut freq_vec: Vec<(&i32, i32)> = freq.into_iter().collect();
-    // sort by frequency in descending order
+    // sort by frequency in a descending order
     freq_vec.sort_by(|a, b| b.1.cmp(&a.1));
 
     // leverage rust iterator to take first k elements
-    freq_vec
-        .iter()
+    freq_vec.iter()
         .take(k as usize)
         .map(|(num, _)| **num)
         .collect()
 }
 
 // Slightly better approach: use max heap to keep track of k most frequent elements
-// TC: O(k log n)
+// TC: O(n log n)
 // SC: O(n)
 pub fn top_k_frequent_heap(nums: Vec<i32>, k: i32) -> Vec<i32> {
     let mut freq = HashMap::new();
@@ -53,20 +52,20 @@ pub fn top_k_frequent_heap(nums: Vec<i32>, k: i32) -> Vec<i32> {
 // TC: O(n)
 // SC: O(n)
 fn top_k_frequent_bucket_sort(input: &[i32], k: i32) -> Vec<i32> {
+    let mut buckets: Vec<Vec<i32>> = vec![vec![]; input.len() + 1];
     let mut freq = HashMap::new();
-    let mut list: Vec<Vec<i32>> = vec![vec![]; input.len() + 1];
 
     for num in input.iter() {
         *freq.entry(num).or_insert(0) += 1;
     }
 
     for (num, count) in freq.iter() {
-        list[*count as usize].push(**num);
+        buckets[*count as usize].push(**num);
     }
 
     let mut result = vec![];
 
-    for elem in list.iter().rev() {
+    for elem in buckets.iter().rev() {
         for num in elem.iter() {
             result.push(*num);
 

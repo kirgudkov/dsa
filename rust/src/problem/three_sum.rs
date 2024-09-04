@@ -1,6 +1,7 @@
 pub fn three_sum(mut nums: Vec<i32>) -> Vec<Vec<i32>> {
-    let mut result: Vec<Vec<i32>> = vec![];
-    nums.sort();
+    nums.sort_unstable();
+
+    let mut result = vec![];
 
     for i in 0..nums.len() {
         if i > 0 && nums[i] == nums[i - 1] {
@@ -22,7 +23,7 @@ fn two_sum(nums: &[i32], sum: i32) -> Option<Vec<Vec<i32>>> {
         return None;
     }
 
-    let mut result: Vec<Vec<i32>> = vec![];
+    let mut result = vec![];
 
     for i in 0..nums.len() {
         if i > 0 && nums[i] == nums[i - 1] {

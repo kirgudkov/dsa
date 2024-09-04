@@ -36,9 +36,9 @@ fn search_sub_matrix(matrix: &Vec<Vec<i32>>, target: i32, top_left: Cell, bottom
             return true;
         }
 
-        // if we found the cell with the value greater than the target, we can split the matrix vertically;
-        // Run search recursively on the bottom-left and top-right sub-matrices:
+        // If we have found a cell with the value greater than the target, we can split the matrix horizontally;
         if matrix[i][mid_col] > target {
+            // Run search recursively on the top-right
             let top_right = {
                 let top_left = Cell { i: top_left.i, j: mid_col };
                 let bottom_right = Cell { i: i.wrapping_sub(1), j: bottom_right.j };
@@ -46,6 +46,7 @@ fn search_sub_matrix(matrix: &Vec<Vec<i32>>, target: i32, top_left: Cell, bottom
                 search_sub_matrix(matrix, target, top_left, bottom_right)
             };
 
+            // and the bottom-left sub-matrices
             let bottom_left = {
                 let top_left = Cell { i, j: top_left.j };
                 let bottom_right = Cell { i: bottom_right.i, j: mid_col.wrapping_sub(1) };
@@ -57,7 +58,7 @@ fn search_sub_matrix(matrix: &Vec<Vec<i32>>, target: i32, top_left: Cell, bottom
         }
     }
 
-    // We couldn't split the matrix horizontally; Search in the right full-height sub-matrix:
+    // If we end up here, we couldn't split the matrix horizontally; Search in the right full-height sub-matrix:
     search_sub_matrix(matrix, target, Cell { i: top_left.i, j: mid_col + 1 }, bottom_right)
 }
 

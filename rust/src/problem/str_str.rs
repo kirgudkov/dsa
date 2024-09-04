@@ -2,7 +2,7 @@ pub fn str_str(haystack: String, needle: String) -> i32 {
     if needle.is_empty() {
         return 0;
     }
-    
+
     for i in 0..haystack.len() {
         if haystack[i.saturating_sub(needle.len() - 1)..=i] == needle {
             return i as i32 - needle.len() as i32 + 1;

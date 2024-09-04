@@ -1,24 +1,34 @@
-pub fn set_zeroes(matrix: &mut [Vec<i32>]) {
-    let mut first_row = false;
-    let mut first_col = false;
+// The idea is to use 0-th row and 0-th col as masks to mark corresponding row/col as "need to be filled with zeros":
+// [1,0,1]
+// [1,1,1]
+// [0,1,1]
+// In this example 0-th row marked 1-th col as filled and 0th-col marked 2-th row as filled:
+// [1,0,1]
+// [1,0,1]
+// [0,0,0]
+// The only subtle thing is that we should handle cases when mask row/col has zeros initially, se we need to fill them too.
 
+pub fn set_zeroes(matrix: &mut [Vec<i32>]) {
+    let mut row_has_zero = false;
+    let mut col_has_zero = false;
+
+    // 1. Traverse the entire matrix and find all zeros.
+    // Here we only mark out mask row/col.
     for i in 0..matrix.len() {
         for j in 0..matrix[i].len() {
             if matrix[i][j] == 0 {
-                if i == 0 {
-                    first_row = true;
-                }
-
-                if j == 0 {
-                    first_col = true;
-                }
-
+                // If we meet zero, we mark the position in 0-th row and 0-th col with 0 to deal with them later;
                 matrix[i][0] = 0;
                 matrix[0][j] = 0;
+
+                // If zero has been met at our mask row/col, we remeber it in order to fill them at the very end; 
+                if i == 0 { row_has_zero = true; }
+                if j == 0 { col_has_zero = true; }
             }
         }
     }
 
+    // 2. Process everything except mask row/col;
     for i in 1..matrix.len() {
         for j in 1..matrix[i].len() {
             if matrix[i][0] == 0 || matrix[0][j] == 0 {
@@ -27,13 +37,14 @@ pub fn set_zeroes(matrix: &mut [Vec<i32>]) {
         }
     }
 
-    if first_row {
+    // 3. After we processed everything, it's time to deal with mask row and col
+    if row_has_zero {
         for cell in matrix[0].iter_mut() {
             *cell = 0;
         }
     }
 
-    if first_col {
+    if col_has_zero {
         for row in matrix.iter_mut() {
             row[0] = 0;
         }

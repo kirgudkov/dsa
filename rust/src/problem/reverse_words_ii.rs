@@ -4,18 +4,17 @@ pub fn reverse_words(s: &mut [char]) {
     let mut l = 0;
     let mut r = s.len() - 1;
 
-    // Reverse the entire string
+    // 1. Reverse the entire string
     while l < r {
         s.swap(l, r);
-
         l += 1;
         r -= 1;
     }
 
-    // Reverse each word
     l = 0;
     r = 0;
 
+    // 2. Reverse each word
     while r < s.len() {
         while r < s.len() && s[r] != ' ' {
             r += 1;

@@ -34,6 +34,8 @@ impl TwoSum {
         let mut l = 0;
         let mut r = self.vec.len() - 1;
 
+        // Binary search won't make a big difference 
+        // because we still would have to traverse n elements in the worst case (when there is no pair that sums to target)
         while l < r {
             let sum = self.vec[l] + self.vec[r];
 
@@ -70,15 +72,15 @@ impl TwoSumHM {
         *self.map.entry(number).or_insert(0) += 1;
     }
 
-    fn find(&self, value: i32) -> bool {
-        for &key in self.map.keys() {
-            let diff = value - key;
+    fn find(&self, target: i32) -> bool {
+        for &a in self.map.keys() {
+            let b = target - a;
 
-            if diff == key {
-                if *self.map.get(&key).unwrap() > 1 {
+            if b == a {
+                if *self.map.get(&a).unwrap() > 1 {
                     return true;
                 }
-            } else if self.map.contains_key(&diff) {
+            } else if self.map.contains_key(&b) {
                 return true;
             }
         }

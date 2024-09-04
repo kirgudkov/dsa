@@ -1,5 +1,5 @@
 pub fn three_sum_closest(mut nums: Vec<i32>, target: i32) -> i32 {
-    nums.sort();
+    nums.sort_unstable();
 
     let mut closest = nums[0] + nums[1] + nums[2];
 

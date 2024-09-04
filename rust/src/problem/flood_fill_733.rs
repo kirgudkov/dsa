@@ -1,5 +1,5 @@
-use crate::utils::neighbors;
 use std::collections::VecDeque;
+use crate::utils::Neighbors;
 
 // https://leetcode.com/problems/flood-fill
 pub fn flood_fill(mut image: Vec<Vec<i32>>, si: i32, sj: i32, color: i32) -> Vec<Vec<i32>> {
@@ -13,7 +13,7 @@ pub fn flood_fill(mut image: Vec<Vec<i32>>, si: i32, sj: i32, color: i32) -> Vec
     while let Some((i, j)) = queue.pop_front() {
         image[i][j] = color;
 
-        neighbors(i, j, &image).iter().for_each(|&(i, j)| {
+        image.neighbors(i, j).iter().for_each(|&(i, j)| {
             if image[i][j] == original_color {
                 queue.push_back((i, j))
             }
