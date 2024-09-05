@@ -1,24 +1,25 @@
+use crate::utils::Neighbors;
+
 // https://leetcode.com/problems/walls-and-gates
-// TC is O(mn);
-// BFS approach: Starting from each 0-cell propagate outwards and increment distance in each neighbor cell
-pub fn walls_and_gates(rooms: &mut [Vec<i32>]) {
+// TC/SC is O(mn);
+// BFS approach: Starting from each 0-cell (gate) propagate outwards and increment distance in each neighbor cell
+pub fn walls_and_gates(rooms: &mut Vec<Vec<i32>>) {
     let mut q = std::collections::VecDeque::new();
 
     for (i, col) in rooms.iter().enumerate() {
         for (j, row) in col.iter().enumerate() {
-            if *row == 0 { q.push_back((i, j, 0)); }
+            if *row == 0 {
+                q.push_back((i, j, 0));
+            }
         }
     }
 
-    while let Some((i, j, k)) = q.pop_front() {
-        rooms[i][j] = rooms[i][j].min(k);
+    while let Some((i, j, distance)) = q.pop_front() {
+        rooms[i][j] = rooms[i][j].min(distance);
 
-        for &(delta_i, delta_j) in &[(0, 1), (1, 0), (0, -1), (-1, 0)] {
-            let new_i = (i as isize + delta_i) as usize;
-            let new_j = (j as isize + delta_j) as usize;
-
-            if new_i < rooms.len() && new_j < rooms[0].len() && rooms[new_i][new_j] == i32::MAX {
-                q.push_back((new_i, new_j, k + 1));
+        for (i, j) in rooms.neighbors(i, j) {
+            if rooms[i][j] == i32::MAX {
+                q.push_back((i, j, distance + 1));
             }
         }
     }

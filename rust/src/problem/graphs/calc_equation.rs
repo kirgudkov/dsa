@@ -8,7 +8,7 @@ pub fn calc_equation(equations: Vec<Vec<String>>, values: Vec<f64>, queries: Vec
         ds.union(&eq[0], &eq[1], *val);
     });
 
-    queries.into_iter().map(|q| {
+    queries.iter().map(|q| {
         if !ds.map.contains_key(&q[0]) || !ds.map.contains_key(&q[1]) {
             return -1.0;
         }
@@ -17,10 +17,10 @@ pub fn calc_equation(equations: Vec<Vec<String>>, values: Vec<f64>, queries: Vec
         let (b_root, b_val) = ds.find(&q[1]);
 
         if a_root == b_root {
-            return a_val / b_val;
+            a_val / b_val
+        } else {
+            -1.0
         }
-
-        -1.0
     }).collect()
 }
 
@@ -80,15 +80,15 @@ pub fn calc_equation_bfs(equations: Vec<Vec<String>>, values: Vec<f64>, queries:
         let mut visited = HashSet::from([nom]);
         let mut q = VecDeque::from([(nom, 1.0)]);
 
-        while let Some((n, v)) = q.pop_front() {
-            if n == denom {
-                return v;
+        while let Some((v, val)) = q.pop_front() {
+            if v == denom {
+                return val;
             }
 
-            for (y, _val) in graph.get(n).unwrap() {
-                if !visited.contains(y.as_str()) {
-                    q.push_back((y, v * _val));
-                    visited.insert(y);
+            for (n, _val) in graph.get(v).unwrap() {
+                if !visited.contains(n.as_str()) {
+                    q.push_back((n, val * _val));
+                    visited.insert(n);
                 }
             }
         }

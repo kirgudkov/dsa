@@ -23,7 +23,7 @@ pub fn min_cost_connect_points_krus(points: Vec<Vec<i32>>) -> i32 {
 
     edges.sort_unstable();
 
-    let mut ds = DisjointSet::new(points.len());
+    let mut ds = DisjointSet::with_capacity(points.len());
     let mut cost = 0;
     let mut count = 0;
 

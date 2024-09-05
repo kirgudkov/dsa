@@ -1,36 +1,31 @@
+use std::collections::VecDeque;
+
 // https://leetcode.com/problems/cheapest-flights-within-k-stops/
-pub fn find_cheapest_price(n: i32, flights: Vec<Vec<i32>>, src: i32, dst: i32, mut k: i32) -> i32 {
-    use std::collections::VecDeque;
+pub fn find_cheapest_price(n: i32, flights: Vec<Vec<i32>>, src: i32, dst: i32, mut stops: i32) -> i32 {
+    let graph = flights.iter().fold(vec![vec![]; n as usize], |mut acc, flight| {
+        acc[flight[0] as usize].push((flight[1], flight[2]));
+        acc
+    });
 
-    let mut adj = vec![vec![]; n as usize];
-    for flight in &flights {
-        adj[flight[0] as usize].push((flight[1], flight[2]));
-    }
+    let mut queue = VecDeque::from([(src, 0)]);
+    let mut prices = vec![i32::MAX; n as usize];
 
-    let mut q = VecDeque::from([(src, 0)]);
-    let mut costs = vec![i32::MAX; n as usize];
-    costs[src as usize] = 0;
+    while stops >= 0 && !queue.is_empty() {
+        for _ in 0..queue.len() {
+            let (v, price) = queue.pop_front().unwrap();
 
-    while k >= 0 && !q.is_empty() {
-        let mut size = q.len();
-
-        while size > 0 {
-            let (node, cost) = q.pop_front().unwrap();
-
-            for &(nei, nei_cost) in &adj[node as usize] {
-                if cost + nei_cost < costs[nei as usize] {
-                    costs[nei as usize] = cost + nei_cost;
-                    q.push_back((nei, costs[nei as usize]));
+            graph[v as usize].iter().for_each(|&(n, n_price)| {
+                if price + n_price < prices[n as usize] {
+                    prices[n as usize] = price + n_price;
+                    queue.push_back((n, prices[n as usize]));
                 }
-            }
-
-            size -= 1;
+            });
         }
 
-        k -= 1;
+        stops -= 1;
     }
 
-    if costs[dst as usize] == i32::MAX { -1 } else { costs[dst as usize] }
+    if prices[dst as usize] == i32::MAX { -1 } else { prices[dst as usize] }
 }
 
 #[cfg(test)]

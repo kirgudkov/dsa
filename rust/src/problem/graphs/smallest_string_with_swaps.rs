@@ -4,7 +4,7 @@ use crate::ds::disjoint_set::DisjointSet;
 pub fn smallest_string_with_swaps(s: String, pairs: Vec<Vec<i32>>) -> String {
     let mut res: Vec<char> = s.chars().collect();
 
-    let mut ds = DisjointSet::new(res.len());
+    let mut ds = DisjointSet::with_capacity(res.len());
     pairs.iter().for_each(|pair| {
         ds.union(pair[0] as usize, pair[1] as usize);
     });

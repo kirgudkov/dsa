@@ -3,7 +3,7 @@ use crate::ds::disjoint_set::DisjointSet;
 // https://leetcode.com/problems/find-if-path-exists-in-graph
 
 pub fn valid_path(n: i32, edges: Vec<Vec<i32>>, source: i32, destination: i32) -> bool {
-    let mut ds = DisjointSet::new(n as usize);
+    let mut ds = DisjointSet::with_capacity(n as usize);
 
     edges.iter().for_each(|e| {
         ds.union(e[0] as usize, e[1] as usize);

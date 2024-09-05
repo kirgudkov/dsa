@@ -1,17 +1,16 @@
 use crate::ds::disjoint_set::DisjointSet;
 
-pub fn earliest_acq(mut logs: Vec<Vec<i32>>, n: i32) -> i32 {
+pub fn earliest_acq(mut logs: Vec<Vec<i32>>, mut n: i32) -> i32 {
     logs.sort_unstable_by_key(|k| k[0]);
 
-    let mut ds = DisjointSet::new(n as usize);
-    let mut count = n;
+    let mut ds = DisjointSet::with_capacity(n as usize);
 
     for log in logs {
         if ds.union(log[1] as usize, log[2] as usize) {
-            count -= 1;
+            n -= 1;
         }
 
-        if count == 1 {
+        if n == 1 {
             return log[0];
         }
     }

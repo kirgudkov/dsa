@@ -1,3 +1,21 @@
+// https://leetcode.com/problems/all-paths-from-source-to-target
+pub fn all_paths_source_target_bfs(graph: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
+    let mut q = std::collections::VecDeque::from([(0, vec![0])]);
+    let mut paths = vec![];
+
+    while let Some((v, path)) = q.pop_front() {
+        if v == graph.len() as i32 - 1 {
+            paths.push(path);
+        } else {
+            graph[v as usize].iter().for_each(|&n| {
+                q.push_back((n, [path.clone(), vec![n]].concat()));
+            });
+        }
+    }
+
+    paths
+}
+
 pub fn all_paths_source_target_dfs_rec(graph: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
     let mut paths = vec![];
     let mut path = vec![];
@@ -23,31 +41,12 @@ pub fn all_paths_source_target_dfs_it(graph: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
     let mut stack = vec![(0, vec![0])];
     let mut paths = vec![];
 
-    while let Some((node, path)) = stack.pop() {
-        if node == graph.len() as i32 - 1 {
+    while let Some((v, path)) = stack.pop() {
+        if v == graph.len() as i32 - 1 {
             paths.push(path.clone());
         } else {
-            for &neighbor in &graph[node as usize] {
-                stack.push((neighbor, [path.clone(), vec![neighbor]].concat()));
-            }
-        }
-    }
-
-    paths
-}
-
-pub fn all_paths_source_target_bfs_it(graph: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
-    use std::collections::VecDeque;
-
-    let mut q = VecDeque::from([(0, vec![0])]);
-    let mut paths = vec![];
-
-    while let Some((v, path)) = q.pop_front() {
-        if v == graph.len() as i32 - 1 {
-            paths.push(path);
-        } else {
             for &n in &graph[v as usize] {
-                q.push_back((n, [path.clone(), vec![n]].concat()));
+                stack.push((n, [path.clone(), vec![n]].concat()));
             }
         }
     }
@@ -120,7 +119,7 @@ mod tests {
         ];
         assert_eq!(all_paths_source_target_dfs_it(graph), res);
     }
-    
+
     #[test]
     fn test_all_paths_source_target_bfs_it() {
         let graph = vec![
@@ -133,7 +132,7 @@ mod tests {
             vec![0, 1, 3],
             vec![0, 2, 3],
         ];
-        assert_eq!(all_paths_source_target_bfs_it(graph), res);
+        assert_eq!(all_paths_source_target_bfs(graph), res);
 
         let graph = vec![
             vec![4, 3, 1],
@@ -149,6 +148,6 @@ mod tests {
             vec![0, 1, 3, 4],
             vec![0, 1, 2, 3, 4],
         ];
-        assert_eq!(all_paths_source_target_bfs_it(graph), res);
+        assert_eq!(all_paths_source_target_bfs(graph), res);
     }
 }

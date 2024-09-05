@@ -5,7 +5,7 @@ mod earliest_acq;
 mod smallest_string_with_swaps;
 mod calc_equation;
 mod valid_path;
-mod all_paths_source_target;
+mod all_paths_source_target_797;
 mod leads_to_destination;
 mod shortest_path_binary_matrix;
 mod oranges_rotting;

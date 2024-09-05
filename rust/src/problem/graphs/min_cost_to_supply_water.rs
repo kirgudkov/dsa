@@ -19,7 +19,7 @@ pub fn min_cost_to_supply_water_kruskal(n: i32, wells: Vec<i32>, pipes: Vec<Vec<
     edges.sort_unstable_by_key(|edge| edge[2]);
 
     // Use disjoint set to check if two houses are connected.
-    let mut ds = DisjointSet::new(n as usize + 1);
+    let mut ds = DisjointSet::with_capacity(n as usize + 1);
     let mut cost = 0;
 
     for edge in edges {
