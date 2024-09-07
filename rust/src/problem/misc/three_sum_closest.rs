@@ -31,7 +31,7 @@ pub fn three_sum_closest(mut nums: Vec<i32>, target: i32) -> i32 {
 
 #[cfg(test)]
 mod tests {
-    use crate::problem::three_sum_closest::three_sum_closest;
+    use crate::problem::misc::three_sum_closest::three_sum_closest;
 
     #[test]
     fn test_0() {

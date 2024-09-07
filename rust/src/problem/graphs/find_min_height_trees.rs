@@ -1,37 +1,81 @@
-pub fn find_min_height_trees(mut n: i32, edges: Vec<Vec<i32>>) -> Vec<i32> {
-    let mut adj_l = vec![vec![]; n as usize];
-    let mut indegrees = vec![0i32; n as usize];
+// https://leetcode.com/problems/minimum-height-trees
+// Editorial implementataion
+fn find_min_height_trees(mut n: i32, edges: Vec<Vec<i32>>) -> Vec<i32> {
+    if n <= 2 {
+        return (0..n).collect();
+    }
 
-    edges.iter().for_each(|e| {
-        adj_l[e[0] as usize].push(e[1]);
-        adj_l[e[1] as usize].push(e[0]);
+    let mut graph = vec![vec![]; n as usize];
 
-        indegrees[e[0] as usize] += 1;
-        indegrees[e[1] as usize] += 1;
+    edges.iter().for_each(|edge| {
+        graph[edge[0] as usize].push(edge[1]);
+        graph[edge[1] as usize].push(edge[0]);
+    });
+
+    let mut leaves = graph.iter()
+        .enumerate()
+        .filter_map(|(vertex, neighbors)| {
+            (neighbors.len() == 1).then_some(vertex as i32)
+        })
+        .collect::<Vec<_>>();
+
+    while n > 2 {
+        n -= leaves.len() as i32;
+
+        leaves = leaves.iter()
+            .filter_map(|&leaf| {
+                let parent = graph[leaf as usize].pop()
+                    .unwrap() as usize;
+
+                graph[parent].retain(|&vertex| {
+                    vertex != leaf
+                });
+
+                (graph[parent].len() == 1).then_some(parent as i32)
+            })
+            .collect();
+    }
+
+    leaves
+}
+
+// My implementation using indegrees
+fn find_min_height_trees_2(mut n: i32, edges: Vec<Vec<i32>>) -> Vec<i32> {
+    let mut graph = vec![vec![]; n as usize];
+    let mut indegrees = vec![0; n as usize];
+
+    edges.iter().for_each(|edge| {
+        graph[edge[0] as usize].push(edge[1]);
+        graph[edge[1] as usize].push(edge[0]);
+
+        indegrees[edge[0] as usize] += 1;
+        indegrees[edge[1] as usize] += 1;
     });
 
     while n > 2 {
-        let mut leaves = vec![];
-
-        for (u, indegree) in indegrees.iter().enumerate() {
-            if *indegree == 1 { leaves.push(u as i32) }
-        }
+        let leaves = indegrees.iter()
+            .enumerate()
+            .filter_map(|(vertex, &indegree)| {
+                (indegree == 1).then_some(vertex)
+            })
+            .collect::<Vec<_>>();
 
         n -= leaves.len() as i32;
 
-        for u in leaves {
-            indegrees[u as usize] = -1;
+        leaves.iter().for_each(|&leaf| {
+            indegrees[leaf] = -1;
 
-            for &v in &adj_l[u as usize] {
-                indegrees[v as usize] -= 1;
-            }
-        }
+            graph[leaf].iter().for_each(|&vertex| {
+                indegrees[vertex as usize] -= 1;
+            });
+        });
     }
 
     indegrees.iter()
         .enumerate()
-        .filter(|&(_, &d)| d == 1 || d == 0)
-        .map(|(i, _)| i as i32)
+        .filter_map(|(vertex, &indegree)| {
+            matches!(indegree, 1 | 0).then_some(vertex as i32)
+        })
         .collect()
 }
 

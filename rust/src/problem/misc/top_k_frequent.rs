@@ -80,7 +80,7 @@ fn top_k_frequent_bucket_sort(input: &[i32], k: i32) -> Vec<i32> {
 
 #[cfg(test)]
 mod tests {
-    use crate::problem::top_k_frequent::{top_k_frequent, top_k_frequent_bucket_sort, top_k_frequent_heap};
+    use crate::problem::misc::top_k_frequent::{top_k_frequent, top_k_frequent_bucket_sort, top_k_frequent_heap};
 
     #[test]
     fn test_top_k_frequent_heap() {

@@ -29,7 +29,7 @@ pub fn sort_colors(nums: &mut [i32]) {
 
 #[cfg(test)]
 mod tests {
-    use crate::problem::sort_colors::sort_colors;
+    use crate::problem::misc::sort_colors::sort_colors;
 
     #[test]
     fn test_sort_colors() {

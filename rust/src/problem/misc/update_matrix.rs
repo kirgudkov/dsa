@@ -33,7 +33,7 @@ pub fn update_matrix(mut matrix: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
 
 #[cfg(test)]
 mod tests {
-    use crate::problem::update_matrix::update_matrix;
+    use crate::problem::misc::update_matrix::update_matrix;
 
     #[test]
     fn test_update_matrix() {

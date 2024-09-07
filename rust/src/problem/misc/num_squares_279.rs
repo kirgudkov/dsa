@@ -74,7 +74,7 @@ pub fn num_squares_rec(n: i32) -> i32 {
 
 #[cfg(test)]
 mod tests {
-    use crate::problem::num_squares_279::{num_squares_bfs, num_squares_dp, num_squares_rec};
+    use crate::problem::misc::num_squares_279::{num_squares_bfs, num_squares_dp, num_squares_rec};
 
     #[test]
     fn test_num_squares_dp() {

@@ -30,7 +30,7 @@ pub fn largest_rectangle_area(heights: Vec<i32>) -> i32 {
 
 #[cfg(test)]
 mod tests {
-    use crate::problem::largest_rectangle_area::largest_rectangle_area;
+    use crate::problem::misc::largest_rectangle_area::largest_rectangle_area;
 
     #[test]
     fn test_1() {

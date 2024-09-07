@@ -29,7 +29,7 @@ fn fix(x: f64) -> f64 {
 
 #[cfg(test)]
 mod tests {
-    use crate::problem::my_pow::my_pow;
+    use crate::problem::misc::my_pow::my_pow;
 
     #[test]
     fn test_my_pow() {

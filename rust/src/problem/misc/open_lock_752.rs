@@ -70,7 +70,7 @@ fn get_options(code: usize) -> Vec<usize> {
 
 #[cfg(test)]
 mod tests {
-    use crate::problem::open_lock_752::open_lock;
+    use crate::problem::misc::open_lock_752::open_lock;
 
     #[test]
     fn test_open_lock() {

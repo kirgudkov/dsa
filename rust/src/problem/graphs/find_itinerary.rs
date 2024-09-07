@@ -1,16 +1,19 @@
 use std::collections::HashMap;
 
 pub fn find_itinerary(tickets: Vec<Vec<String>>) -> Vec<String> {
-    let mut graph = HashMap::new();
-    let mut result = vec![];
+    let mut graph: HashMap<&String, Vec<&String>> = HashMap::new();
 
-    for ticket in &tickets {
-        graph.entry(&ticket[0]).or_insert(vec![]).push(&ticket[1]);
-    }
+    tickets.iter().for_each(|ticket| {
+        graph.entry(&ticket[0])
+            .or_default()
+            .push(&ticket[1]);
+    });
 
-    for v in graph.values_mut() {
+    graph.values_mut().for_each(|v| {
         v.sort_unstable_by(|a, b| b.cmp(a));
-    }
+    });
+
+    let mut result = vec![];
 
     fn dfs(v: &String, graph: &mut HashMap<&String, Vec<&String>>, result: &mut Vec<String>) {
         while let Some(next) = graph.get_mut(v).and_then(|v| v.pop()) {
@@ -21,6 +24,7 @@ pub fn find_itinerary(tickets: Vec<Vec<String>>) -> Vec<String> {
     }
 
     dfs(&"JFK".to_string(), &mut graph, &mut result);
+
     result
 }
 

@@ -30,7 +30,7 @@ fn is_valid(s: String) -> bool {
 
 #[cfg(test)]
 mod tests {
-    use crate::problem::valid_parentheses::is_valid;
+    use crate::problem::misc::valid_parentheses::is_valid;
 
     #[test]
     fn test_1() {

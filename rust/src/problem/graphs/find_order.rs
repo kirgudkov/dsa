@@ -4,29 +4,31 @@ use std::collections::VecDeque;
 // Topological sort using Kahn's algorithm.
 // TC: O(V + E), SC: O(V + E), where V and E are the number of vertices and edges respectively.
 pub fn find_order(n: i32, prerequisites: Vec<Vec<i32>>) -> Vec<i32> {
-    let mut sorted = vec![];
-    let mut adj_list = vec![vec![]; n as usize];
-    let mut indegree = vec![0; n as usize];
+    let mut graph = vec![vec![]; n as usize];
+    let mut indegrees = vec![0; n as usize];
 
     prerequisites.iter().for_each(|p| {
-        adj_list[p[1] as usize].push(p[0]);
-        indegree[p[0] as usize] += 1;
+        graph[p[1] as usize].push(p[0]);
+        indegrees[p[0] as usize] += 1;
     });
 
-    let mut q = VecDeque::new();
+    let mut queue = indegrees.iter()
+        .enumerate()
+        .filter_map(|(vertex, &indegree)| {
+            (indegree == 0).then_some(vertex as i32)
+        })
+        .collect::<VecDeque<i32>>();
 
-    indegree.iter().enumerate().for_each(|(i, &d)| {
-        if d == 0 { q.push_back(i as i32) }
-    });
+    let mut sorted = vec![];
 
-    while let Some(course) = q.pop_front() {
-        sorted.push(course);
+    while let Some(vertex) = queue.pop_front() {
+        sorted.push(vertex);
 
-        for &next in &adj_list[course as usize] {
-            indegree[next as usize] -= 1;
+        for &neighbor in &graph[vertex as usize] {
+            indegrees[neighbor as usize] -= 1;
 
-            if indegree[next as usize] == 0 {
-                q.push_back(next);
+            if indegrees[neighbor as usize] == 0 {
+                queue.push_back(neighbor);
             }
         }
     }

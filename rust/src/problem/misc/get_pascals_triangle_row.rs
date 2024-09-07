@@ -19,7 +19,7 @@ fn cell(i: usize, j: usize, memo: &mut Vec<Vec<i32>>) -> i32 {
 
 #[cfg(test)]
 mod tests {
-    use crate::problem::get_pascals_triangle_row::get_row;
+    use crate::problem::misc::get_pascals_triangle_row::get_row;
 
     #[test]
     fn test_get_row() {

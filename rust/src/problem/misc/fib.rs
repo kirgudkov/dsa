@@ -19,7 +19,7 @@ fn _fib(n: usize, memo: &mut Vec<Option<i32>>) -> i32 {
 
 #[cfg(test)]
 mod tests {
-    use crate::problem::fib::fib;
+    use crate::problem::misc::fib::fib;
 
     #[test]
     fn test_fib() {

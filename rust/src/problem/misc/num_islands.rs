@@ -28,7 +28,7 @@ fn flood(grid: &mut Vec<Vec<char>>, i: usize, j: usize) {
 
 #[cfg(test)]
 mod tests {
-    use crate::problem::num_islands::num_islands;
+    use crate::problem::misc::num_islands::num_islands;
 
     #[test]
     fn test_num_islands() {

@@ -40,7 +40,7 @@ pub fn next_greater_element2(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
 
 #[cfg(test)]
 mod tests {
-    use crate::problem::next_greater_element::{next_greater_element, next_greater_element2};
+    use crate::problem::misc::next_greater_element::{next_greater_element, next_greater_element2};
 
     #[test]
     fn test_next_greater_element() {

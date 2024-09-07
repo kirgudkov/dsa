@@ -5,8 +5,8 @@ pub fn find_circle_num(is_connected: Vec<Vec<i32>>) -> i32 {
     let mut ds = DisjointSet::with_capacity(is_connected.len());
     let mut count = is_connected.len() as i32;
 
-    for i in 0..is_connected.len() {
-        for j in (i + 1)..is_connected.len() {
+    for i in 0..is_connected.len() - 1 {
+        for j in i + 1..is_connected.len() {
             if is_connected[i][j] == 1 && ds.union(i, j) {
                 count -= 1;
             }

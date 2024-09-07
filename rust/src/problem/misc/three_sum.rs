@@ -40,7 +40,7 @@ fn two_sum(nums: &[i32], sum: i32) -> Option<Vec<Vec<i32>>> {
 
 #[cfg(test)]
 mod tests {
-    use crate::problem::three_sum::three_sum;
+    use crate::problem::misc::three_sum::three_sum;
 
     #[test]
     fn test_three_sum() {

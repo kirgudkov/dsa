@@ -17,7 +17,7 @@ fn trim_and_pick_kth_smallest(nums: &[String], k: i32, trim: i32) -> i32 {
 
 #[cfg(test)]
 mod tests {
-    use crate::problem::smallest_trimmed_numbers::smallest_trimmed_numbers;
+    use crate::problem::misc::smallest_trimmed_numbers::smallest_trimmed_numbers;
 
     #[test]
     fn test_smallest_trimmed_numbers() {

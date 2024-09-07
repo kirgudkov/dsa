@@ -26,7 +26,7 @@ pub fn merge_two_lists(list1: Option<Box<ListNode>>, list2: Option<Box<ListNode>
 
 #[cfg(test)]
 mod tests {
-    use crate::problem::merge_two_sorted_lists::{ListNode, merge_two_lists};
+    use crate::problem::misc::merge_two_sorted_lists::{ListNode, merge_two_lists};
 
     #[test]
     fn test_merge_two_lists() {

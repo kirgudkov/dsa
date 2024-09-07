@@ -11,7 +11,7 @@ fn maximum_gap(mut nums: Vec<i32>) -> i32 {
 
 #[cfg(test)]
 mod tests {
-    use crate::problem::maximum_gap::maximum_gap;
+    use crate::problem::misc::maximum_gap::maximum_gap;
 
     #[test]
     fn test_maximum_gap() {
