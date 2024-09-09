@@ -4,18 +4,13 @@ pub trait Neighbors<T> {
 
 impl<T> Neighbors<T> for Vec<Vec<T>> {
     fn neighbors(&self, i: usize, j: usize) -> Vec<(usize, usize)> {
-        let mut neighbors = vec![];
-
-        [(1, 0), (-1, 0), (0, 1), (0, -1)].iter().for_each(|&(di, dj)| {
+        [(1, 0), (-1, 0), (0, 1), (0, -1)].iter().filter_map(|&(di, dj)| {
             let ni = i as isize + di;
             let nj = j as isize + dj;
 
-            if ni >= 0 && ni < self.len() as isize && nj >= 0 && nj < self[0].len() as isize {
-                neighbors.push((ni as usize, nj as usize));
-            }
-        });
-
-        neighbors
+            (ni >= 0 && ni < self.len() as isize && nj >= 0 && nj < self[0].len() as isize)
+                .then_some((ni as usize, nj as usize))
+        }).collect()
     }
 }
 

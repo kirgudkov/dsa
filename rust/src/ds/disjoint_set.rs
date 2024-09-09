@@ -13,32 +13,32 @@ impl DisjointSet {
         }
     }
 
-    pub fn find(&mut self, x: usize) -> usize {
-        if self.root[x] != x {
-            self.root[x] = self.find(self.root[x]);
+    pub fn find(&mut self, v: usize) -> usize {
+        if self.root[v] != v {
+            self.root[v] = self.find(self.root[v]);
         }
 
-        self.root[x]
+        self.root[v]
     }
 
-    pub fn union(&mut self, x: usize, y: usize) -> bool {
-        let x = self.find(x);
-        let y = self.find(y);
+    pub fn union(&mut self, v: usize, u: usize) -> bool {
+        let v_root = self.find(v);
+        let u_root = self.find(u);
 
-        if x == y {
+        if v_root == u_root {
             return false;
         }
 
-        match self.rank[x].cmp(&self.rank[y]) {
+        match self.rank[v_root].cmp(&self.rank[u_root]) {
             Ordering::Less => {
-                self.root[x] = y
+                self.root[v_root] = u_root
             }
             Ordering::Greater => {
-                self.root[y] = x
+                self.root[u_root] = v_root
             }
             Ordering::Equal => {
-                self.root[x] = y;
-                self.rank[y] += 1;
+                self.root[v_root] = u_root;
+                self.rank[u_root] += 1;
             }
         }
 

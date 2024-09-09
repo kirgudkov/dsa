@@ -1,3 +1,4 @@
+use crate::utils::Neighbors;
 use std::cmp::Reverse;
 use std::collections::BinaryHeap;
 
@@ -6,23 +7,19 @@ pub fn minimum_effort_path(heights: Vec<Vec<i32>>) -> i32 {
     let mut heap = BinaryHeap::from([Reverse((0, 0, 0))]);
 
     while let Some(Reverse((effort, i, j))) = heap.pop() {
-        if visited[i][j] {
-            continue;
-        }
-
         if i == heights.len() - 1 && j == heights[0].len() - 1 {
             return effort;
         }
 
+        if visited[i][j] {
+            continue;
+        }
+
         visited[i][j] = true;
 
-        for (di, dj) in &[(1, 0), (-1, 0), (0, 1), (0, -1)] {
-            let new_i = (i as i32 + di) as usize;
-            let new_j = (j as i32 + dj) as usize;
-
-            if new_i < heights.len() && new_j < heights[0].len() && !visited[new_i][new_j] {
-                let new_effort = (heights[i][j] - heights[new_i][new_j]).abs();
-                heap.push(Reverse((effort.max(new_effort), new_i, new_j)));
+        for (ni, nj) in heights.neighbors(i, j) {
+            if !visited[ni][nj] {
+                heap.push(Reverse((effort.max((heights[i][j] - heights[ni][nj]).abs()), ni, nj)));
             }
         }
     }

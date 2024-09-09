@@ -1,4 +1,5 @@
 use crate::ds::disjoint_set::DisjointSet;
+use std::collections::VecDeque;
 
 // https://leetcode.com/problems/find-if-path-exists-in-graph
 
@@ -20,28 +21,27 @@ fn valid_path_dfs(n: i32, edges: Vec<Vec<i32>>, source: i32, destination: i32) -
         graph[e[1] as usize].push(e[0]);
     });
 
-    let mut seen = vec![false; n as usize];
+    let mut visited = vec![false; n as usize];
     let mut stack = vec![source];
 
     while let Some(v) = stack.pop() {
-        seen[v as usize] = true;
+        visited[v as usize] = true;
 
         if v == destination {
             return true;
         }
 
-        for ne in graph[v as usize].iter() {
-            if !seen[*ne as usize] {
-                stack.push(*ne);
+        graph[v as usize].iter().for_each(|&u| {
+            if !visited[u as usize] {
+                stack.push(u);
             }
-        }
+        });
     }
 
     false
 }
 
 fn valid_path_bfs(n: i32, edges: Vec<Vec<i32>>, source: i32, destination: i32) -> bool {
-    use std::collections::VecDeque;
     let mut graph = vec![vec![]; n as usize];
 
     edges.iter().for_each(|e| {
@@ -49,21 +49,21 @@ fn valid_path_bfs(n: i32, edges: Vec<Vec<i32>>, source: i32, destination: i32) -
         graph[e[1] as usize].push(e[0]);
     });
 
-    let mut q = VecDeque::from([source]);
-    let mut seen = vec![false; n as usize];
+    let mut queue = VecDeque::from([source]);
+    let mut visited = vec![false; n as usize];
 
-    while let Some(v) = q.pop_front() {
-        seen[v as usize] = true;
+    while let Some(v) = queue.pop_front() {
+        visited[v as usize] = true;
 
         if v == destination {
             return true;
         }
 
-        for &n in graph.get(v as usize).unwrap() {
-            if !seen[n as usize] {
-                q.push_back(n);
+        graph[v as usize].iter().for_each(|&u| {
+            if !visited[u as usize] {
+                queue.push_back(u);
             }
-        }
+        });
     }
 
     false

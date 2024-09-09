@@ -5,28 +5,30 @@ use std::collections::BinaryHeap;
 // Dijkstra's algorithm.
 // TC: O(N + E * log(N))
 pub fn network_delay_time(times: Vec<Vec<i32>>, n: i32, k: i32) -> i32 {
-    let mut minimums = vec![i32::MAX; n as usize];
-    minimums[k as usize - 1] = 0;
+    let n = n as usize;
+    let k = k as usize - 1;
 
-    let mut adj = vec![vec![]; n as usize];
-    for edge in &times {
-        adj[edge[0] as usize - 1].push((edge[1], edge[2]))
-    }
+    let graph = times.iter().fold(vec![vec![]; n], |mut acc, edge| {
+        acc[edge[0] as usize - 1].push((edge[1] as usize - 1, edge[2] as usize));
+        acc
+    });
 
-    let mut pq = BinaryHeap::from([Reverse((0, k))]); // (time, node)
-    let mut seen = vec![false; n as usize];
+    let mut min_time = vec![usize::MAX; n];
+    min_time[k] = 0;
 
-    while let Some(Reverse((curr_time, curr_node))) = pq.pop() {
-        // Skip if result already contains time that is less than the current one or if the node is already seen.
-        if curr_time > minimums[curr_node as usize - 1] || seen[curr_node as usize - 1] {
+    let mut heap = BinaryHeap::from([Reverse((0, k))]);
+    let mut visited = vec![false; n];
+
+    while let Some(Reverse((time, v))) = heap.pop() {
+        if visited[v] || time > min_time[v] {
             continue;
         }
 
-        seen[curr_node as usize - 1] = true;
+        visited[v] = true;
 
-        for &(nei, nei_time) in &adj[curr_node as usize - 1] {
+        graph[v].iter().for_each(|&(u, u_time)| {
             // Edge relaxation:
-            // If the time to reach the current node + the time to reach the neighbor is
+            // If the time to reach the current vertex + time to reach the neighbor is
             // less than the previously discovered time to reach the neighbor,
             // update the time to reach the neighbor and add it to the priority queue.
             //          "1"
@@ -36,19 +38,19 @@ pub fn network_delay_time(times: Vec<Vec<i32>>, n: i32, k: i32) -> i32 {
             // Previously discovered time to reach 3  is 3;
             // Now, we are at the node 2 and the time to reach 2 is 1 + the time to reach 3 from 2 is 1 = 1 + 1 = 2
             // 2 < 3, so we update the time to reach 3 to 2.
-            if minimums[curr_node as usize - 1] + nei_time < minimums[nei as usize - 1] {
-                minimums[nei as usize - 1] = minimums[curr_node as usize - 1] + nei_time;
-                pq.push(Reverse((minimums[nei as usize - 1], nei)));
+            if min_time[v] + u_time < min_time[u] {
+                min_time[u] = min_time[v] + u_time;
+                heap.push(Reverse((min_time[u], u)));
             }
-        }
+        });
     }
 
-    minimums.sort_unstable();
+    min_time.sort_unstable();
 
-    if minimums[n as usize - 1] == i32::MAX {
+    if min_time[n - 1] == usize::MAX {
         -1
     } else {
-        minimums[n as usize - 1]
+        min_time[n - 1] as i32
     }
 }
 

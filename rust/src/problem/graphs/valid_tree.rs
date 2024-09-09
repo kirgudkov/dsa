@@ -1,20 +1,19 @@
 use crate::ds::disjoint_set::DisjointSet;
 
-pub fn valid_tree(n: i32, edges: Vec<Vec<i32>>) -> bool {
-    if (edges.len() as i32) != n - 1 {
+pub fn valid_tree(mut n: i32, edges: Vec<Vec<i32>>) -> bool {
+    if edges.len() as i32 != n - 1 {
         return false;
     }
 
     let mut ds = DisjointSet::with_capacity(n as usize);
-    let mut count = n;
 
-    for edge in edges {
+    edges.iter().for_each(|edge| {
         if ds.union(edge[0] as usize, edge[1] as usize) {
-            count -= 1;
+            n -= 1;
         }
-    }
+    });
 
-    count == 1
+    n == 1
 }
 
 #[cfg(test)]

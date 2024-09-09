@@ -1,35 +1,36 @@
 use crate::utils::Neighbors;
+use std::collections::VecDeque;
 
 // https://leetcode.com/problems/rotting-oranges
 // TC: O(mn), SC: O(mn)
 pub fn oranges_rotting(mut grid: Vec<Vec<i32>>) -> i32 {
-    let mut q = std::collections::VecDeque::new();
-    let mut max = 0;
+    // Initialize a queue with all rotten oranges
+    let mut queue = grid.iter()
+        .enumerate()
+        .flat_map(|(i, row)| {
+            row.iter().enumerate().filter_map(move |(j, &val)| {
+                (val == 2).then_some((i, j, 0))
+            })
+        }).collect::<VecDeque<_>>();
 
-    // Push all rotten oranges to the queue
-    for i in 0..grid.len() {
-        for j in 0..grid[0].len() {
-            // It takes 0 minutes for a rotten orange to rot
-            if grid[i][j] == 2 { q.push_back((i, j, 0)) }
-        }
-    }
+    let mut elapsed = 0;
 
-    while let Some((i, j, d)) = q.pop_front() {
-        max = max.max(d);
+    while let Some((i, j, minutes)) = queue.pop_front() {
+        elapsed = elapsed.max(minutes);
 
-        for (i, j) in grid.neighbors(i, j) {
+        grid.neighbors(i, j).iter().for_each(|&(i, j)| {
             if grid[i][j] == 1 {
                 grid[i][j] = 2;
-                q.push_back((i, j, d + 1));
+                queue.push_back((i, j, minutes + 1));
             }
-        }
+        });
     }
 
     for row in &grid {
         if row.contains(&1) { return -1; }
     }
 
-    max
+    elapsed
 }
 
 #[cfg(test)]
