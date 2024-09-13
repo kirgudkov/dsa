@@ -10,56 +10,46 @@ class Trie {
 			return;
 		}
 
-		const _insert = (node: TrieNode, char: string): TrieNode => {
+		let node = this.root;
+
+		for (const char of word) {
 			if (!node.children.has(char)) {
 				node.children.set(char, new TrieNode(char));
 			}
 
-			return node.children.get(char);
-		};
-
-		let node = this.root;
-
-		for (const char of word) {
-			node = _insert(node, char);
+			node = node.children.get(char)!;
 		}
 
 		node.terminal = true;
 	}
 
 	search(word: string): boolean {
-		let node = this.root;
-
-		for (const char of word) {
-			if (!node.children.has(char)) {
-				return false;
-			}
-
-			node = node.children.get(char);
-		}
-
-		return node.terminal;
+		return this.searchPrefixNode(word)?.terminal ?? false;
 	}
 
 	startsWith(prefix: string): boolean {
+		return this.searchPrefixNode(prefix) != undefined;
+	}
+
+	private searchPrefixNode(prefix: string): TrieNode | undefined {
 		let node = this.root;
 
 		for (const char of prefix) {
 			if (!node.children.has(char)) {
-				return false;
+				return;
 			}
 
-			node = node.children.get(char);
+			node = node.children.get(char)!;
 		}
 
-		return true;
+		return node;
 	}
 }
 
 class TrieNode {
 	char: string;
 	terminal: boolean;
-	children = new Map();
+	children = new Map<string, TrieNode>();
 
 	constructor(char: string, terminal: boolean = false) {
 		this.char = char;

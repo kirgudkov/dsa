@@ -1,17 +1,20 @@
-class TrieNode {
-	char: string;
-	children = new Map<string, TrieNode>();
-
-	heat?: number; // only terminal nodes have heat
-	str?: string; // only terminal nodes have the whole string
-
-	constructor(char: string) {
-		this.char = char;
-	}
-}
-
 class AutocompleteSystem {
-	private root = new TrieNode("-");
+	private Node = class {
+		char: string;
+		is_terminal: boolean;
+		children: Map<string, this>;
+
+		rank?: number;
+		str?: string;
+
+		constructor(char: string) {
+			this.char = char;
+			this.is_terminal = false;
+			this.children = new Map<string, this>();
+		}
+	};
+
+	private root = new this.Node("");
 	private buffer: string[] = [];
 
 	constructor(sentences: string[], times: number[]) {
@@ -20,30 +23,29 @@ class AutocompleteSystem {
 		);
 	}
 
-	input(c: string): string[] {
-		if (c === "#") {
+	input(char: string): string[] {
+		if (char == "#") {
 			this.insert_str(this.buffer.join(""));
-			this.buffer = [];
-			return [];
+			return this.buffer = [];
 		} else {
-			this.buffer.push(c);
+			this.buffer.push(char);
 			return this.search_buf();
 		}
 	}
 
-	private insert_str(str: string, heat: number = 1) {
+	private insert_str(str: string, rank: number = 1) {
 		let node = this.root;
 
 		for (let char of str) {
 			if (!node.children.has(char)) {
-				node.children.set(char, new TrieNode(char));
+				node.children.set(char, new this.Node(char));
 			}
 
 			node = node.children.get(char)!;
 		}
 
-		// terminal node
-		node.heat = (node.heat || 0) + heat;
+		node.is_terminal = true;
+		node.rank = (node.rank || 0) + rank;
 		node.str = str;
 	}
 
@@ -51,41 +53,41 @@ class AutocompleteSystem {
 		// 1. Find the last node that represents the current buffer
 		let node = this.root;
 
-		for (const sym of this.buffer) {
-			if (!node.children.has(sym)) {
+		for (const char of this.buffer) {
+			if (!node.children.has(char)) {
 				// No words were found with the current prefix
 				return [];
 			} else {
-				node = node.children.get(sym)!;
+				node = node.children.get(char)!;
 			}
 		}
 
 		// 2. Now we have the starting node from which we will collect all the words, sort them and return top 3
-		let words: [word: string, heat: number][] = [];
+		const words: [word: string, heat: number][] = [];
+		const queue = [node];
 
-		const q: TrieNode[] = [node];
-		while (q.length) {
-			const node = q.shift()!;
+		while (queue.length) {
+			const node = queue.shift()!;
 
-			// If we found a terminal node, add its string to the result
-			if (node.heat && node.str) {
-				words.push([node.str, node.heat]);
-				continue;
+			if (node.is_terminal) {
+				words.push([node.str!, node.rank!]);
 			}
 
 			for (const child of node.children.values()) {
-				q.push(child);
+				queue.push(child);
 			}
 		}
 
 		// Probably we could use a max heap here to avoid sorting
-		return words.sort((a, b) => {
-			if (a[1] === b[1]) {
-				return a[0].localeCompare(b[0]);
-			}
+		return words.sort(([a_str, a_rank], [b_str, b_rank]) => {
+				if (a_rank == b_rank) {
+					return a_str.localeCompare(b_str);
+				}
 
-			return b[1] - a[1];
-		}).slice(0, 3).map((word) => word[0]);
+				return b_rank - a_rank;
+			})
+			.slice(0, 3)
+			.map(([str]) => str);
 	}
 }
 
