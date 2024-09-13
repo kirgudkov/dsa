@@ -10,8 +10,9 @@ function addTwoNumbers(l1: ListNode | null, l2: ListNode | null): ListNode | nul
 
 	while (a || b) {
 		let sum = carry + (a?.val ?? 0) + (b?.val ?? 0);
+
+		carry = sum > 9 ? 1 : 0;
 		curr.val = sum % 10;
-		carry = sum > 9 ? 1 : 0; // Math.floor(sum / 10) => 12 / 10 = 1.2 => 1
 
 		a = a?.next ?? null;
 		b = b?.next ?? null;
@@ -36,6 +37,7 @@ function reverse(head: ListNode | null): ListNode | null {
 	while (curr) {
 		const next = curr.next;
 		curr.next = prev;
+
 		prev = curr;
 		curr = next;
 	}

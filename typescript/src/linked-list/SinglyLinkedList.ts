@@ -1,98 +1,61 @@
 export class SinglyLinkedList {
 	private head?: SinglyLinkedListNode;
 
-	get(index: number): number {
-		if (!this.head) {
-			return -1;
-		}
+	get(index: number) {
+		let curr = this.head;
 
-		let i = 0;
-		let curr: SinglyLinkedListNode | undefined = this.head;
-
-		while (i < index) {
+		for (let i = 0; i < index; i++) {
 			curr = curr?.next;
-			i++;
 		}
 
 		return curr?.val ?? -1;
 	}
 
-	addAtHead(val: number): void {
-		const node = new SinglyLinkedListNode(val);
-
-		if (this.head) {
-			node.next = this.head;
-		}
-
-		this.head = node;
+	addAtHead(val: number) {
+		this.head = new SinglyLinkedListNode(val, this.head);
 	}
 
-	addAtTail(val: number): void {
-		if (!this.head) {
+	addAtTail(val: number) {
+		let tail = this.head;
+
+		while (tail?.next) {
+			tail = tail.next;
+		}
+
+		if (tail) {
+			tail.next = new SinglyLinkedListNode(val);
+		} else {
+			this.addAtHead(val);
+		}
+	}
+
+	addAtIndex(index: number, val: number) {
+		if (!this.head || index == 0) {
 			return this.addAtHead(val);
 		}
 
-		let curr: SinglyLinkedListNode | undefined = this.head;
-		while (curr?.next) {
-			curr = curr.next;
+		let curr = this.head;
+		for (let i = index; i > 1; i--) {
+			curr = curr.next!;
 		}
 
-		if (curr) {
-			curr.next = new SinglyLinkedListNode(val);
-		}
+		curr.next = new SinglyLinkedListNode(val, curr.next);
 	}
 
-	addAtIndex(index: number, val: number): void {
-		if (!this.head && index === 0) {
-			return this.addAtHead(val);
-		}
-
-		let prev: SinglyLinkedListNode | undefined = undefined;
-		let curr: SinglyLinkedListNode | undefined = this.head;
-		let i = 0;
-
-		while (i < index) {
-			prev = curr;
-			curr = curr?.next;
-			i++;
-		}
-
-		const node = new SinglyLinkedListNode(val);
-
-		if (prev) {
-			prev.next = node;
-		}
-
-		if (curr) {
-			node.next = curr;
-		}
-
-		if (curr && curr === this.head) {
-			this.head = node;
-		}
-	}
-
-	deleteAtIndex(index: number): void {
+	deleteAtIndex(index: number) {
 		if (!this.head) {
 			return;
 		}
 
-		let prev: SinglyLinkedListNode | undefined = undefined;
-		let curr: SinglyLinkedListNode | undefined = this.head;
-		let i = 0;
-
-		while (i < index) {
-			prev = curr;
-			curr = curr?.next;
-			i++;
+		let curr = this.head;
+		for (let i = index; i > 1; i--) {
+			curr = curr.next!;
 		}
 
-		if (curr && curr === this.head) {
-			this.head = curr.next;
-		}
-
-		if (prev) {
-			prev.next = curr?.next;
+		if (curr == this.head) {
+			this.head = this.head.next;
+		} else {
+			curr.next = curr.next?.next;
 		}
 	}
 }

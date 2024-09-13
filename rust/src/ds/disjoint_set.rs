@@ -1,24 +1,24 @@
 use std::cmp::Ordering;
 
 pub struct DisjointSet {
-    root: Vec<usize>,
-    rank: Vec<usize>,
+    roots: Vec<usize>,
+    ranks: Vec<usize>,
 }
 
 impl DisjointSet {
     pub fn with_capacity(n: usize) -> Self {
         Self {
-            root: (0..n).collect(),
-            rank: vec![0; n],
+            roots: (0..n).collect(),
+            ranks: vec![0; n],
         }
     }
 
     pub fn find(&mut self, v: usize) -> usize {
-        if self.root[v] != v {
-            self.root[v] = self.find(self.root[v]);
+        if self.roots[v] != v {
+            self.roots[v] = self.find(self.roots[v]);
         }
 
-        self.root[v]
+        self.roots[v]
     }
 
     pub fn union(&mut self, v: usize, u: usize) -> bool {
@@ -29,16 +29,16 @@ impl DisjointSet {
             return false;
         }
 
-        match self.rank[v_root].cmp(&self.rank[u_root]) {
+        match self.ranks[v_root].cmp(&self.ranks[u_root]) {
             Ordering::Less => {
-                self.root[v_root] = u_root
+                self.roots[v_root] = u_root
             }
             Ordering::Greater => {
-                self.root[u_root] = v_root
+                self.roots[u_root] = v_root
             }
             Ordering::Equal => {
-                self.root[v_root] = u_root;
-                self.rank[u_root] += 1;
+                self.roots[v_root] = u_root;
+                self.ranks[u_root] += 1;
             }
         }
 
@@ -53,8 +53,8 @@ mod tests {
     #[test]
     fn test_initialization() {
         let ds = DisjointSet::with_capacity(5);
-        assert_eq!(ds.root, vec![0, 1, 2, 3, 4]);
-        assert_eq!(ds.rank, vec![0, 0, 0, 0, 0]);
+        assert_eq!(ds.roots, vec![0, 1, 2, 3, 4]);
+        assert_eq!(ds.ranks, vec![0, 0, 0, 0, 0]);
     }
 
     #[test]
@@ -75,7 +75,7 @@ mod tests {
         assert_eq!(ds.find(0), ds.find(2));
 
         let x = ds.find(0);
-        assert_eq!(ds.rank[x], 1);
+        assert_eq!(ds.ranks[x], 1);
     }
 
     #[test]
@@ -86,14 +86,14 @@ mod tests {
         ds.union(3, 4);
 
         let x = ds.find(3);
-        assert_eq!(ds.rank[x], 1);
+        assert_eq!(ds.ranks[x], 1);
         let x = ds.find(4);
-        assert_eq!(ds.rank[x], 1);
+        assert_eq!(ds.ranks[x], 1);
 
         ds.union(0, 2);
 
         let x = ds.find(0);
-        assert_eq!(ds.rank[x], 2);
+        assert_eq!(ds.ranks[x], 2);
         assert_eq!(ds.find(1), ds.find(3));
         assert_eq!(ds.find(0), ds.find(4));
     }

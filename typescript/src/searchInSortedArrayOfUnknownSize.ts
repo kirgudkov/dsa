@@ -13,7 +13,7 @@ function searchInSortedArrayOfUnknownSize(reader: ArrayReader, target: number): 
 
 		const mid = l + Math.floor((r - l) / 2);
 
-		if (reader.get(mid) === target) {
+		if (reader.get(mid) == target) {
 			return mid;
 		}
 

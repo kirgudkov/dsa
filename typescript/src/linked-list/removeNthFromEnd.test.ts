@@ -8,6 +8,12 @@ describe("removeNthFromEnd", () => {
 		expect(result).toEqual({ val: 1, next: { val: 3, next: null } });
 	});
 
+	test("should remove the nth node from the end of the list", () => {
+		const head = { val: 1, next: { val: 2, next: { val: 3, next: { val: 4, next: null } } } };
+		const result = removeNthFromEnd(head, 2);
+		expect(result).toEqual({ val: 1, next: { val: 2, next: { val: 4, next: null } } });
+	});
+
 	test("should remove first when list has 2 nodes", () => {
 		const head = { val: 1, next: { val: 2, next: null } };
 		const result = removeNthFromEnd(head, 2);

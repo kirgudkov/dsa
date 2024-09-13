@@ -7,15 +7,15 @@ export class ListNode {
 		this.next = (next === undefined ? null : next);
 	}
 
-	print() {
-		let result = this.val.toString();
-		let curr = this.next;
-
-		while (curr && curr !== this) {
-			result += " -> " + curr.val;
-			curr = curr.next;
-		}
-
-		console.log(result);
-	}
+	// print() {
+	// 	let result = this.val.toString();
+	// 	let curr = this.next;
+	//
+	// 	while (curr && curr !== this) {
+	// 		result += " -> " + curr.val;
+	// 		curr = curr.next;
+	// 	}
+	//
+	// 	console.log(result);
+	// }
 }

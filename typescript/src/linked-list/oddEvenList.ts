@@ -5,32 +5,23 @@ export function oddEvenList(head: ListNode | null): ListNode | null {
 		return head;
 	}
 
+	let last_odd: ListNode = head;
+	let current_even: ListNode | null = head.next;
+
 	const first_even: ListNode = head.next;
 
-	let last_odd: ListNode = head;
-	let current: ListNode | null = head.next;
+	/**
+	 * The idea is to take the node following current_even (which is always odd) and put it in betweeen last_odd and first_even.
+	 * Moved node becomes new last_odd.
+	 */
+	while (current_even?.next) {
+		const next_even: ListNode | null = current_even.next.next;
 
-	while (current?.next) {
-		// current is always even;
-		// current.next is always odd;
-
-		// We are going to move current.next to the position between last_odd and first_even.
-		// current.next will become the new last_odd.
-		// current will point to the node after current.next (next even node).
-
-		// Stash next even node, because we're about to mutate the reference:
-		const next_even: ListNode | null = current.next.next;
-
-		// Make the current.next the new last_odd:
-		current.next.next = first_even;
-		last_odd.next = current.next;
-		last_odd = current.next;
-
-		// Connect current node with next_even:
-		current.next = next_even;
-
-		// Update current pointer
-		current = next_even;
+		current_even.next.next = first_even;
+		last_odd.next = current_even.next;
+		last_odd = current_even.next;
+		current_even.next = next_even;
+		current_even = next_even;
 	}
 
 	return head;

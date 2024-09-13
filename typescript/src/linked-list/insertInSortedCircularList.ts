@@ -24,8 +24,7 @@ function insert(head: ListNode | null, insertVal: number): ListNode | null {
 		node = node.next;
 	}
 
-	const next = node.next;
-	node.next = new ListNode(insertVal, next);
+	node.next = new ListNode(insertVal, node.next);
 
 	return head;
 }

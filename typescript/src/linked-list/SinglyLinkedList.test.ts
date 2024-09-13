@@ -36,7 +36,9 @@ describe("MyLinkedList", () => {
 		linkedList.addAtIndex(0, 2);
 		expect(linkedList.get(0)).toBe(2);
 		linkedList.addAtIndex(1, 3);
+		expect(linkedList.get(0)).toBe(2);
 		expect(linkedList.get(1)).toBe(3);
+		expect(linkedList.get(2)).toBe(1);
 	});
 
 	test("deleteAtIndex", () => {

@@ -11,35 +11,35 @@ class TrieNode {
 }
 
 class AutocompleteSystem {
-	private trie_root = new TrieNode("-");
-	private buf: string[] = [];
+	private root = new TrieNode("-");
+	private buffer: string[] = [];
 
 	constructor(sentences: string[], times: number[]) {
-		sentences.forEach((str, i) => {
-			this.insert_str(str, times[i]);
-		});
+		sentences.forEach((str, i) =>
+			this.insert_str(str, times[i])
+		);
 	}
 
 	input(c: string): string[] {
 		if (c === "#") {
-			this.insert_str(this.buf.join(""));
-			this.buf = [];
+			this.insert_str(this.buffer.join(""));
+			this.buffer = [];
 			return [];
 		} else {
-			this.buf.push(c);
+			this.buffer.push(c);
 			return this.search_buf();
 		}
 	}
 
 	private insert_str(str: string, heat: number = 1) {
-		let node = this.trie_root;
+		let node = this.root;
 
-		for (let sym of str) {
-			if (!node.children.has(sym)) {
-				node.children.set(sym, new TrieNode(sym));
+		for (let char of str) {
+			if (!node.children.has(char)) {
+				node.children.set(char, new TrieNode(char));
 			}
 
-			node = node.children.get(sym)!;
+			node = node.children.get(char)!;
 		}
 
 		// terminal node
@@ -49,9 +49,9 @@ class AutocompleteSystem {
 
 	private search_buf(): string[] {
 		// 1. Find the last node that represents the current buffer
-		let node = this.trie_root;
+		let node = this.root;
 
-		for (const sym of this.buf) {
+		for (const sym of this.buffer) {
 			if (!node.children.has(sym)) {
 				// No words were found with the current prefix
 				return [];

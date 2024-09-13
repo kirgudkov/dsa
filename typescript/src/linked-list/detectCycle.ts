@@ -14,3 +14,26 @@ export function detectCycle(head: ListNode | null): ListNode | null {
 
 	return null;
 }
+
+export function detectCycleSlowFastPointers(head: ListNode | null): ListNode | null {
+	let slow = head;
+	let fast = head;
+
+	while (slow && fast && fast.next) {
+		slow = slow.next;
+		fast = fast.next.next;
+
+		if (slow == fast) {
+			fast = head;
+
+			while (slow != fast) {
+				slow = slow!.next;
+				fast = fast!.next;
+			}
+
+			return slow;
+		}
+	}
+
+	return null;
+}

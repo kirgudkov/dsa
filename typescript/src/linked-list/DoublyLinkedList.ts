@@ -5,18 +5,6 @@ export class DoublyLinkedList {
 	private tail?: DoublyLinkedListNode;
 
 	get(index: number): number {
-		if (index < 0 || index >= this.length) {
-			return -1;
-		}
-
-		if (index === 0) {
-			return this.head?.val ?? -1;
-		}
-
-		if (index === this.length - 1) {
-			return this.tail?.val ?? -1;
-		}
-
 		return this.getNode(index)?.val ?? -1;
 	}
 
@@ -38,8 +26,7 @@ export class DoublyLinkedList {
 
 	addAtTail(val: number): void {
 		if (!this.head) {
-			this.addAtHead(val);
-			return;
+			return this.addAtHead(val);
 		}
 
 		const tail = new DoublyLinkedListNode(val, undefined, this.tail);
@@ -53,45 +40,40 @@ export class DoublyLinkedList {
 	}
 
 	addAtIndex(index: number, val: number): void {
+		if (index == 0) {
+			return this.addAtHead(val);
+		}
 
-		if (index === 0) {
-			this.addAtHead(val);
+		if (index == this.length) {
+			return this.addAtTail(val);
+		}
+
+		if (index < 0 || index > this.length) {
 			return;
 		}
 
-		if (index === this.length) {
-			this.addAtTail(val);
-			return;
-		}
+		const new_node = new DoublyLinkedListNode(val);
+		const old_node = this.getNode(index)!;
 
-		if (index < 0 || index > this.length || !this.head) {
-			return;
-		}
-
-		const curr = this.getNode(index)!;
-		const node = new DoublyLinkedListNode(val);
-
-		node.prev = curr!.prev;
-		node.next = curr;
-		curr!.prev!.next = node;
-		curr!.prev = node;
+		new_node.prev = old_node!.prev;
+		new_node.next = old_node;
+		old_node!.prev!.next = new_node;
+		old_node!.prev = new_node;
 
 		this.length++;
 	}
 
 	deleteAtIndex(index: number): void {
-		if (index < 0 || index >= this.length || !this.head) {
+		if (index < 0 || index >= this.length) {
 			return;
 		}
 
-		if (index === 0) {
-			this.deleteHead();
-			return;
+		if (index == 0) {
+			return this.deleteHead();
 		}
 
-		if (index === this.length - 1) {
-			this.deleteTail();
-			return;
+		if (index == this.length - 1) {
+			return this.deleteTail();
 		}
 
 		const curr = this.getNode(index)!;
