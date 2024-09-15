@@ -1,36 +1,37 @@
 import type { TreeNode } from "./TreeNode.ts";
 
 // https://leetcode.com/problems/closest-binary-search-tree-value
-// DFS approach: perform incomplete inorder traversal that stops when the target is between the current and previous node values
+// DFS approach: perform incomplete inorder traversal.
+// Basically, we're observing "virtual" sorted array using two pointers: current and previous;
 // Time complexity: O(H + k), where k is an index of the closest element
 // Space complexity: O(H), where H is a height of the tree
-function closestValue(root: TreeNode | null, target: number): number {
-	if (!root) {
+function closestValue(node: TreeNode | null, target: number): number {
+	if (!node) {
 		return -1;
 	}
 
-	let pred = -Infinity;
+	let prev = -Infinity;
 	const stack: TreeNode[] = [];
 
-	while (root || stack.length) {
-		while (root) {
-			stack.push(root);
-			root = root.left;
+	while (node || stack.length) {
+		while (node) {
+			stack.push(node);
+			node = node.left;
 		}
 
-		root = stack.pop()!;
+		node = stack.pop()!;
 
-		if (pred <= target && target < root.val) {
-			return [pred, root.val].reduce((prev, curr) =>
-				Math.abs(target - prev) <= Math.abs(target - curr) ? prev : curr
-			);
+		if (node.val > target) { // prev here guaranteed to be less/equal to target
+			return Math.abs(target - prev) <= Math.abs(target - node.val) // return the closest
+				? prev
+				: node.val;
 		}
 
-		pred = root.val;
-		root = root.right;
+		prev = node.val;
+		node = node.right;
 	}
 
-	return pred;
+	return prev;
 }
 
 export { closestValue };

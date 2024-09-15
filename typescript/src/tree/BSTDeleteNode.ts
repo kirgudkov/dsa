@@ -1,38 +1,38 @@
 import type { TreeNode } from "./TreeNode.ts";
 
-function deleteNode(node: TreeNode | null, key: number): TreeNode | null {
-	if (!node) {
+function deleteNode(root: TreeNode | null, key: number): TreeNode | null {
+	if (!root) {
 		return null;
 	}
 
-	if (key < node.val) {
-		node.left = deleteNode(node.left, key);
-	} else if (key > node.val) {
-		node.right = deleteNode(node.right, key);
+	if (key < root.val) {
+		root.left = deleteNode(root.left, key);
+	} else if (key > root.val) {
+		root.right = deleteNode(root.right, key);
 	} else {
-		if (!node.left) {
-			return node.right;
+		if (!root.left) {
+			return root.right;
 		}
 
-		if (!node.right) {
-			return node.left;
+		if (!root.right) {
+			return root.left;
 		}
 
-		node.val = leftmost(node.right);
-		node.right = deleteNode(node.right, node.val);
+		root.val = leftmost(root.right);
+		root.right = deleteNode(root.right, root.val);
 	}
 
-	return node;
+	return root;
 }
 
-const leftmost = (node: TreeNode): number => {
-	let left = node;
+const leftmost = (root: TreeNode): number => {
+	let node = root;
 
-	while (left.left) {
-		left = left.left;
+	while (node.left) {
+		node = node.left;
 	}
 
-	return left.val;
+	return node.val;
 };
 
 export { deleteNode };

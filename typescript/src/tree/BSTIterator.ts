@@ -6,7 +6,6 @@ class BSTIterator {
 	private list: number[] = [];
 
 	constructor(root: TreeNode | null) {
-
 		if (!root) {
 			return;
 		}
