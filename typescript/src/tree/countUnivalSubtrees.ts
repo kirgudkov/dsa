@@ -4,25 +4,21 @@ function countUnivalSubtrees(root: TreeNode | null): number {
 	return count(root)[0];
 }
 
-// Returns tuple of [count, isSubtreeUnival]
-function count(root: TreeNode | null): [number, boolean] {
-	if (!root) {
+function count(node: TreeNode | null): [number, boolean] /* [count, isSubtreeUnival] */ {
+	if (!node) {
+		// Base case: null node forms a unival subtree with count 0;
+		// This will sufficiently turn leaf nodes into valid unival subtrees with count 1;
 		return [0, true];
 	}
 
-	const [leftCount, isLeftUnival] = count(root.left);
-	const [rightCount, isRightUnival] = count(root.right);
+	const [leftCount, isLeftUnival] = count(node.left);
+	const [rightCount, isRightUnival] = count(node.right);
 
-	// This sufficiently covers the base case of a leaf node and the case when higher roots are unival:
-	// for the leaf node it'll get two null subtrees with count 0 and both of them are unival, so it'll add 1 to the count.
-	// for the higher roots, if both left and right subtrees are unival and the root value is the same as the left and right values, it'll add 1 to the count.
-	if (isLeftUnival && isRightUnival) {
-		if (
-			(!root.left || root.left.val === root.val) &&
-			(!root.right || root.right.val === root.val)
-		) {
-			return [leftCount + rightCount + 1, true];
-		}
+	const isLeftNullOrMatchesRoot = !node.left || node.left.val == node.val;
+	const isRightNullOrMatchesRoot = !node.right || node.right.val == node.val;
+
+	if (isLeftUnival && isRightUnival && isLeftNullOrMatchesRoot && isRightNullOrMatchesRoot) {
+		return [leftCount + rightCount + 1, true];
 	}
 
 	return [leftCount + rightCount, false];

@@ -20,21 +20,21 @@ test("eulerWalk", () => {
 	n3.left = n6;
 	n3.right = n7;
 
-	const visits = eulerTour(root, 0);
+	const visits = eulerTour(root);
 
 	expect(visits).toEqual([
-		{ node: root, depth: 0 },
-		{ node: n2, depth: 1 },
-		{ node: n4, depth: 2 },
-		{ node: n2, depth: 1 },
-		{ node: n5, depth: 2 },
-		{ node: n2, depth: 1 },
-		{ node: root, depth: 0 },
-		{ node: n3, depth: 1 },
-		{ node: n6, depth: 2 },
-		{ node: n3, depth: 1 },
-		{ node: n7, depth: 2 },
-		{ node: n3, depth: 1 },
-		{ node: root, depth: 0 }
+		[root, 0],
+		[n2, 1],
+		[n4, 2],
+		[n2, 1],
+		[n5, 2],
+		[n2, 1],
+		[root, 0],
+		[n3, 1],
+		[n6, 2],
+		[n3, 1],
+		[n7, 2],
+		[n3, 1],
+		[root, 0]
 	]);
 });

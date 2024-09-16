@@ -1,30 +1,33 @@
 import type { TreeNode } from "./TreeNode.ts";
 
-export function eulerTour(root: TreeNode | null, depth: number): Visit[] {
-	const visits: Visit[] = [];
-	walk(root, visits, depth);
-	return visits;
-}
+export function eulerTour(root: TreeNode | null): [TreeNode, number][] {
+	const tour: [TreeNode, number][] = [];
 
-function walk(root: TreeNode | null, visits: Visit[], depth: number) {
 	if (!root) {
-		return;
+		return tour;
 	}
 
-	visits.push({ node: root, depth });
+	const stack: [TreeNode, number, boolean][] = [[root, 0, false]];
 
-	if (root.left) {
-		walk(root.left, visits, depth + 1);
-		visits.push({ node: root, depth });
+	while (stack.length) {
+		const [node, depth, visited] = stack.pop()!;
+
+		tour.push([node, depth]);
+
+		if (visited) {
+			continue;
+		}
+
+		if (node.right) {
+			stack.push([node, depth, true]);
+			stack.push([node.right, depth + 1, false]);
+		}
+
+		if (node.left) {
+			stack.push([node, depth, true]);
+			stack.push([node.left, depth + 1, false]);
+		}
 	}
 
-	if (root.right) {
-		walk(root.right, visits, depth + 1);
-		visits.push({ node: root, depth });
-	}
+	return tour;
 }
-
-export type Visit = {
-	node: TreeNode;
-	depth: number;
-};

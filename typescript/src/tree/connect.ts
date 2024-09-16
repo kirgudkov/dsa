@@ -29,9 +29,8 @@ export function connect(root: _Node | null): _Node | null {
 
 	while (queue.length) {
 		const level: _Node[] = [];
-		const length = queue.length;
 
-		for (let i = 0; i < length; i++) {
+		for (let i = queue.length; i > 0; i--) {
 			const node = queue.shift()!;
 			level.push(node);
 
@@ -39,18 +38,8 @@ export function connect(root: _Node | null): _Node | null {
 			node.right && queue.push(node.right);
 		}
 
-		if (level.length > 1) {
-			let i = 1;
-			let prev = level[i - 1];
-			let current = level[i];
-
-			while (current) {
-				i++;
-
-				prev.next = current;
-				prev = current;
-				current = level[i];
-			}
+		for (let i = 1; i < level.length; i++) {
+			level[i - 1].next = level[i];
 		}
 	}
 
