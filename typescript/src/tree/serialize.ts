@@ -2,8 +2,8 @@ import { TreeNode } from "./TreeNode.ts";
 
 export function serialize(root: TreeNode | null): string {
 	return root
-		? root.val.toString() + "," + serialize(root?.left) + "," + serialize(root?.right)
-		: "#";
+		? root.val.toString() + DELIMITER + serialize(root?.left) + DELIMITER + serialize(root?.right)
+		: END;
 }
 
 export function deserialize(data: string): TreeNode | null {
@@ -11,26 +11,28 @@ export function deserialize(data: string): TreeNode | null {
 }
 
 function parse(str: string): [TreeNode | null, string] {
-	let _str = str;
-
-	if (str[0] === ",") {
-		_str = str.substring(1);
+	if (str[0] == DELIMITER) {
+		str = str.slice(1);
 	}
 
-	if (_str[0] === "#") {
-		return [null, _str.substring(1)];
+	if (str[0] == END) {
+		return [null, str.slice(1)];
 	}
 
-	const comma = _str.indexOf(",");
-	const val = _str.substring(0, comma);
+	const val_end = str.indexOf(DELIMITER);
 
-	const root = new TreeNode(parseInt(val));
+	const root = new TreeNode(
+		parseInt(str.slice(0, val_end))
+	);
 
-	const [left, str1] = parse(_str.substring(comma + 1));
-	root.left = left;
-
+	const [left, str1] = parse(str.slice(val_end + 1));
 	const [right, str2] = parse(str1);
+
+	root.left = left;
 	root.right = right;
 
 	return [root, str2];
 }
+
+const DELIMITER = ",";
+const END = "#";

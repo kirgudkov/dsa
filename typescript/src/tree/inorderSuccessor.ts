@@ -16,15 +16,15 @@ function inorderSuccessor(root: TreeNode | null, p: TreeNode | null): TreeNode |
 
 		curr = stack.pop()!;
 
-		if (curr === p) {
+		if (curr == p) {
 			// If the current node has a right child, then the successor is the leftmost node in the right subtree.
 			if (curr.right) {
-				let temp = curr.right;
-				while (temp.left) {
-					temp = temp.left;
+				let leftmost = curr.right;
+				while (leftmost.left) {
+					leftmost = leftmost.left;
 				}
 
-				return temp;
+				return leftmost;
 			}
 
 			return stack.pop() ?? null;

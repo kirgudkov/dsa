@@ -5,8 +5,5 @@ export function preorderTraversal(root: TreeNode | null): number[] {
 		return [];
 	}
 
-	const result: number[] = [];
-	result.push(root.val, ...preorderTraversal(root.left), ...preorderTraversal(root.right));
-
-	return result;
+	return [root.val, ...preorderTraversal(root.left), ...preorderTraversal(root.right)];
 }

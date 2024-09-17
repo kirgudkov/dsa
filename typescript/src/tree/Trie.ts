@@ -24,11 +24,11 @@ class Trie {
 	}
 
 	search(word: string): boolean {
-		return this.searchPrefixNode(word)?.terminal ?? false;
+		return !!this.searchPrefixNode(word)?.terminal;
 	}
 
 	startsWith(prefix: string): boolean {
-		return this.searchPrefixNode(prefix) != undefined;
+		return !!this.searchPrefixNode(prefix);
 	}
 
 	private searchPrefixNode(prefix: string): TrieNode | undefined {

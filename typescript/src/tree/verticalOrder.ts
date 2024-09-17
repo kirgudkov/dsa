@@ -6,13 +6,11 @@ function verticalOrder(root: TreeNode | null): number[][] {
 	}
 
 	const map = new Map<number, number[]>();
-	const q: [TreeNode, number][] = [[root, 0]];
+	const queue: [TreeNode, number][] = [[root, 0]];
 
-	while (q.length) {
-		let n = q.length;
-
-		while (n > 0) {
-			const [node, index] = q.shift()!;
+	while (queue.length) {
+		for (let i = queue.length; i > 0; i--) {
+			const [node, index] = queue.shift()!;
 
 			if (map.has(index)) {
 				map.get(index)!.push(node.val);
@@ -20,16 +18,14 @@ function verticalOrder(root: TreeNode | null): number[][] {
 				map.set(index, [node.val]);
 			}
 
-			node.left && q.push([node.left, index - 1]);
-			node.right && q.push([node.right, index + 1]);
-
-			n--;
+			node.left && queue.push([node.left, index - 1]);
+			node.right && queue.push([node.right, index + 1]);
 		}
 	}
 
 	return Array.from(map.keys())
 		.sort((a, b) => a - b)
-		.map((key) => map.get(key)!);
+		.map(key => map.get(key)!);
 }
 
 export { verticalOrder };

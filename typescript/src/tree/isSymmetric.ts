@@ -13,23 +13,20 @@ export function isSymmetric(root: TreeNode | null): boolean {
 
 	while (queue.length) {
 		const level: (number | null)[] = [];
-		const length = queue.length;
 
-		for (let i = 0; i < length; i++) {
+		for (let i = queue.length; i > 0; i--) {
 			const node = queue.shift();
+
 			level.push(node?.val ?? null);
 
-			if (!node) {
-				continue;
+			if (node) {
+				queue.push(node.left);
+				queue.push(node.right);
 			}
-
-			queue.push(node.left);
-			queue.push(node.right);
 		}
 
-		// Check if the level is palindrome array
 		for (let i = 0, j = level.length - 1; i < j; i++, j--) {
-			if (level[i] !== level[j]) {
+			if (level[i] != level[j]) {
 				return false;
 			}
 		}

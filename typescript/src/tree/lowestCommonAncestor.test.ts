@@ -34,3 +34,16 @@ test("Two nodes tree", () => {
 
 	expect(lowestCommonAncestor(root, n2, root)).toBe(root);
 });
+
+test("Linear tree", () => {
+	const root = new TreeNode(1);
+	const n2 = new TreeNode(2);
+	const n3 = new TreeNode(3);
+	const n4 = new TreeNode(4);
+
+	root.left = n2;
+	n2.left = n3;
+	n3.left = n4;
+
+	expect(lowestCommonAncestor(root, n3, n4)).toBe(n3);
+});

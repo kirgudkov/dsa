@@ -8,62 +8,54 @@ class MapSum {
 	insert(key: string, val: number): void {
 		let node = this.root;
 
-		const _insert_char = (node: TrieNode, char: string): TrieNode => {
-			if (node.children.has(char)) {
-				return node.children.get(char)!;
-			} else {
-				const child = new TrieNode(char);
-				node.children.set(char, child);
-				return child;
-			}
-		};
-
 		for (const char of key) {
-			node = _insert_char(node, char);
+			if (!node.children.has(char)) {
+				node.children.set(char, new TrieNode(char));
+			}
+
+			node = node.children.get(char)!;
 		}
 
-		node.terminal = true;
 		node.value = val;
 	}
 
 	sum(prefix: string): number {
 		let node = this.root;
-		let sum = 0;
 
 		for (const char of prefix) {
-			if (node.children.has(char)) {
-				node = node.children.get(char)!;
-			} else {
-				return 0;
+			if (!node.children.has(char)) {
+				return 0; // prefix not found;
 			}
+
+			node = node.children.get(char)!;
 		}
 
-		const traverse = (node: TrieNode) => {
-			if (node.terminal) {
-				sum += node.value ?? 0;
+		const count = (node: TrieNode, acc = 0): number => {
+			let sum = acc;
+
+			if (node.value != undefined) {
+				sum += node.value;
 			}
 
 			for (const [_, child] of node.children) {
-				traverse(child);
+				sum += count(child, acc);
 			}
+
+			return sum;
 		};
 
-		traverse(node);
-
-		return sum;
+		return count(node);
 	}
 }
 
 class TrieNode {
 	char: string;
 	children: Map<string, TrieNode>;
-	terminal: boolean;
 	value?: number;
 
 	constructor(char: string) {
 		this.char = char;
 		this.children = new Map();
-		this.terminal = false;
 	}
 }
 

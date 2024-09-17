@@ -8,10 +8,9 @@ function replaceWords(dictionary: string[], sentence: string): string {
 }
 
 class Trie {
-	root: TrieNode;
+	root = new TrieNode("");
 
 	constructor(dictionary: string[]) {
-		this.root = new TrieNode("");
 		dictionary.forEach(this.insert_word);
 	}
 
@@ -20,18 +19,18 @@ class Trie {
 		let node = this.root;
 
 		for (const char of word) {
-			if (node.children.has(char)) {
-				node = node.children.get(char)!;
-
-				root = root
-					? root + node.char
-					: node.char;
-
-				if (node.terminal) {
-					break;
-				}
-			} else {
+			if (!node.children.has(char)) {
 				return null;
+			}
+
+			node = node.children.get(char)!;
+
+			root = root
+				? root + node.char
+				: node.char;
+
+			if (node.terminal) {
+				break;
 			}
 		}
 

@@ -5,8 +5,5 @@ export function inorderTraversal(root: TreeNode | null): number[] {
 		return [];
 	}
 
-	const result: number[] = [];
-	result.push(...inorderTraversal(root.left), root.val, ...inorderTraversal(root.right));
-
-	return result;
+	return [...inorderTraversal(root.left), root.val, ...inorderTraversal(root.right)];
 }

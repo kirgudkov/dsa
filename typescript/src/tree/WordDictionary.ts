@@ -5,42 +5,42 @@ class WordDictionary {
 		let node = this.root;
 
 		for (const char of word) {
-			if (node.children.has(char)) {
-				node = node.children.get(char)!;
-			} else {
-				const child = new TrieNode(char);
-				node.children.set(char, child);
-				node = child;
+			if (!node.children.has(char)) {
+				node.children.set(char, new TrieNode(char));
 			}
+
+			node = node.children.get(char)!;
 		}
 
 		node.terminal = true;
 	}
 
 	search(word: string): boolean {
-		const _search = (node: TrieNode, word: string): boolean => {
+		function search(node: TrieNode, word: string) {
 			let curr = node;
 
 			for (let i = 0; i < word.length; i++) {
-				if (curr.children.has(word[i])) {
-					curr = curr.children.get(word[i])!;
-				} else if (word[i] === ".") {
-					for (const child of curr.children) {
-						if (_search(child[1], word.slice(i + 1))) {
+				if (word[i] == ".") {
+					for (const [_, node] of curr.children) {
+						if (search(node, word.slice(i + 1))) {
 							return true;
 						}
 					}
 
 					return false;
+				}
+
+				if (curr.children.has(word[i])) {
+					curr = curr.children.get(word[i])!;
 				} else {
 					return false;
 				}
 			}
 
 			return curr.terminal;
-		};
+		}
 
-		return _search(this.root, word);
+		return search(this.root, word);
 	}
 }
 

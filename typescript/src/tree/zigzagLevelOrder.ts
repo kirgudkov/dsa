@@ -6,31 +6,25 @@ function zigzagLevelOrder(root: TreeNode | null): number[][] {
 	}
 
 	const result: number[][] = [];
-	const q: TreeNode[] = [root];
+	const queue: [TreeNode, number][] = [[root, 0]];
 
-	let depth = 0;
-
-	while (q.length) {
-		let n = q.length;
+	while (queue.length) {
 		const level: number[] = [];
 
-		while (n > 0) {
-			const node = q.shift()!;
+		for (let i = queue.length; i > 0; i--) {
+			const [node, depth] = queue.shift()!;
 
-			if (depth % 2 === 0) {
+			if (depth % 2 == 0) {
 				level.push(node.val);
 			} else {
 				level.unshift(node.val);
 			}
 
-			node.left && q.push(node.left);
-			node.right && q.push(node.right);
-
-			n--;
+			node.left && queue.push([node.left, depth + 1]);
+			node.right && queue.push([node.right, depth + 1]);
 		}
 
 		result.push(level);
-		depth++;
 	}
 
 	return result;
