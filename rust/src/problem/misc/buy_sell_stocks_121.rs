@@ -1,14 +1,12 @@
+// https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
 pub fn max_profit(prices: Vec<i32>) -> i32 {
-    let mut min_price = i32::MAX;
+    let mut min_price = prices[0];
     let mut max_profit = 0;
 
-    for price in prices {
-        if price < min_price {
-            min_price = price;
-        } else if price - min_price > max_profit {
-            max_profit = price - min_price;
-        }
-    }
+    prices.iter().skip(1).for_each(|&price| {
+        min_price = min_price.min(price);
+        max_profit = max_profit.max(price - min_price)
+    });
 
     max_profit
 }

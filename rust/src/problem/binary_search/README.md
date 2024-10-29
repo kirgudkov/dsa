@@ -35,7 +35,7 @@ fn binary_search<T: Ord>(vec: &[T], target: T) -> Option<usize> {
     let mut r = vec.len() - 1;
 
     while l != r {
-        let m = (l + r).div_ceil(2);
+        let m = (l + r).div_ceil(2); // important to round mid index up
 
         if vec[m] > target {
             r = m - 1;

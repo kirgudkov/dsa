@@ -1,41 +1,32 @@
-use std::collections::BinaryHeap;
+use std::collections::{BinaryHeap, HashMap};
 
 pub fn reorganize_string(s: String) -> String {
-    let mut heap = BinaryHeap::<(i32, char)>::new();
+    let mut result = String::new();
 
-    s.as_bytes().iter()
-        .fold(vec![0; 26], |mut acc, b| {
-            acc[(b - b'a') as usize] += 1;
+    let mut queue: BinaryHeap<(i32, char)> = s.chars()
+        .fold(HashMap::new(), |mut acc, c| {
+            *acc.entry(c).or_insert(0) += 1;
             acc
         })
-        .iter().enumerate()
-        .for_each(|(i, &count)| {
-            if count > 0 {
-                heap.push((count, (b'a' + i as u8) as char));
-            }
-        });
+        .into_iter()
+        .map(|(c, f)| (f, c))
+        .collect();
 
-    let mut res = String::new();
+    while queue.len() > 1 {
+        let (f1, c1) = queue.pop().unwrap();
+        let (f2, c2) = queue.pop().unwrap();
 
-    while heap.len() > 1 {
-        let (f1, c1) = heap.pop().unwrap();
-        let (f2, c2) = heap.pop().unwrap();
+        result.push_str(&format!("{}{}", c1, c2));
 
-        res.push_str(&format!("{}{}", c1, c2));
-
-        if f1 > 1 { heap.push((f1 - 1, c1)) }
-        if f2 > 1 { heap.push((f2 - 1, c2)) }
+        if f1 > 1 { queue.push((f1 - 1, c1)); }
+        if f2 > 1 { queue.push((f2 - 1, c2)); }
     }
 
-    if let Some((f, c)) = heap.pop() {
-        if f > 1 {
-            return String::from("");
-        } else {
-            res.push(c);
-        }
+    match queue.pop() {
+        None => result,
+        Some((1, c)) => format!("{}{}", result, c),
+        Some(_) => "".to_string(),
     }
-
-    res
 }
 
 #[cfg(test)]
