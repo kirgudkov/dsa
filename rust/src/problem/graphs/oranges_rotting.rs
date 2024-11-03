@@ -1,17 +1,17 @@
 use crate::utils::Neighbors;
-use std::collections::VecDeque;
 
 // https://leetcode.com/problems/rotting-oranges
-// TC: O(mn), SC: O(mn)
+// TC: O(N * M), SC: O(N * M)
 pub fn oranges_rotting(mut grid: Vec<Vec<i32>>) -> i32 {
-    // Initialize a queue with all rotten oranges
-    let mut queue = grid.iter()
-        .enumerate()
-        .flat_map(|(i, row)| {
-            row.iter().enumerate().filter_map(move |(j, &val)| {
-                (val == 2).then_some((i, j, 0))
-            })
-        }).collect::<VecDeque<_>>();
+    // SC: O(N * M)
+    let mut queue = std::collections::VecDeque::new();
+
+    //  TC: O(N * M)
+    for (i, row) in grid.iter().enumerate() {
+        for (j, &cell) in row.iter().enumerate() {
+            if cell == 2 { queue.push_back((i, j, 0)); }
+        }
+    }
 
     let mut elapsed = 0;
 
@@ -20,8 +20,8 @@ pub fn oranges_rotting(mut grid: Vec<Vec<i32>>) -> i32 {
 
         grid.neighbors(i, j).iter().for_each(|&(i, j)| {
             if grid[i][j] == 1 {
-                grid[i][j] = 2;
                 queue.push_back((i, j, minutes + 1));
+                grid[i][j] = 2;
             }
         });
     }

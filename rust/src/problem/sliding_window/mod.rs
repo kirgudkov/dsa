@@ -9,3 +9,4 @@ mod character_replacement_424;
 mod number_of_subarrays_1248;
 mod num_subarrays_with_sum_930;
 mod max_consequiteve_iii_1004;
+mod permutation_in_string_567;

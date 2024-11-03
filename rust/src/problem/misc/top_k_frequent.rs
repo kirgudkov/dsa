@@ -25,27 +25,31 @@ pub fn top_k_frequent(nums: Vec<i32>, k: i32) -> Vec<i32> {
 }
 
 // Slightly better approach: use max heap to keep track of k most frequent elements
-// TC: O(n log n)
-// SC: O(n)
+// TC: O(N log k)
+// SC: O(N + k)
 pub fn top_k_frequent_heap(nums: Vec<i32>, k: i32) -> Vec<i32> {
-    let mut freq = HashMap::new();
+    let mut counts = HashMap::new();
+
+    // O(N)
+    for num in nums {
+        *counts.entry(num).or_insert(0) += 1;
+    }
+
     let mut heap = BinaryHeap::new();
 
-    for num in nums.iter() {
-        *freq.entry(num).or_insert(0) += 1;
+    // O(N log k)
+    for (num, count) in counts {
+        heap.push(std::cmp::Reverse((count, num)));
+
+        if heap.len() > k as usize {
+            heap.pop();
+        }
     }
 
-    for (num, count) in freq.iter() {
-        heap.push((count, num));
-    }
-
-    let mut result = vec![];
-
-    for _ in 0..k {
-        result.push(**heap.pop().unwrap().1);
-    }
-
-    result
+    // This doesn't perform heap pop, only colelcts all entries, so it's just O(k)
+    heap.into_iter()
+        .map(|e| e.0.1)
+        .collect::<Vec<i32>>()
 }
 
 // The beast approach: using bucket sort
@@ -84,7 +88,9 @@ mod tests {
 
     #[test]
     fn test_top_k_frequent_heap() {
-        assert_eq!(top_k_frequent_heap(vec![1, 1, 1, 2, 2, 3], 2), vec![1, 2]);
+        let mut res = top_k_frequent_heap(vec![1, 1, 1, 2, 2, 3], 2);
+        res.sort();
+        assert_eq!(res, vec![1, 2]);
         assert_eq!(top_k_frequent_heap(vec![1], 1), vec![1]);
     }
 

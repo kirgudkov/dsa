@@ -11,39 +11,30 @@ class _Node {
 }
 
 function copyRandomList(head: _Node | null): _Node | null {
-	if (!head) {
-		return null;
-	}
-
 	const map = new Map<_Node, _Node>();
 
-	const get_copy = (node?: _Node | null) => {
-		if (!node) {
-			return null;
+	const getCopy = (original?: _Node | null): _Node | null => {
+		if (!original) return null;
+
+		if (!map.has(original)) {
+			map.set(original, new _Node(original.val));
 		}
 
-		let copy = map.get(node);
-
-		if (!copy) {
-			copy = new _Node(node.val);
-			map.set(node, copy);
-		}
-
-		return copy;
+		return map.get(original)!;
 	};
 
-	let old_node: _Node | null = head;
-	let new_node: _Node | null = get_copy(old_node);
+	let oldNode = head;
+	let newNode = getCopy(head);
 
-	while (new_node) {
-		new_node.next = get_copy(old_node?.next);
-		new_node.random = get_copy(old_node?.random);
+	while (newNode && oldNode) {
+		newNode.next = getCopy(oldNode.next);
+		newNode.random = getCopy(oldNode.random);
 
-		new_node = new_node.next;
-		old_node = old_node?.next ?? null;
+		newNode = newNode.next;
+		oldNode = oldNode.next;
 	}
 
-	return get_copy(head);
+	return getCopy(head);
 }
 
 export { copyRandomList, _Node };

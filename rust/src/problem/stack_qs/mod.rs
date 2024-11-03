@@ -3,5 +3,7 @@ mod min_remove_to_make_valid;
 mod can_visit_all_rooms;
 mod daily_temperatures_739;
 mod decode_string_394;
-mod eval_rpn_150;
+mod reverse_polish_notation_150;
 mod find_target_sum_ways_494;
+mod max_width_ramp_962;
+mod basic_calculator_ii_227;

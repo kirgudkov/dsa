@@ -1,33 +1,34 @@
-use std::ops::RangeInclusive;
-
 // https://leetcode.com/problems/longest-palindromic-substring/
 pub fn longest_palindrome(s: String) -> String {
-    let mut range = RangeInclusive::new(0, 0);
-    let bytes = s.as_bytes();
+    let vec = s.chars().collect::<Vec<_>>();
+    let mut range = (0, 0);
 
-    for i in 0..bytes.len() * 2 {
-        let mut l = i as i32 / 2;
-        let mut r = i / 2 + if i % 2 == 0 { 0 } else { 1 };
-
-        while l >= 0 && r < bytes.len() && bytes[l as usize] == bytes[r] {
-            if r - l as usize > range.end() - range.start() {
-                range = RangeInclusive::new(l as usize, r);
-            }
-
+    let expand = |mut l: i32, mut r: i32| -> (i32, i32) {
+        while l >= 0 && r < s.len() as i32 && vec[l as usize] == vec[r as usize] {
             l -= 1;
             r += 1;
         }
+
+        (l + 1, r - 1)
+    };
+
+    for i in 0..s.len() as i32 * 2 {
+        let (l, r) = expand(i / 2, if i % 2 == 0 { i / 2 } else { i / 2 + 1 });
+
+        if r - l > range.1 - range.0 {
+            range = (l, r)
+        }
     }
 
-    s[range].to_string()
+    s[range.0 as usize..=range.1 as usize].to_string()
 }
 
 fn longest_palindrome_n2(s: String) -> String {
-    let bytes = s.as_bytes();
-    let len = s.len() as i32;
+    let vec = s.chars().collect::<Vec<_>>();
+    let mut range = (0, 0);
 
     let expand = |mut i: i32, mut j: i32| -> (i32, i32) {
-        while i >= 0 && j < len && bytes[i as usize] == bytes[j as usize] {
+        while i >= 0 && j < vec.len() as i32 && vec[i as usize] == vec[j as usize] {
             i -= 1;
             j += 1;
         }
@@ -35,22 +36,20 @@ fn longest_palindrome_n2(s: String) -> String {
         (i + 1, j - 1)
     };
 
-    let mut ans = (0, 0);
-
-    for i in 0..len {
+    for i in 0..vec.len() as i32 {
         let (l1, r1) = expand(i, i);
         let (l2, r2) = expand(i, i + 1);
 
-        if r1 - l1 > ans.1 - ans.0 {
-            ans = (l1, r1)
+        if r1 - l1 > range.1 - range.0 {
+            range = (l1, r1)
         }
 
-        if r2 - l2 > ans.1 - ans.0 {
-            ans = (l2, r2)
+        if r2 - l2 > range.1 - range.0 {
+            range = (l2, r2)
         }
     }
 
-    s[ans.0 as usize..=ans.1 as usize].to_string()
+    s[range.0 as usize..=range.1 as usize].to_string()
 }
 
 // Dynamic programming approach O(n^2)
@@ -88,31 +87,28 @@ fn longest_palindrome_dp(s: String) -> String {
 
 // Brute force solution O(n^3)
 fn longest_palindrome_bf(s: String) -> String {
-    let bytes = s.as_bytes();
+    let vec = s.chars().collect::<Vec<_>>();
+
+    // O(n)
+    let is_palindrome = |mut l: usize, mut r: usize| -> bool {
+        while l < r && vec[l] == vec[r] {
+            l += 1;
+            r -= 1;
+        }
+
+        l >= r
+    };
+
     // O(n^2)
     for r in (0..s.len()).rev() {
         for l in 0..=s.len() - r {
-            if is_palindrome(bytes, l, r) {
+            if is_palindrome(l, r) {
                 return s[l..=r].to_string();
             }
         }
     }
 
-    // O(n)
-    fn is_palindrome(s: &[u8], mut l: usize, mut r: usize) -> bool {
-        while l < r {
-            if s[l] != s[r] {
-                return false;
-            }
-
-            l += 1;
-            r -= 1;
-        }
-
-        true
-    }
-
-    String::new()
+    unreachable!()
 }
 
 #[cfg(test)]

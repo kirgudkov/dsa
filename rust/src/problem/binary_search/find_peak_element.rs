@@ -36,6 +36,21 @@ pub fn find_peak_element(nums: Vec<i32>) -> i32 {
 
     -1
 }
+// Simple O(N) Linear Scan approach
+// if nums[0] > nums[1] {
+//     return 0;
+// }
+
+// if nums[nums.len() - 1] > nums[nums.len() - 2] {
+//     return nums.len() as i32 - 1;
+// }
+
+// for i in 1..nums.len() - 1 {
+//     if nums[i] > nums[i - 1] && nums[i] > nums[i + 1] {
+//         return i as i32;
+//     }
+// }
+
 
 #[cfg(test)]
 mod tests {

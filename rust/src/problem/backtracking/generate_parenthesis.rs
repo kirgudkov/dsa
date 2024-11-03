@@ -1,48 +1,27 @@
 pub fn generate_parenthesis(n: i32) -> Vec<String> {
-    Bt::new(n).result
-}
+    let mut result = vec![];
 
-#[derive(Default)]
-struct Bt {
-    n: usize,
-    buf: String,
-    result: Vec<String>,
-}
-
-impl Bt {
-    fn new(n: i32) -> Self {
-        let mut instance = Bt { n: n as usize, ..Default::default() };
-        instance.backtrack();
-        instance
-    }
-
-    fn backtrack(&mut self) {
-        if self.buf.len() == self.n * 2 {
-            return self.result.push(self.buf.clone());
+    fn backtrack(result: &mut Vec<String>, buf: &mut Vec<char>, open: i32, close: i32) {
+        if open == 0 && close == 0 {
+            result.push(buf.iter().collect());
+            return;
         }
 
-        for p in ['(', ')'] {
-            if self.is_valid(p) {
-                self.buf.push(p);
-                self.backtrack();
-                self.buf.pop();
-            }
+        if open > 0 {
+            buf.push('(');
+            backtrack(result, buf, open - 1, close);
+            buf.pop();
+        }
+
+        if open < close {
+            buf.push(')');
+            backtrack(result, buf, open, close - 1);
+            buf.pop();
         }
     }
 
-    // 1. We can insert '(' only if the number of '(' is less than n; - "There is space for an open parenthesis"
-    // 2. We can insert ')' only if the number of ')' is less than the number of '('; - "There is an open parenthesis to be closed"
-    // e.g, we cannot insert ')' at 0 position, because there is no open parenthesis to close yet. 
-    fn is_valid(&self, c: char) -> bool {
-        let open_count = self.buf.chars().filter(|&c| c == '(').count();
-        let close_count = self.buf.chars().filter(|&c| c == ')').count();
-
-        if c == '(' {
-            open_count < self.n
-        } else {
-            close_count < open_count
-        }
-    }
+    backtrack(&mut result, &mut vec![], n, n);
+    result
 }
 
 #[cfg(test)]
@@ -51,9 +30,8 @@ mod tests {
 
     #[test]
     fn test_generate_parenthesis() {
-        let n = 3;
-        let result = generate_parenthesis(n);
-        let expected = vec!["((()))", "(()())", "(())()", "()(())", "()()()"];
-        assert_eq!(result, expected);
+        assert_eq!(generate_parenthesis(1), vec!["()"]);
+        assert_eq!(generate_parenthesis(2), vec!["(())", "()()"]);
+        assert_eq!(generate_parenthesis(3), vec!["((()))", "(()())", "(())()", "()(())", "()()()"]);
     }
 }

@@ -6,14 +6,14 @@ fn eval_rpn(tokens: Vec<String>) -> i32 {
         if let Ok(num) = token.parse() {
             stack.push(num);
         } else {
-            let r = stack.pop().unwrap();
-            let l = stack.pop().unwrap();
+            let rhs = stack.pop().unwrap();
+            let lhs = stack.pop().unwrap();
 
             stack.push(match token.as_str() {
-                "+" => l + r,
-                "-" => l - r,
-                "*" => l * r,
-                "/" => l / r,
+                "+" => lhs + rhs,
+                "-" => lhs - rhs,
+                "*" => lhs * rhs,
+                "/" => lhs / rhs,
                 _ => unreachable!()
             });
         }

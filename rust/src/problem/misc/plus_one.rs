@@ -1,17 +1,19 @@
 pub fn plus_one(mut digits: Vec<i32>) -> Vec<i32> {
-    let mut i = digits.len() as i32 - 1;
     let mut carry = 1;
 
-    while i >= 0 && carry > 0 {
-        let sum = digits[i as usize] + carry;
-        digits[i as usize] = sum % 10;
-        carry = sum / 10;
-        i -= 1;
+    for i in (0..digits.len()).rev() {
+        digits[i] += carry;
+        carry = digits[i] / 10;
+        digits[i] %= 10;
+
+        if carry == 0 {
+            return digits;
+        }
     }
 
-    if carry > 0 {
-        digits.insert(0, carry);
-    }
+    digits.push(1);
+    let last = digits.len() - 1;
+    digits.swap(0, last);
 
     digits
 }
