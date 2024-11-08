@@ -9,3 +9,7 @@ mod total_n_queens;
 mod word_search_ii_212;
 mod max_score_words_1255;
 mod subsets_78;
+mod subsets_ii_98;
+mod combination_sum_39;
+mod combination_sum_ii_40;
+mod combination_sum_iii_216;
