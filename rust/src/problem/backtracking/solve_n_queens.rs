@@ -15,13 +15,30 @@ struct Backtracking {
 
 impl Backtracking {
     pub fn solve(n: i32) -> Vec<Vec<String>> {
-        let mut bt = Backtracking {
+        let mut instance = Backtracking {
             board: vec![".".repeat(n as usize); n as usize],
             ..Default::default()
         };
 
-        bt.backtrack(0);
-        bt.result
+        instance.backtrack(0);
+        instance.result
+    }
+
+    fn backtrack(&mut self, i: i32) {
+        if i == self.board.len() as i32 {
+            self.result.push(self.board.clone());
+            return;
+        }
+
+        for j in 0..self.board.len() as i32 {
+            if self.is_under_attack(i, j) {
+                continue;
+            }
+
+            self.place(i, j);
+            self.backtrack(i + 1);
+            self.remove(i, j);
+        }
     }
 
     fn place(&mut self, i: i32, j: i32) {
@@ -44,25 +61,7 @@ impl Backtracking {
     }
 
     fn is_under_attack(&self, i: i32, j: i32) -> bool {
-        self.cols.contains(&j)
-            || self.diag_1.contains(&(i - j))
-            || self.diag_2.contains(&(i + j))
-    }
-
-    fn backtrack(&mut self, i: i32) {
-        if i == self.board.len() as i32 {
-            self.result.push(self.board.clone());
-        }
-
-        for j in 0..self.board.len() as i32 {
-            if self.is_under_attack(i, j) {
-                continue;
-            }
-
-            self.place(i, j);
-            self.backtrack(i + 1);
-            self.remove(i, j);
-        }
+        self.cols.contains(&j) || self.diag_1.contains(&(i - j)) || self.diag_2.contains(&(i + j))
     }
 }
 

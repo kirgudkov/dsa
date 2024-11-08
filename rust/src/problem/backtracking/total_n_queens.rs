@@ -13,10 +13,10 @@ struct Backtracking {
 }
 
 impl Backtracking {
-    pub fn solve(n: i32) -> i32 {
-        let mut bt = Backtracking::default();
-        bt.backtrack(n, 0);
-        bt.count
+    fn solve(n: i32) -> i32 {
+        let mut instance = Self::default();
+        instance.backtrack(n, 0);
+        instance.count
     }
 
     fn backtrack(&mut self, n: i32, i: i32) {
@@ -25,7 +25,7 @@ impl Backtracking {
         }
 
         for j in 0..n {
-            if !self.is_safe(i, j) {
+            if self.is_under_attack(i, j) {
                 continue;
             }
 
@@ -47,10 +47,8 @@ impl Backtracking {
         self.diags_2.remove(&(i + j));
     }
 
-    fn is_safe(&self, i: i32, j: i32) -> bool {
-        !self.cols.contains(&j)
-            && !self.diags_1.contains(&(i - j))
-            && !self.diags_2.contains(&(i + j))
+    fn is_under_attack(&self, i: i32, j: i32) -> bool {
+        self.cols.contains(&j) || self.diags_1.contains(&(i - j)) || self.diags_2.contains(&(i + j))
     }
 }
 

@@ -7,3 +7,5 @@ mod reverse_polish_notation_150;
 mod find_target_sum_ways_494;
 mod max_width_ramp_962;
 mod basic_calculator_ii_227;
+mod largest_rectangle_area;
+mod remove_duplicate_letters_316;

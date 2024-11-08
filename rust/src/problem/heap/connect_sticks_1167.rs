@@ -24,6 +24,8 @@ pub fn connect_sticks(sticks: Vec<i32>) -> i32 {
 }
 
 // Alternative way. Probably could be the first version that leads to optimized heap solution;
+// Each recursuive call reduces sticks count by 1. So it runs in O(n) time, each recursive call, we sort sticks in O(n log n)
+// So, the overall time complexity is O(n^2 log n)
 pub fn connect_sticks_rec(mut sticks: Vec<i32>, cost: i32) -> i32 {
     if sticks.len() == 1 { // We have one stick; All sticks were connected
         return cost;

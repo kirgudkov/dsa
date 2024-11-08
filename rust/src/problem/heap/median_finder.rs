@@ -14,17 +14,14 @@ impl MedianFinder {
         Default::default()
     }
 
+    // O(n) insertion: even though we find a insertion position in O(log n), vector insertion is still O(n)
     fn add_num(&mut self, num: i32) {
         let mut l = 0;
         let mut r = self.vec.len();
 
+        // Rigthmost insertion position search
         while l < r {
             let m = l + (r - l) / 2;
-
-            if self.vec[m] == num {
-                self.vec.insert(m, num);
-                return;
-            }
 
             if self.vec[m] > num {
                 r = m;

@@ -8,3 +8,4 @@ mod solve_sudoku;
 mod total_n_queens;
 mod word_search_ii_212;
 mod max_score_words_1255;
+mod subsets_78;
