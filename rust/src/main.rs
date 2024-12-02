@@ -7,5 +7,6 @@ mod problem;
 mod sort;
 mod utils;
 mod temp;
+mod aoc;
 
 fn main() {}
