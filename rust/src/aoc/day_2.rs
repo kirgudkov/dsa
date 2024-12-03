@@ -1,4 +1,5 @@
 fn solve(input: &str, is_valid: fn(&[i32], [i32; 2]) -> bool) -> i32 {
+    // Parse input string as a 2d array
     let input = input
         .lines()
         .map(|line| {
@@ -8,6 +9,7 @@ fn solve(input: &str, is_valid: fn(&[i32], [i32; 2]) -> bool) -> i32 {
         })
         .collect::<Vec<Vec<_>>>();
 
+    // Count valid rows
     input
         .iter()
         .fold(0, |acc, row| if is_valid(row, [1, 3]) { acc + 1 } else { acc })
@@ -18,11 +20,13 @@ fn part_1(vec: &[i32], range: [i32; 2]) -> bool {
 }
 
 fn part_2(vec: &[i32], range: [i32; 2]) -> bool {
-    is_valid(vec, &range) || vec.iter().enumerate().any(|(i, _)| {
-        let mut temp = vec.to_vec();
-        temp.remove(i);
-        is_valid(&temp, &range)
-    })
+    // If the entire vector is valid or it becomes valid after removing one element
+    is_valid(vec, &range)
+        || vec.iter().enumerate().any(|(i, _)| {
+            let mut temp = vec.to_vec();
+            temp.remove(i);
+            is_valid(&temp, &range)
+        })
 }
 
 fn is_valid(vec: &[i32], range: &[i32; 2]) -> bool {
@@ -38,7 +42,6 @@ fn is_valid(vec: &[i32], range: &[i32; 2]) -> bool {
 
 #[cfg(test)]
 mod tests {
-    use std::fs::read_to_string;
     use super::*;
 
     #[test]
@@ -50,7 +53,7 @@ mod tests {
 8 6 4 4 1
 1 3 6 7 9";
         assert_eq!(solve(input, part_1), 2);
-        dbg!(solve(&read_to_string("./src/aoc/inputs/day_2").unwrap(), part_1));
+        dbg!(solve(&std::fs::read_to_string("./src/aoc/inputs/day_2").unwrap(), part_1));
     }
 
     #[test]
@@ -63,6 +66,6 @@ mod tests {
 8 6 4 4 1
 1 3 6 7 9";
         assert_eq!(solve(input, part_2), 5);
-        dbg!(solve(&read_to_string("./src/aoc/inputs/day_2").unwrap(), part_2));
+        dbg!(solve(&std::fs::read_to_string("./src/aoc/inputs/day_2").unwrap(), part_2));
     }
 }
