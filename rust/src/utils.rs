@@ -1,16 +1,41 @@
+pub trait InBounds<T> {
+    fn in_bounds(&self, i: i32, j: i32) -> bool;
+}
+
+impl<T> InBounds<T> for [Vec<T>] {
+    fn in_bounds(&self, i: i32, j: i32) -> bool {
+        i >= 0 && i < self.len() as i32 && j >= 0 && j < self[0].len() as i32
+    }
+}
+
 pub trait Neighbors<T> {
     fn neighbors(&self, i: usize, j: usize) -> Vec<(usize, usize)>;
+    fn neighbors_diag(&self, i: usize, j: usize) -> Vec<(usize, usize)>;
 }
 
 impl<T> Neighbors<T> for Vec<Vec<T>> {
     fn neighbors(&self, i: usize, j: usize) -> Vec<(usize, usize)> {
-        [(1, 0), (-1, 0), (0, 1), (0, -1)].iter().filter_map(|&(di, dj)| {
-            let ni = i as isize + di;
-            let nj = j as isize + dj;
+        [(1, 0), (-1, 0), (0, 1), (0, -1)]
+            .iter()
+            .filter_map(|&(di, dj)| {
+                let ni = i as isize + di;
+                let nj = j as isize + dj;
 
-            (ni >= 0 && ni < self.len() as isize && nj >= 0 && nj < self[0].len() as isize)
-                .then_some((ni as usize, nj as usize))
-        }).collect()
+                (ni >= 0 && ni < self.len() as isize && nj >= 0 && nj < self[0].len() as isize).then_some((ni as usize, nj as usize))
+            })
+            .collect()
+    }
+
+    fn neighbors_diag(&self, i: usize, j: usize) -> Vec<(usize, usize)> {
+        [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (-1, 1), (1, -1), (-1, -1)]
+            .iter()
+            .filter_map(|&(di, dj)| {
+                let ni = i as isize + di;
+                let nj = j as isize + dj;
+
+                (ni >= 0 && ni < self.len() as isize && nj >= 0 && nj < self[0].len() as isize).then_some((ni as usize, nj as usize))
+            })
+            .collect()
     }
 }
 
@@ -41,7 +66,10 @@ mod tests {
         assert_eq!(m.neighbors(0, 1), vec![(1, 1), (0, 0)]);
         assert_eq!(m.neighbors(1, 0), vec![(0, 0), (1, 1)]);
         assert_eq!(m.neighbors(1, 1), vec![(0, 1), (1, 0)]);
-        assert_eq!(vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]].neighbors(1, 1), vec![(2, 1), (0, 1), (1, 2), (1, 0)]);
+        assert_eq!(
+            vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]].neighbors(1, 1),
+            vec![(2, 1), (0, 1), (1, 2), (1, 0)]
+        );
     }
 
     #[test]
