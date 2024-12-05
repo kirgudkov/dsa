@@ -71,8 +71,8 @@ fn into_vec(input: &str) -> Vec<Vec<char>> {
     input
         .lines()
         .map(|line| line.split_whitespace().flat_map(|word| word.chars()))
-        .map(|chars| chars.collect::<Vec<_>>())
-        .collect::<Vec<_>>()
+        .map(|chars| chars.collect())
+        .collect()
 }
 
 fn backtrack(input: &mut [Vec<char>], target: &[char], k: usize, i: i32, j: i32, delta: (i32, i32)) -> bool {
