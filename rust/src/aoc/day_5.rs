@@ -65,7 +65,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_part_1() {
+    fn test() {
         let input = "47|53
 97|13
 97|61
