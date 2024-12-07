@@ -8,6 +8,7 @@ fn part_1(input: &str) -> i32 {
         // Filter out invalid rows
         .filter(|row| {
             row.windows(2)
+                // row is valid if each entry is known and each pair follows order rules
                 .all(|pair| order_rules.contains_key(&pair[0]) && order_rules[&pair[0]].contains(&pair[1]))
         })
         // Sum their middle elements
@@ -22,10 +23,11 @@ fn part_2(input: &str) -> i32 {
         // Filter out valid rows
         .filter(|row| {
             row.windows(2)
+                // row is invalid if any entry is unknown or any pair does not follow order rules
                 .any(|pair| !order_rules.contains_key(&pair[0]) || !order_rules[&pair[0]].contains(&pair[1]))
         })
-        // Sort them by the order rules
         .map(|row| {
+            // Sort them by the order rules using custom comparator function
             row.sort_unstable_by(|a, b| {
                 if order_rules.contains_key(a) && order_rules[a].contains(b) {
                     std::cmp::Ordering::Less
@@ -33,6 +35,7 @@ fn part_2(input: &str) -> i32 {
                     std::cmp::Ordering::Greater
                 }
             });
+            // return mid item and sum
             row[row.len() / 2]
         })
         .sum()
@@ -43,17 +46,15 @@ fn parse_rows(input: &str) -> Vec<Vec<i32>> {
         .lines()
         .skip_while(|line| !line.is_empty())
         .skip(1)
-        .map(|line| line.split(",").map(|x| x.parse::<i32>().unwrap()))
-        .map(|line| line.collect::<Vec<i32>>())
-        .collect::<Vec<Vec<i32>>>()
+        .map(|line| line.split(",").map(|x| x.parse().unwrap()).collect())
+        .collect()
 }
 
 fn parse_order_rules(input: &str) -> HashMap<i32, Vec<i32>> {
     input
         .lines()
         .take_while(|line| !line.is_empty())
-        .map(|line| line.split("|").map(|x| x.parse::<i32>().unwrap()))
-        .map(|line| line.collect::<Vec<i32>>())
+        .map(|line| line.split("|").map(|x| x.parse().unwrap()).collect::<Vec<i32>>())
         .fold(HashMap::<i32, Vec<i32>>::new(), |mut acc, pair| {
             acc.entry(pair[0]).or_default().push(pair[1]);
             acc
