@@ -1,6 +1,10 @@
 export class DoublyLinkedList {
 	private length: number = 0;
 
+	get size(): number {
+		return this.length;
+	}
+
 	private head?: DoublyLinkedListNode;
 	private tail?: DoublyLinkedListNode;
 

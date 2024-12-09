@@ -23,7 +23,7 @@ export function cloneGraphRecursive(node: _Node | null, visited: Map<number, _No
 
 	new_node.neighbors = node.neighbors
 		.map(neighbor => cloneGraphRecursive(neighbor, visited))
-		.filter(Boolean) as _Node[];
+		.filter((neighbor) => neighbor !== null);
 
 	return new_node;
 }

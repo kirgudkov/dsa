@@ -1,87 +1,112 @@
 // https://leetcode.com/problems/lru-cache
-class LRUCache<KeyType, ValueType> {
-	private readonly map = new Map<KeyType, LRUListNode<KeyType, ValueType>>();
+class LruCache<K extends string | number, V> implements Cache<K, V> {
+	readonly #map: Map<K, LinkedNode<CacheEntry<K, V>>> = new Map();
+	readonly #list: List<LinkedNode<CacheEntry<K, V>>> = new DoublyLinkedList();
+	readonly #capacity: number;
 
-	private lru?: LRUListNode<KeyType, ValueType>;
-	private mru?: LRUListNode<KeyType, ValueType>;
-
-	constructor(
-		private readonly capacity: number,
-	) {}
-
-	get = (key: KeyType) => this.map.has(key)
-		? this.handleCacheHit(this.map.get(key)!).value
-		: -1; // todo: -1 is not a good choice, since we're using generics, we should return undefined or null
-
-	put = (key: KeyType, value: ValueType) => {
-		this.map.has(key)
-			// If the key exists, update the value and promote the node
-			? this.handleCacheHit(this.map.get(key)!, value)
-			// Otherwise create a new node
-			: this.handleCacheMiss(key, value);
-	};
-
-	// This method is used to promote the node to the "mru", making it the mru recently used.
-	// Instead of modifying the node, we delete it and create a new one with the same key and value.
-	// While this is not the mru efficient way to do it, it simplifies the code.
-	private handleCacheHit(node: LRUListNode<KeyType, ValueType>, value?: ValueType) {
-		this.deleteNode(node);
-		return this.createNode(node.key, value ?? node.value);
+	constructor(capacity: number) {
+		this.#capacity = capacity;
 	}
 
-	private handleCacheMiss(key: KeyType, value: ValueType) {
-		this.createNode(key, value);
+	put(key: K, value: V): void {
+		const existingNode = this.#map.get(key);
 
-		if (this.map.size > this.capacity) {
-			this.deleteNode(this.lru!);
+		if (existingNode) {
+			existingNode.value.value = value;
+			this.#promoteNode(existingNode);
+			return;
+		}
+
+		const newNode = {
+			value: { key, value },
+		};
+
+		this.#list.pushFront(newNode);
+		this.#map.set(key, newNode);
+
+		this.#evict();
+	}
+
+	get(key: K): V | undefined {
+		const node = this.#map.get(key);
+
+		if (!node) {
+			return undefined;
+		}
+
+		this.#promoteNode(node);
+		return node.value.value;
+	}
+
+	#promoteNode(node: LinkedNode<CacheEntry<K, V>>): void {
+		this.#list.remove(node);
+		this.#list.pushFront(node);
+	}
+
+	#evict(): void {
+		if (this.#map.size > this.#capacity && this.#list.last) {
+			this.#map.delete(this.#list.last.value.key);
+			this.#list.remove(this.#list.last);
 		}
 	}
+}
 
-	private deleteNode(node: LRUListNode<KeyType, ValueType>): void {
-		// Step 1: Delete the node from the map
-		this.map.delete(node.key);
+class DoublyLinkedList<T> implements List<LinkedNode<T>> {
+	last?: LinkedNode<T>;
+	private first?: LinkedNode<T>;
 
-		const next = node.next;
+	remove(node: LinkedNode<T>): void {
 		const prev = node.prev;
+		const next = node.next;
 
-		// Step 2: Delete the node from the linked list
-		if (prev) prev.next = next;
-		if (next) next.prev = prev;
+		prev && (prev.next = next);
+		next && (next.prev = prev);
 		node.prev = undefined;
 		node.next = undefined;
 
-		// Step 3: Update the lru and mru if necessary
-		if (node == this.lru) this.lru = next;
-		if (node == this.mru) this.mru = prev;
+		// It's important to update refs
+		if (node === this.first) this.first = next;
+		if (node === this.last) this.last = prev;
 	}
 
-	private createNode(key: KeyType, value: ValueType): LRUListNode<KeyType, ValueType> {
-		// Step 1: Create a new node
-		const node = new LRUListNode<KeyType, ValueType>(key, value);
-
-		// Step 2: Add the node to the linked list
-		if (this.mru) {
-			node.prev = this.mru;
-			this.mru.next = node;
+	pushFront(node: LinkedNode<T>): void {
+		// No matter what first is, set it as next
+		node.next = this.first;
+		// if list isn't empty, demote current first
+		if (this.first) {
+			this.first.prev = node;
+		} else {
+			// Otherwise, new node is the only one so far.
+			// So it is first and last at the same time
+			this.last = node;
 		}
-		this.mru = node;
-		if (!this.lru) this.lru = node;
-
-		// Step 3: Add the node to the map
-		this.map.set(key, node);
-
-		return node;
+		// Finally, update first ref
+		this.first = node;
 	}
 }
 
-class LRUListNode<KeyType, ValueType> {
-	constructor(
-		public key: KeyType,
-		public value: ValueType,
-	) {}
-
-	next?: LRUListNode<KeyType, ValueType>;
-	prev?: LRUListNode<KeyType, ValueType>;
+interface LinkedNode<T> {
+	value: T;
+	prev?: LinkedNode<T>;
+	next?: LinkedNode<T>;
 }
 
-export { LRUCache };
+interface CacheEntry<K, V> {
+	key: K;
+	value: V;
+}
+
+interface List<T> {
+	readonly last?: T;
+	remove(node: T): void;
+	pushFront(node: T): void;
+}
+
+interface Cache<K, V> {
+	get(key: K): V | undefined;
+	put(key: K, value: V): void;
+}
+
+export {
+	LruCache,
+};
